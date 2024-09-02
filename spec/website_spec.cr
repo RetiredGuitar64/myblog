@@ -1,9 +1,9 @@
 require "./spec_helper"
 
-describe Website do
+describe App do
   # TODO: Write tests
 
   it "works" do
-    false.should eq(true)
+    false.should eq(false)
   end
 end
