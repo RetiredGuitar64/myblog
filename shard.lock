@@ -8,6 +8,14 @@ shards:
     git: https://github.com/sija/backtracer.cr.git
     version: 1.2.2
 
+  baked_file_system:
+    git: https://github.com/schovi/baked_file_system.git
+    version: 0.10.0
+
+  baked_file_system_mounter:
+    git: https://github.com/crystal-china/baked_file_system_mounter.git
+    version: 0.5.4
+
   cadmium_transliterator:
     git: https://github.com/cadmiumcr/transliterator.git
     version: 0.1.0+git.commit.46c4c14594057dbcfaf27e7e7c8c164d3f0ce3f1
@@ -39,6 +47,10 @@ shards:
   lucky_cache:
     git: https://github.com/luckyframework/lucky_cache.git
     version: 0.1.1
+
+  lucky_env:
+    git: https://github.com/luckyframework/lucky_env.git
+    version: 0.2.0
 
   lucky_router:
     git: https://github.com/luckyframework/lucky_router.git
