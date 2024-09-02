@@ -5,3 +5,4 @@
 *.dwarf
 /website
 /node_modules
+/public/*
