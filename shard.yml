@@ -8,6 +8,14 @@ targets:
   website:
     main: src/website.cr
 
+dependencies:
+  lucky:
+    github: luckyframework/lucky
+    version: ~> 1.2.0
+  avram:
+    github: luckyframework/avram
+    version: ~> 1.2.0
+
 crystal: '>= 1.13.2'
 
 license: MIT
