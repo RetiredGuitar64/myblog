@@ -30,13 +30,12 @@ if (mix.inProduction()) {
   // Add additional compression plugins here.
   // For example if you want to add Brotli compression:
   //
-  // let brotliCompression = new CompressionWepackPlugin({
-  //   compressionOptions: { level: 11 },
-  //   filename: '[path].br[query]',
-  //   algorithm: 'brotliCompress',
-  //   test: /\.js$|\.css$|\.html$|\.svg$/
-  // })
-  // plugins.push(brotliCompression)
+  let brotliCompression = new CompressionWepackPlugin({
+    filename: "[path][base].br",
+    algorithm: 'brotliCompress',
+    test: /\.js$|\.css$|\.html$|\.svg$/
+  })
+  plugins.push(brotliCompression)
 }
 
 mix
