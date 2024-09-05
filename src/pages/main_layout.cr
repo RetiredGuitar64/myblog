@@ -20,7 +20,9 @@ abstract class MainLayout
 
       body "hx-boost": true do
         mount Shared::FlashMessages, context.flash
-        content
+        main do
+          content
+        end
       end
     end
   end
