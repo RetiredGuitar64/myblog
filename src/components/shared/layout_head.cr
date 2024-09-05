@@ -9,7 +9,7 @@ class Shared::LayoutHead < BaseComponent
       js_link asset("js/app.js"), defer: "true"
       csrf_meta_tags
       responsive_meta_tag
-      css_link "https://fonts.googleapis.com/icon?family=Material+Icons"
+      # css_link "https://fonts.googleapis.com/icon?family=Material+Icons"
 
       # Development helper used with the `lucky watch` command.
       # Reloads the browser when files are updated.
