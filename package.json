@@ -4,7 +4,7 @@
   "dependencies": {
     "htmx.org": "^1.9.12",
     "hyperscript.org": "^0.9.12",
-    "modern-normalize": "^2.0.0"
+    "modern-normalize": "^3.0.0"
   },
   "scripts": {
     "heroku-postbuild": "yarn prod",
