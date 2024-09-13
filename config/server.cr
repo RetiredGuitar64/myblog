@@ -25,14 +25,13 @@ Lucky::Server.configure do |settings|
   #
   # However you could use a CDN when in production like this:
   #
-  #   Lucky::Server.configure do |settings|
-  #     if LuckyEnv.production?
-  #       settings.asset_host = "https://mycdnhost.com"
-  #     else
-  #       settings.asset_host = ""
-  #     end
-  #   end
-  settings.asset_host = "" # Lucky will serve assets
+  Lucky::Server.configure do |settings|
+    if LuckyEnv.production?
+      settings.asset_host = "https://assets.crystal-china.org"
+    else
+      settings.asset_host = ""
+    end
+  end
 end
 
 Lucky::ForceSSLHandler.configure do |settings|
