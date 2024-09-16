@@ -3217,7 +3217,7 @@ htmlparser2@^4.1.0:
 
 htmx.org@^2.0.0:
   version "2.0.2"
-  resolved "https://registry.yarnpkg.com/htmx.org/-/htmx.org-2.0.2.tgz#62852952dcce8f61253caf476f3cc5c1192a5afd"
+  resolved "https://registry.npmmirror.com/htmx.org/-/htmx.org-2.0.2.tgz#62852952dcce8f61253caf476f3cc5c1192a5afd"
   integrity sha512-eUPIpQaWKKstX393XNCRCMJTrqPzikh36Y9RceqsUZLTtlFjFaVDgwZLUsrFk8J2uzZxkkfiy0TE359j2eN6hA==
 
 http-deceiver@^1.2.7:
