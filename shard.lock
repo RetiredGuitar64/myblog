@@ -1,3 +1,4 @@
+# NOTICE: This lockfile contains some overrides from shard.override.yml
 version: 2.0
 shards:
   avram:
@@ -8,13 +9,17 @@ shards:
     git: https://github.com/sija/backtracer.cr.git
     version: 1.2.2
 
-  baked_file_system:
+  baked_file_system: # Overridden
     git: https://github.com/schovi/baked_file_system.git
     version: 0.10.0
 
   baked_file_system_mounter:
     git: https://github.com/crystal-china/baked_file_system_mounter.git
     version: 0.5.4
+
+  base58:
+    git: https://github.com/crystal-china/base58.cr.git
+    version: 0.1.0+git.commit.2b0564a975171f4507c33251e0c0ab7990459e23
 
   cadmium_transliterator:
     git: https://github.com/cadmiumcr/transliterator.git
@@ -31,6 +36,10 @@ shards:
   dexter:
     git: https://github.com/luckyframework/dexter.git
     version: 0.3.4
+
+  docopt:
+    git: https://github.com/chenkovsky/docopt.cr.git
+    version: 0.2.0+git.commit.620fce4f334ff15d7321e5ecb6665ad258fe9297
 
   exception_page:
     git: https://github.com/crystal-loot/exception_page.git
@@ -76,9 +85,17 @@ shards:
     git: https://github.com/luckyframework/shell-table.cr.git
     version: 0.9.3
 
+  sixteen:
+    git: https://github.com/ralsina/sixteen.git
+    version: 0.3.1
+
   splay_tree_map:
     git: https://github.com/wyhaines/splay_tree_map.cr.git
     version: 0.3.0
+
+  tartrazine:
+    git: https://github.com/ralsina/tartrazine.git
+    version: 0.7.0
 
   wordsmith:
     git: https://github.com/luckyframework/wordsmith.git

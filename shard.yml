@@ -20,6 +20,8 @@ dependencies:
     version: ~> 0.2.0
   baked_file_system_mounter:
     github: crystal-china/baked_file_system_mounter
+  tartrazine :
+    github: ralsina/tartrazine
 
 crystal: '>= 1.13.2'
 
