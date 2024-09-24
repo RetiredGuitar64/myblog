@@ -2,6 +2,7 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "asciinema-player": "^3.8.0",
     "htmx.org": "^2.0.0",
     "hyperscript.org": "^0.9.12",
     "missing.css": "1.1.3",

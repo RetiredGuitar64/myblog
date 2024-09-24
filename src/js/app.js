@@ -7,6 +7,9 @@ window.htmx = htmx;
 import _hyperscript from 'hyperscript.org';
 _hyperscript.browserInit();
 
+import * as AsciinemaPlayer from 'asciinema-player';
+AsciinemaPlayer.create('/demo.cast', document.getElementById('demo'));
+
 function init () {
     htmx.logger = function (elt, event, data) {
         if (console) {
