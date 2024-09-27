@@ -37,32 +37,44 @@ label {
   font-weight: 500;
 }
 
-[type='color'],
-[type='date'],
-[type='datetime'],
-[type='datetime-local'],
-[type='email'],
-[type='month'],
-[type='number'],
-[type='password'],
-[type='search'],
-[type='tel'],
-[type='text'],
-[type='time'],
-[type='url'],
-[type='week'],
-input:not([type]),
-textarea {
-  border-radius: 3px;
-  border: 1px solid #bbb;
-  margin: 7px 0 14px 0;
-  max-width: 400px;
-  padding: 8px 6px;
-  width: 100%;
-}
+/* [type='color'], */
+/* [type='date'], */
+/* [type='datetime'], */
+/* [type='datetime-local'], */
+/* [type='email'], */
+/* [type='month'], */
+/* [type='number'], */
+/* [type='password'], */
+/* [type='search'], */
+/* [type='tel'], */
+/* [type='text'], */
+/* [type='time'], */
+/* [type='url'], */
+/* [type='week'], */
+/* input:not([type]), */
+/* textarea { */
+/*   border-radius: 3px; */
+/*   border: 1px solid #bbb; */
+/*   margin: 7px 0 14px 0; */
+/*   max-width: 400px; */
+/*   padding: 8px 6px; */
+/*   width: 100%; */
+/* } */
 
 [type='submit'] {
   font-weight: 900;
   margin: 9px 0;
   padding: 6px 9px;
+}
+
+
+:root {
+  --main-font: "Source Sans 3", -apple-system, system-ui, sans-serif;
+}
+dfn > code {
+  font-style: normal;
+  text-decoration: 1px dashed var(--muted-fg) underline;
+}
+code a {
+  font-family: inherit;
 }
