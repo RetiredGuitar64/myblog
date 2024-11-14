@@ -1,0 +1,13 @@
+[Unit]
+Description=crystal-china
+After=nginx.service
+
+[Service]
+Type=simple
+User=crystal_china
+WorkingDirectory=/home/crystal_china/apps/website_production
+ExecStart=/home/crystal_china/apps/website_production/bin/website
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
