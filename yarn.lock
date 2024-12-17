@@ -3229,9 +3229,9 @@ htmlparser2@^4.1.0:
     entities "^2.0.0"
 
 htmx.org@^2.0.0:
-  version "2.0.2"
-  resolved "https://registry.npmmirror.com/htmx.org/-/htmx.org-2.0.2.tgz#62852952dcce8f61253caf476f3cc5c1192a5afd"
-  integrity sha512-eUPIpQaWKKstX393XNCRCMJTrqPzikh36Y9RceqsUZLTtlFjFaVDgwZLUsrFk8J2uzZxkkfiy0TE359j2eN6hA==
+  version "2.0.4"
+  resolved "https://registry.npmmirror.com/htmx.org/-/htmx.org-2.0.4.tgz#74fce66b177eb59c6d251ecf1052a2478743bec9"
+  integrity sha512-HLxMCdfXDOJirs3vBZl/ZLoY+c7PfM4Ahr2Ad4YXh6d22T5ltbTXFFkpx9Tgb2vvmWFMbIc3LqN2ToNkZJvyYQ==
 
 http-deceiver@^1.2.7:
   version "1.2.7"
