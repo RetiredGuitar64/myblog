@@ -11,13 +11,10 @@ targets:
 dependencies:
   lucky:
     github: luckyframework/lucky
-    version: ~> 1.2.0
   avram:
     github: luckyframework/avram
-    version: ~> 1.2.0
   lucky_env:
     github: luckyframework/lucky_env
-    version: ~> 0.2.0
   baked_file_system_mounter:
     github: crystal-china/baked_file_system_mounter
   tartrazine :
