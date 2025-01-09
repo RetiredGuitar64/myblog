@@ -1,6 +1,10 @@
 # NOTICE: This lockfile contains some overrides from shard.override.yml
 version: 2.0
 shards:
+  autolink:
+    git: https://github.com/crystal-community/autolink.cr.git
+    version: 0.1.3
+
   avram:
     git: https://github.com/luckyframework/avram.git
     version: 1.3.0

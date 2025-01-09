@@ -51,11 +51,7 @@ HEREDOC
 </div>
 HEREDOC
 
-    para do
-      text <<-'HEREDOC'
-字符串必须是双引号，但是也可以使用 %Q 或省略Q, 写作 % ，%q 则表示单引号
-HEREDOC
-    end
+    para_text "字符串必须是双引号，但是也可以使用 %Q 或省略Q, 写作 % ，%q 则表示单引号"
 
     missing_warn "字符串必须是双引号，但是也可以使用 %Q 或省略Q, 写作 % ，%q 则表示单引号"
 

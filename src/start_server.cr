@@ -13,14 +13,6 @@ Signal::INT.trap do
   app_server.close
 end
 
-private def print_running_at
-  STDOUT.puts ""
-  STDOUT.puts running_at_background
-  STDOUT.puts running_at_message.colorize.on_cyan.black
-  STDOUT.puts running_at_background
-  STDOUT.puts ""
-end
-
 private def running_at_background
   extra_space_for_emoji = 1
   (" " * (running_at_message.size + extra_space_for_emoji)).colorize.on_cyan

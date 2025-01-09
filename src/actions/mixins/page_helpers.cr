@@ -1,3 +1,5 @@
+require "autolink"
+
 module PageHelpers
   def missing_ok(msg)
     div class: "box ok" do
@@ -23,6 +25,14 @@ module PageHelpers
     div class: "box bad" do
       strong "错误", class: "block titlebar"
       text msg
+    end
+  end
+
+  def para_text(para, *, autolink = false)
+    para = Autolink.auto_link(para) if autolink
+
+    para do
+      text para
     end
   end
 end
