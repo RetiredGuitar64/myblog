@@ -1,6 +1,10 @@
 module App
-  VERSION          = {{ `shards version "#{__DIR__}"`.chomp.stringify }}
-  DEPLOYED_VERSION = {{ `git rev-parse --short HEAD`.chomp.stringify + `crystal eval 'puts Time.local.to_s(" %Y/%m/%d %H:%M:%S")'`.chomp.stringify }}
+  VERSION = {{
+              `shards version "#{__DIR__}"`.chomp.stringify +
+              " (rev " +
+              `git rev-parse --short HEAD`.chomp.stringify +
+              ")"
+            }}
 end
 
 require "./shards"
