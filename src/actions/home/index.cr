@@ -1,5 +1,5 @@
 class Home::Index < BrowserAction
   get "/" do
-    html IndexPage
+    redirect Docs::Index
   end
 end
