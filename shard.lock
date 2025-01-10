@@ -29,6 +29,10 @@ shards:
     git: https://github.com/cadmiumcr/transliterator.git
     version: 0.1.0+git.commit.46c4c14594057dbcfaf27e7e7c8c164d3f0ce3f1
 
+  common_marker:
+    git: https://github.com/mamantoha/crystal-cmark-gfm.git
+    version: 0.7.0
+
   cry:
     git: https://github.com/luckyframework/cry.git
     version: 0.4.3

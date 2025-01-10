@@ -24,6 +24,8 @@ dependencies:
     github: ralsina/tartrazine
   autolink:
     github: crystal-community/autolink.cr
+  common_marker:
+    github: mamantoha/crystal-cmark-gfm
 
 crystal: '>= 1.14.0'
 
