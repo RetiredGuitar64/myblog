@@ -1,6 +1,7 @@
 abstract class MainLayout
   include Lucky::HTMLPage
   include PageHelpers
+  include PageHelpers::Box
 
   abstract def content
   abstract def page_title
@@ -14,6 +15,10 @@ abstract class MainLayout
   # This method so every page is required to have its own page title.
   def page_title
     "Welcome"
+  end
+
+  def current_path
+    URI.parse(context.request.resource).path
   end
 
   def render
@@ -31,15 +36,16 @@ abstract class MainLayout
 
         div class: "sidebar-layout" do
           header do
-            mount Sidebar
+            mount Sidebar if current_path.starts_with?("/docs")
           end
 
           div class: "col-2" do
             main do
               content
+              mount Pager
             end
 
-            footer do
+            footer class: "f-row flex-wrap:wrap justify-content:center" do
               mount Footer
             end
           end
