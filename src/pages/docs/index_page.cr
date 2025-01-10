@@ -3,12 +3,11 @@ class Docs::IndexPage < MainLayout
     "前言"
   end
 
-  def content
-    h1 do
-      text "前言"
-      sub_title "写在开始之前"
-    end
+  def sub_title
+    "写在开始之前"
+  end
 
+  def content
     missing_info "这是一份面向 Ruby (或有类似经验) 开发者的 Crystal 文档。"
 
     missing_info "目前，Ruby 相关的基础概念会仅仅略过，代之，会着重介绍 Crystal 和 Ruby 的不同，建议在学习 Crystal 之前，掌握一些 Ruby 的基本概念。"

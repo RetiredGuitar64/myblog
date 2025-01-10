@@ -45,9 +45,11 @@ module PageHelpers
     end
   end
 
-  def sub_title(msg)
-    tag "sub-title" do
-      text msg
+  def sub_title_tag(msg)
+    if msg
+      tag "sub-title" do
+        text msg
+      end
     end
   end
 

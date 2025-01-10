@@ -17,6 +17,10 @@ abstract class MainLayout
     "Welcome"
   end
 
+  def sub_title
+    nil
+  end
+
   def current_path
     URI.parse(context.request.resource).path
   end
@@ -41,6 +45,10 @@ abstract class MainLayout
 
           div class: "col-2" do
             main do
+              h2 do
+                text page_title
+                sub_title_tag sub_title if sub_title
+              end
               content
               mount Pager
             end
