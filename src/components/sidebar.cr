@@ -1,25 +1,34 @@
 class Sidebar < BaseComponent
+  def render_child(ary)
+    if !ary.empty?
+      ul class: "margin" do
+        ary.each do |child|
+          li do
+            a child.name, href: child.path
+
+            render_child(child.child)
+          end
+        end
+      end
+    end
+  end
+
   def render
     div "My App", class: "<h1>"
 
     nav do
       ul role: "list" do
-        li do
-          a "Home", href: "#", "aria-current": "page"
-        end
-
-        li do
-          para do
-            b "Tests"
-          end
-
-          ul role: "list", class: "margin" do
+        PageHelpers::SIDEBAR_LINKS.each do |k, v|
+          if v.parent == "root"
             li do
-              a "Test 1", href: "#"
+              if current_path == v.path
+                a v.name, href: k, class: "<button>"
+              else
+                a v.name, href: k
+              end
             end
-            li do
-              a "Lorem ipsum", href: "#"
-            end
+
+            render_child(v.child)
           end
         end
 
