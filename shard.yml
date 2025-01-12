@@ -20,12 +20,10 @@ dependencies:
     version: ~> 0.2.0
   baked_file_system_mounter:
     github: crystal-china/baked_file_system_mounter
-  tartrazine :
+  tartrazine:
     github: ralsina/tartrazine
-  autolink:
-    github: crystal-community/autolink.cr
-  common_marker:
-    github: mamantoha/crystal-cmark-gfm
+  markd:
+    github: zw963/markd
 
 crystal: '>= 1.14.0'
 

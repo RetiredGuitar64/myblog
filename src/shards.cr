@@ -6,4 +6,5 @@ LuckyEnv.load?(".env")
 require "lucky"
 require "avram/lucky"
 require "baked_file_system_mounter"
-require "tartrazine"
+require "tartrazine" # optional dependency for markd to render markdown code block.
+require "markd"
