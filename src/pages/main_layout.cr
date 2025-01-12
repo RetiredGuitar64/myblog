@@ -22,7 +22,7 @@ abstract class MainLayout
   end
 
   def current_path
-    URI.parse(context.request.resource).path
+    context.request.path
   end
 
   def render
