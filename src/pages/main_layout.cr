@@ -7,7 +7,6 @@ abstract class MainLayout
   abstract def page_title
 
   needs formatter : Tartrazine::Formatter
-  needs lexer : Tartrazine::Lexer
 
   # The default page title. It is passed to `Shared::LayoutHead`.
   #

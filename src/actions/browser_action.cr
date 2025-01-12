@@ -17,18 +17,13 @@ abstract class BrowserAction < Lucky::Action
 
   accepted_formats [:html, :json], default: :html
 
-  expose lexer
   expose formatter
-
-  memoize def lexer : Tartrazine::Lexer
-    Tartrazine.lexer("crystal")
-  end
 
   memoize def formatter : Tartrazine::Formatter
     Tartrazine::Html.new(
       theme: Tartrazine.theme("catppuccin-macchiato"),
-      line_numbers: true,
-      standalone: true,
+      line_numbers: false,
+      standalone: false,
     )
   end
 end

@@ -14,6 +14,7 @@
 @import 'modern-normalize/modern-normalize.css';
 @import 'missing.css';
 @import 'asciinema-player/dist/bundle/asciinema-player.css';
+@import './catppuccin-macchiato.css';
 // Add your own components and import them like this:
 //
 // @import "components/my_new_component";
@@ -77,4 +78,8 @@ dfn > code {
 }
 code a {
   font-family: inherit;
+}
+
+button.copyBtn {
+  float: right;
 }

@@ -10,6 +10,42 @@ _hyperscript.browserInit();
 import * as AsciinemaPlayer from 'asciinema-player';
 // AsciinemaPlayer.create('/demo.cast', document.getElementById('demo'));
 
+function copyCodeButton () {
+    const copyButtonLabel = "Copy Code";
+
+    // use a class selector if available
+    let blocks = document.querySelectorAll("pre.b");
+
+    blocks.forEach((block) => {
+        // only add button if browser supports Clipboard API
+        if (navigator.clipboard) {
+            let button = document.createElement("button");
+            button.className = "copyBtn";
+
+            button.innerText = copyButtonLabel;
+
+            block.prepend(button);
+
+            button.addEventListener("click", async () => {
+                await copyCode(block, button);
+            });
+        }
+    });
+
+    async function copyCode(block, button) {
+        let code = block.querySelector("code");
+        let text = code.innerText;
+
+        await navigator.clipboard.writeText(text);
+
+        button.innerText = "Code Copied";
+
+        setTimeout(() => {
+            button.innerText = copyButtonLabel;
+        }, 1500);
+    }
+}
+
 function init () {
     // htmx.logger = function (elt, event, data) {
     //     if (console) {
@@ -28,6 +64,7 @@ function init () {
 
     // setIPhoneDataAttribute();
     // startLogoAnimation();
+    copyCodeButton();
 }
 
 htmx.onLoad(init);

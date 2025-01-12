@@ -1,6 +1,3 @@
-require "autolink"
-require "common_marker"
-
 module PageHelpers
   PAGE_URL_MAPPING = {
     "/docs" => {name: "前言", next_page: ["简介", "/docs/introduction"], parent: "root"},
@@ -37,14 +34,6 @@ module PageHelpers
     end
   end
 
-  def para_text(para, *, autolink = false)
-    para = Autolink.auto_link(para) if autolink
-
-    para do
-      text para
-    end
-  end
-
   def sub_title_tag(msg)
     if msg
       tag "sub-title" do
@@ -54,11 +43,6 @@ module PageHelpers
   end
 
   def markdown(text)
-    md = CommonMarker.new(
-      text,
-      options: ["unsafe"],
-      extensions: ["table", "strikethrough", "autolink", "tagfilter", "tasklist"]
-    )
-    raw md.to_html
+    raw Markd.to_html(text, formatter: formatter)
   end
 end
