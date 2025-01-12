@@ -14,7 +14,7 @@ class Sidebar < BaseComponent
   end
 
   def render
-    div "My App", class: "<h1>"
+    div "目录", class: "<h1>"
 
     nav do
       ul role: "list" do
