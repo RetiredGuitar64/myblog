@@ -134,6 +134,13 @@ Crystal [早在 2019 年](https://crystal-lang.org/2019/09/06/parallelism-in-cry
 也即将在 2025 年上半年完成，但是鉴于开发资源投入差距巨大，要达到 Golang 实现的成熟度，
 还需要假以时日。
 
+## 其他特性
+
+其他提及的特性，包括：
+
+- 类似于 Rust 的强大的编译时宏(macro)处理, Ruby 这种动态语言中的 method_missing, 模块的混入(mixin)，都是在编译时通过宏实现的
+- Multiple dispatch 允许根据方法参数的名称、个数、类型不同，甚至方法返回值不同，来定义同名方法。
+
 ## 缺点
 
 Crystal 的缺点也是非常明显的：

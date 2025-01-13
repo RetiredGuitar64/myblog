@@ -22,11 +22,11 @@ class Docs::IndexPage < MainLayout
     markdown <<-'HEREDOC'
 
 一直以来，为 Crystal 在中国的普及做贡献，都是自己的一个美好愿望，但一直因故未能实现，
-这次，以 Crystal 官方文档翻译为基础，辅以个人在学习 Crystal 过程中，记录下的大量笔记，
-也算是对自己之前的知识的一个学习和再掌握，
+这次，以翻译 Crystal 官方文档作为开始，将笔者学习 Crystal 过程中大量的笔记进行整理,
+也算是对自己之前的知识的一个学习和再掌握。
 
 正如 Ruby 一样，在看似简单的外表下，Crystal 又绝非一门简单的语言，希望笔者根据自己的
-经验，能将这们让人惊叹的语言讲解清楚，对读者学习掌握 Crystal 带来帮助。
+经验，能将这一门让人惊叹、并且唯一的的语言讲解清楚，对读者学习掌握 Crystal 带来帮助。
 
 
 如有错误，[欢迎提出勘误指正](https://github.com/crystal-china/website/issues).
