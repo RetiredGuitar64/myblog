@@ -37,7 +37,7 @@ abstract class MainLayout
           mount Navbar
         end
 
-        div class: "sidebar-layout" do
+        div class: "sidebar-layout fullscreen" do
           header do
             mount Sidebar if current_path.starts_with?("/docs")
           end
