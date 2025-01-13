@@ -24,7 +24,14 @@ function copyCodeButton () {
 
     async function copyCode(block, button) {
         let code = block.querySelector("code");
+        let lineNumbers = code.querySelectorAll('span[style="user-select: none;"]');
+        lineNumbers.forEach((span) => {
+            span.setAttribute("style", "user-select: none; display: none;");
+        })
         let text = code.innerText;
+        lineNumbers.forEach((span) => {
+            span.setAttribute("style", "user-select: none;");
+        })
 
         await navigator.clipboard.writeText(text);
 

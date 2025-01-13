@@ -27,7 +27,11 @@ function init () {
 
     // setIPhoneDataAttribute();
     // startLogoAnimation();
+
+    // 确保下面的函数，只在 body 重新改变时才触发
+    // if (event.detail.elt.nodeName == "BODY") {
     copyCodeButton();
+    // }
 }
 
 htmx.onLoad(init);

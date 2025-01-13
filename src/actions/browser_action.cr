@@ -22,7 +22,7 @@ abstract class BrowserAction < Lucky::Action
   memoize def formatter : Tartrazine::Formatter
     Tartrazine::Html.new(
       theme: Tartrazine.theme("catppuccin-macchiato"),
-      line_numbers: false,
+      line_numbers: true,
       standalone: false,
     )
   end
