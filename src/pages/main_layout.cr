@@ -2,8 +2,21 @@ abstract class MainLayout
   include Lucky::HTMLPage
   include PageHelpers
   include PageHelpers::Box
+  
+    # 'needs current_user : User' makes it so that the current_user
+  # is always required for pages using MainLayout
+  needs current_user : User
 
-  abstract def content
+  macro load_markdown
+    {% class_name = @type.name.stringify.underscore.gsub(/_page$/, "").gsub(/::/, "/markdown/") %}
+
+    markdown File.read("{{__DIR__.id}}/{{class_name.id}}.md")
+  end
+
+  def content
+    load_markdown
+  end
+
   abstract def page_title
 
   needs formatter : Tartrazine::Formatter

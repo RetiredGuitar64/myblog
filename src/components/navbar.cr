@@ -34,15 +34,7 @@ class Navbar < BaseComponent
 
       ul role: "list" do
         li do
-          a "Test", href: "/"
-        end
-
-        li do
-          a "Contribute", href: "/"
-        end
-
-        li do
-          a "Donate", href: "/"
+          a "Github", href: "https://github.com/crystal-china/website"
         end
       end
     end

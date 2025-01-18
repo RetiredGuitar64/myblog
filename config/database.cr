@@ -1,5 +1,3 @@
-require "../db/migrations/**"
-
 database_name = "crystal_china_#{LuckyEnv.environment}"
 
 AppDatabase.configure do |settings|
@@ -53,6 +51,3 @@ Avram.configure do |settings|
   settings.i18n_backend = MyI18n.new
 end
 
-if !LuckyEnv.task? && LuckyEnv.production?
-  Avram::Migrator::Runner.new.run_pending_migrations
-end
