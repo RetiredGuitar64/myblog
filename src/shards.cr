@@ -5,6 +5,9 @@ LuckyEnv.load?(".env")
 # Require your shards here
 require "lucky"
 require "avram/lucky"
+require "carbon"
+require "authentic"
+require "jwt"
 require "baked_file_system_mounter"
 require "tartrazine" # optional dependency for markd to render markdown code block.
 require "markd"

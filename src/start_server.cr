@@ -5,6 +5,8 @@ Habitat.raise_if_missing_settings!
 if LuckyEnv.development?
   Avram::Migrator::Runner.new.ensure_migrated!
   Avram::SchemaEnforcer.ensure_correct_column_mappings!
+else
+  Avram::Migrator::Runner.new.run_pending_migrations
 end
 
 app_server = AppServer.new
@@ -18,12 +20,8 @@ private def running_at_background
   (" " * (running_at_message.size + extra_space_for_emoji)).colorize.on_cyan
 end
 
-private def running_at
-  "http://#{Lucky::ServerSettings.host}:#{Lucky::ServerSettings.port}"
-end
-
 private def running_at_message
-  "   🎉 App running at #{running_at}   "
+  "   🎉 App running at http://#{Lucky::ServerSettings.host}:#{Lucky::ServerSettings.port}   "
 end
 
 private def print_running_at
