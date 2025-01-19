@@ -7,7 +7,7 @@ puts "hello Crystal!!"
 当前主要维护者是来自 manas 的 Johannes Müller [@straight-shoota](https://github.com/straight-shoota)
 以及社区贡献。
 
-**Manas** 是一家来自于阿根廷的软件服务公司，他们使用 **Ruby On Rails** 以及各种其他语言为客户交付项目，
+Manas 是一家来自于阿根廷的软件服务公司，他们使用 **Ruby On Rails** 以及各种其他语言为客户交付项目，
 而 Crystal 的诞生来源于一个想法，对程序员很友好的 Ruby 程序语言，常常被人诟病性能太差，
 如果可以结合 Ruby 的良好可读性以及静态强类型语言的优点，性能是不是可以变得更好一些？
 
@@ -29,7 +29,7 @@ Ruby 社区的开发者加入，甚至部分核心开发者认为学习 Crystal 
  - 使用宏来在编译时生成代码，避免大量的模板代码重复。
  - 使用 llvm 编译到高性能 native 代码
 
-但是，笔者（一个十年的老 Rubyist）从个人角度，认为官方忽略了 Crystal 语言可能最重要一个特性！
+但是，笔者（一个十年的老 Rubyist）认为，官方忽略了 Crystal 语言一个可能最重要特性！
 
 ## 空安全（Null Safety）
 

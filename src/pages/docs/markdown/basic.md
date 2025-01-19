@@ -12,8 +12,9 @@ end
 add(1, 2) # => 3
 ```
 
+```
 你总可以通过 ``::`` 来引用顶级作用域, 甚至是顶级作用域中定义的方法。
-
+```
 
 ```crystal
 def hello
@@ -29,7 +30,11 @@ end
 p! A.new.hello # => "hello!"
 ```
 
+```
 顶级作用域中的变量是 local 的，在方法中无法被看到。
+
+这点和很多语言，例如，JavaScript, Python，BASH 不同！
+```
 
 ```crystal
 x = 1

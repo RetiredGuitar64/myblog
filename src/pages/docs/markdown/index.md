@@ -18,5 +18,11 @@
 正如 Ruby 一样，在看似简单的外表下，Crystal 又绝非一门简单的语言，希望笔者根据自己的
 经验，能将这一门让人惊叹、并且唯一的的语言讲解清楚，对读者学习掌握 Crystal 带来帮助。
 
+[本站](https://github.com/crystal-china/website) 自然使用 Crystal 编写，目前用到的库有：
+
+- [lucky](https://github.com/luckyframework/lucky) 是一个全功能的 web 框架，用来搭建本站以及计划中的论坛。
+- [markd](https://github.com/icyleaf/markd) 用于转换 markdown 格式到网页。
+- [tartrazine](https://github.com/ralsina/tartrazine), 用于高亮 markdown 中的代码块。
+- [baked_file_system_mounter](https://github.com/crystal-china/baked_file_system_mounter), 用于将本站所需的 assets 文件（包含 js, css, 字体，markdown 等）打包进可执行文件，并在部署到新机器后自动 mount。
 
 如有错误，[欢迎提出勘误指正](https://github.com/crystal-china/website/issues).
