@@ -10,7 +10,7 @@ abstract class DocLayout
   macro load_markdown
     {% class_name = @type.name.stringify.underscore.gsub(/_page$/, "").gsub(/::/, "/markdown/") %}
 
-    markdown File.read("src/pages/{{class_name.id}}.md")
+    markdown File.read("{{class_name.id}}.md")
   end
 
   def content
