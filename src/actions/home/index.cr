@@ -1,5 +1,8 @@
 class Home::Index < BrowserAction
+  include Auth::AllowGuests
+
   get "/" do
-    html IndexPage
+    # html Lucky::WelcomePage
+    redirect Docs::Index
   end
 end

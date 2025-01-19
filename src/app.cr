@@ -1,6 +1,10 @@
 module App
-  VERSION          = {{ `shards version "#{__DIR__}"`.chomp.stringify }}
-  DEPLOYED_VERSION = {{ `git rev-parse --short HEAD`.chomp.stringify + `crystal eval 'puts Time.local.to_s(" %Y/%m/%d %H:%M:%S")'`.chomp.stringify }}
+  VERSION = {{
+              `shards version "#{__DIR__}"`.chomp.stringify +
+              " (rev " +
+              `git rev-parse --short HEAD`.chomp.stringify +
+              ")"
+            }}
 end
 
 require "./shards"
@@ -20,9 +24,12 @@ require "./operations/mixins/**"
 require "./operations/**"
 require "./serializers/base_serializer"
 require "./serializers/**"
+require "./emails/base_email"
+require "./emails/**"
 require "./actions/mixins/**"
 require "./actions/**"
 require "./components/base_component"
 require "./components/**"
 require "./pages/**"
+require "../db/migrations/**"
 require "./app_server"

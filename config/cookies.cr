@@ -1,7 +1,7 @@
 require "./server"
 
 Lucky::Session.configure do |settings|
-  settings.key = "_website_session"
+  settings.key = "_crystal_china_session"
 end
 
 Lucky::CookieJar.configure do |settings|

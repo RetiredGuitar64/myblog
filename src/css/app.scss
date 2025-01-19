@@ -13,14 +13,17 @@
 
 @import 'modern-normalize/modern-normalize.css';
 @import 'missing.css';
+@import 'asciinema-player/dist/bundle/asciinema-player.css';
+@import './catppuccin-macchiato.css';
 // Add your own components and import them like this:
 //
 // @import "components/my_new_component";
 
 // Default Lucky styles.
 // Delete these when you're ready to bring in your own CSS.
+
 body {
-  font-family: system-ui, BlinkMacSystemFont, -apple-system, Segoe UI,
+  font-family: "微软雅黑", "文泉驿微米黑", "宋体", system-ui, BlinkMacSystemFont, -apple-system, Segoe UI,
                Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
                sans-serif;
   margin: 0 auto;
@@ -36,32 +39,48 @@ label {
   font-weight: 500;
 }
 
-[type='color'],
-[type='date'],
-[type='datetime'],
-[type='datetime-local'],
-[type='email'],
-[type='month'],
-[type='number'],
-[type='password'],
-[type='search'],
-[type='tel'],
-[type='text'],
-[type='time'],
-[type='url'],
-[type='week'],
-input:not([type]),
-textarea {
-  border-radius: 3px;
-  border: 1px solid #bbb;
-  margin: 7px 0 14px 0;
-  max-width: 400px;
-  padding: 8px 6px;
-  width: 100%;
-}
+/* [type='color'], */
+/* [type='date'], */
+/* [type='datetime'], */
+/* [type='datetime-local'], */
+/* [type='email'], */
+/* [type='month'], */
+/* [type='number'], */
+/* [type='password'], */
+/* [type='search'], */
+/* [type='tel'], */
+/* [type='text'], */
+/* [type='time'], */
+/* [type='url'], */
+/* [type='week'], */
+/* input:not([type]), */
+/* textarea { */
+/*   border-radius: 3px; */
+/*   border: 1px solid #bbb; */
+/*   margin: 7px 0 14px 0; */
+/*   max-width: 400px; */
+/*   padding: 8px 6px; */
+/*   width: 100%; */
+/* } */
 
 [type='submit'] {
   font-weight: 900;
   margin: 9px 0;
   padding: 6px 9px;
+}
+
+
+:root {
+  --main-font: "Source Sans 3", -apple-system, system-ui, sans-serif;
+}
+dfn > code {
+  font-style: normal;
+  text-decoration: 1px dashed var(--muted-fg) underline;
+}
+code a {
+  font-family: inherit;
+}
+
+button.copyBtn {
+  float: right;
 }
