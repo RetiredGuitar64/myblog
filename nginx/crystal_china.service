@@ -5,8 +5,8 @@ After=nginx.service
 [Service]
 Type=simple
 User=crystal_china
-WorkingDirectory=/home/crystal_china/apps/website_production
-ExecStart=/home/crystal_china/apps/website_production/bin/website
+WorkingDirectory=/home/crystal_china/apps/crystal_china_production
+ExecStart=/home/crystal_china/apps/crystal_china_production/bin/crystal_china
 Restart=on-failure
 
 [Install]
