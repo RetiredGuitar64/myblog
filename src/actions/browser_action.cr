@@ -1,6 +1,5 @@
 abstract class BrowserAction < Lucky::Action
   include Lucky::ProtectFromForgery
-  include PageHelpers
 
   # By default all actions are required to use underscores.
   # Add `include Lucky::SkipRouteStyleCheck` to your actions if you wish to ignore this check for specific routes.
@@ -42,15 +41,5 @@ abstract class BrowserAction < Lucky::Action
   # The 'memoize' macro makes sure only one query is issued to find the user
   private memoize def find_current_user(id : String | User::PrimaryKeyType) : User?
     UserQuery.new.id(id).first?
-  end
-
-  expose formatter
-
-  memoize def formatter : Tartrazine::Formatter
-    Tartrazine::Html.new(
-      theme: Tartrazine.theme("catppuccin-macchiato"),
-      line_numbers: true,
-      standalone: false,
-    )
   end
 end

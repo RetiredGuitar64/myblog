@@ -1,4 +1,4 @@
-class Docs::IndexPage < MainLayout
+class Docs::IndexPage < DocLayout
   def page_title
     "前言"
   end

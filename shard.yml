@@ -6,8 +6,8 @@ authors:
   - Billy.Zheng <vil963@gmail.com>
 
 targets:
-  website:
-    main: src/website.cr
+  crystal_china:
+    main: src/crystal_china.cr
 
 dependencies:
   lucky:

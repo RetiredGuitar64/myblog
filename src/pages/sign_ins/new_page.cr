@@ -2,22 +2,31 @@ class SignIns::NewPage < AuthLayout
   needs operation : SignInUser
 
   def content
-    h1 "Sign In"
-    render_sign_in_form(@operation)
-  end
+    op = operation
+    div style: "height: 100vh;", class: "f-row justify-content:center align-items:center" do
+      figure do
+        #   figcaption "登录"
 
-  private def render_sign_in_form(op)
-    form_for SignIns::Create do
-      sign_in_fields(op)
-      submit "Sign In", flow_id: "sign-in-button"
+        form_for SignIns::Create, class: "table rows" do
+          para do
+            mount Shared::Field, attribute: op.email, label_text: "Email", &.email_input(autofocus: "true")
+          end
+
+          para do
+            mount Shared::Field, attribute: op.password, label_text: "Password", &.password_input
+          end
+
+          para do
+            strong do
+              submit "登录", type: "button", flow_id: "sign-in-button", class: "<button>"
+            end
+
+            strong do
+              link "重置密码", to: PasswordResetRequests::New, class: "<button>"
+            end
+          end
+        end
+      end
     end
-    link "Reset password", to: PasswordResetRequests::New
-    text " | "
-    link "Sign up", to: SignUps::New
-  end
-
-  private def sign_in_fields(op)
-    mount Shared::Field, attribute: op.email, label_text: "Email", &.email_input(autofocus: "true")
-    mount Shared::Field, attribute: op.password, label_text: "Password", &.password_input
   end
 end

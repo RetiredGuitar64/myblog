@@ -34,7 +34,19 @@ class Navbar < BaseComponent
 
       ul role: "list" do
         li do
-          a "Github", href: "https://github.com/crystal-china/website"
+          link "文档", to: Docs::Index
+        end
+
+        li do
+          a "Github", href: "https://github.com/orgs/crystal-china/repositories"
+        end
+
+        li do
+          link "注册", to: SignUps::New
+        end
+
+        li do
+          link "登录", to: SignIns::New
         end
       end
     end

@@ -32,11 +32,11 @@ class Sidebar < BaseComponent
           end
         end
 
-        li do
-          strong do
-            a "Back to home", class: "<button>", href: "/"
-          end
-        end
+        # li do
+        #   strong do
+        #     a "Back to home", class: "<button>", href: "/"
+        #   end
+        # end
       end
     end
   end

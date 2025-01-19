@@ -5,13 +5,6 @@ module PageHelpers::Box
     end
   end
 
-  def missing_info(msg)
-    div class: "box info" do
-      strong "💡 小提示", class: "block titlebar"
-      markdown msg
-    end
-  end
-
   def missing_warn(msg)
     div class: "box warn" do
       strong "警告", class: "block titlebar"

@@ -20,7 +20,18 @@ abstract class AuthLayout
 
       body do
         mount Shared::FlashMessages, context.flash
-        content
+
+        header class: "navbar", style: "margin-bottom: 2px;" do
+          mount Navbar
+        end
+
+        main do
+          content
+        end
+
+        footer class: "f-row flex-wrap:wrap justify-content:center" do
+          mount Footer
+        end
       end
     end
   end

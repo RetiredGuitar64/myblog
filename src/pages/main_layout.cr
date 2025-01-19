@@ -1,90 +1,46 @@
 abstract class MainLayout
   include Lucky::HTMLPage
   include PageHelpers
-  include PageHelpers::Box
-  
-    # 'needs current_user : User' makes it so that the current_user
+
+  # 'needs current_user : User' makes it so that the current_user
   # is always required for pages using MainLayout
   needs current_user : User
 
-  macro load_markdown
-    {% class_name = @type.name.stringify.underscore.gsub(/_page$/, "").gsub(/::/, "/markdown/") %}
-
-    markdown File.read("{{__DIR__.id}}/{{class_name.id}}.md")
-  end
-
-  def content
-    load_markdown
-  end
-
+  abstract def content
   abstract def page_title
 
-  needs formatter : Tartrazine::Formatter
-
-  # The default page title. It is passed to `Shared::LayoutHead`.
+  # MainLayout defines a default 'page_title'.
   #
-  # Add a `page_title` method to pages to override it. You can also remove
-  # This method so every page is required to have its own page title.
+  # Add a 'page_title' method to your indivual pages to customize each page's
+  # title.
+  #
+  # Or, if you want to require every page to set a title, change the
+  # 'page_title' method in this layout to:
+  #
+  #    abstract def page_title : String
+  #
+  # This will force pages to define their own 'page_title' method.
   def page_title
     "Welcome"
-  end
-
-  def sub_title
-    nil
-  end
-
-  def current_path
-    context.request.path
   end
 
   def render
     html_doctype
 
-    html lang: "en", class: "-no-dark-theme" do
+    html lang: "en" do
       mount Shared::LayoutHead, page_title: page_title
 
-      body "hx-boost": true, style: "padding: 0px;" do
+      body do
         mount Shared::FlashMessages, context.flash
-
-        header class: "navbar", style: "margin-bottom: 2px;" do
-          mount Navbar
-        end
-
-        div class: "sidebar-layout fullscreen" do
-          header do
-            mount Sidebar if current_path.starts_with?("/docs")
-          end
-
-          div class: "col-2" do
-            main do
-              h2 do
-                text page_title
-                sub_title_tag sub_title if sub_title
-              end
-              content
-              mount Pager
-            end
-
-            footer class: "f-row flex-wrap:wrap justify-content:center" do
-              mount Footer
-            end
-          end
-        end
-      end
-
-      dialog(class: "margin f-col",
-        style: "max-width: 100%; width: 30em;
-max-height: 100%; height: 40em;
-padding-bottom: 0;") do
-        label "Search", for: "search-input", class: "titlebar", style: "margin-inline: calc(-1*var(--gap))"
-
-        para do
-          input autofocus: "", id: "search-input", class: "block width:100%"
-        end
-
-        div role: "listbox", "aria-label": "results", class: "flow-gap padding-inline", style: "overflow-y: auto; margin-inline: calc(-1*var(--gap))" do
-        end
+        render_signed_in_user
+        content
       end
     end
+  end
+
+  private def render_signed_in_user
+    text current_user.email
+    text " - "
+    link "Sign out", to: SignIns::Delete, flow_id: "sign-out-button"
   end
 end

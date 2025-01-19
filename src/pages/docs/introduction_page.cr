@@ -1,4 +1,4 @@
-class Docs::IntroductionPage < MainLayout
+class Docs::IntroductionPage < DocLayout
   def page_title
     "简介"
   end
