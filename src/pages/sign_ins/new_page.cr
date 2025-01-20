@@ -9,16 +9,16 @@ class SignIns::NewPage < AuthLayout
 
         form_for SignIns::Create, class: "table rows" do
           para do
-            mount Shared::Field, attribute: op.email, label_text: "Email", &.email_input(autofocus: "true")
+            mount Shared::Field, attribute: op.email, label_text: "邮件地址", &.email_input(autofocus: "true")
           end
 
           para do
-            mount Shared::Field, attribute: op.password, label_text: "Password", &.password_input
+            mount Shared::Field, attribute: op.password, label_text: "密码", &.password_input
           end
 
-          para do
+          para class: "f-row align-items:center tool-bar" do
             strong do
-              submit "登录", type: "submit", flow_id: "sign-in-button", class: "<button>"
+              submit "登录", type: "submit", class: "<button>"
             end
 
             strong do
