@@ -32,6 +32,12 @@ class Sidebar < BaseComponent
           end
         end
 
+        if (user = current_user)
+          li do
+            a user.email, href: "#"
+          end
+        end
+
         # li do
         #   strong do
         #     a "Back to home", class: "<button>", href: "/"

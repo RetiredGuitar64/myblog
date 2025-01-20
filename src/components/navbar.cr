@@ -1,6 +1,4 @@
 class Navbar < BaseComponent
-  needs current_user : User?
-
   def render
     div do
       a href: "/", class: "f-row justify-content:end align-items:center" do

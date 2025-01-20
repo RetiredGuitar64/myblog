@@ -45,8 +45,6 @@ it was so easy to implement.
 This has led to innumerable errors, vulnerabilities, and system crashes, which have
 probably caused a billion dollars of pain and damage in the last forty years.”
 
---------------
-
 我在 1965 年发明的 null 引用我称之为 “我的十亿美元错误”。
 
 当时，我正在设计第一个涵盖引用的完整面向对象的语言（ALGOL W）类型系统。我的目标是
@@ -55,9 +53,7 @@ probably caused a billion dollars of pain and damage in the last forty years.”
 
 这一行为导致了不计数的错误、漏洞和系统崩溃，很可能在过去四十年造成数十亿美元的痛苦和损失！
 
-----
-
-**1980 年图灵奖获得者，快速排序以及下面将要提及的 CSP 发明人 托尼·霍尔 （Tony Hoare）在 2019 年 QConf 上的演讲**
+— 1980 年图灵奖获得者，快速排序以及下面将要提及的 CSP 发明人 托尼·霍尔 （Tony Hoare）在 2019 年 QConf 上的演讲
 ```
 
 写过 Ruby 或类似动态语言的对下面的错误应该一点儿都不陌生！
@@ -66,7 +62,7 @@ probably caused a billion dollars of pain and damage in the last forty years.”
 undefined method `???' for nil (NoMethodError)
 ```
 
-Crystal 从一开始就设计了称作 **union type** 的类型系统，来尽可能的保证类型安全。
+Crystal 从一开始就设计了称作 `union type` 的类型系统，来尽可能的保证类型安全。
 
 类似于 Rust, 编译器会在 **编译时** 最大限度捕获有关类型安全的错误，当编译通过时，
 用户可以避免绝大部分的 **运行时空引用错误** 或 **类型错误**。

@@ -44,7 +44,7 @@ abstract class DocLayout
 
         div class: "sidebar-layout fullscreen" do
           header do
-            mount Sidebar
+            mount Sidebar, current_user: current_user
           end
 
           div class: "col-2" do
