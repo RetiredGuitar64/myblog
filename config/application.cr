@@ -23,6 +23,7 @@
 # # `Application.settings.support_email` anywhere you need it.
 # ```
 
+# For htmx hx-boost: true on the body work correct.
 Lucky::Redirectable.configure do |config|
   config.redirect_status = 303
 end

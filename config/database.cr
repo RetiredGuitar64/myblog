@@ -50,4 +50,3 @@ Avram.configure do |settings|
   # settings.time_formats << "%F"
   settings.i18n_backend = MyI18n.new
 end
-
