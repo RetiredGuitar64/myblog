@@ -34,15 +34,17 @@ abstract class DocLayout
       mount Shared::LayoutHead, page_title: page_title
 
       body "hx-boost": true, style: "padding: 0px;" do
-        mount Shared::FlashMessages, context.flash
-
         header class: "navbar", style: "margin-bottom: 2px;" do
-          mount Navbar
+          mount Navbar, current_user: current_user
+        end
+
+        div class: "f-row justify-content:end" do
+          mount Shared::FlashMessages, context.flash
         end
 
         div class: "sidebar-layout fullscreen" do
           header do
-            mount Sidebar if current_path.starts_with?("/docs")
+            mount Sidebar
           end
 
           div class: "col-2" do

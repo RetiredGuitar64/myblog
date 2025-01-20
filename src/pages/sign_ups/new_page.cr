@@ -22,7 +22,7 @@ class SignUps::NewPage < AuthLayout
 
           para do
             strong do
-              submit "注册", type: "button", flow_id: "sign-up-button", class: "<button>"
+              submit "注册", type: "submit", flow_id: "sign-up-button", class: "<button>"
             end
           end
         end

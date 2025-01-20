@@ -1,6 +1,8 @@
 abstract class AuthLayout
   include Lucky::HTMLPage
 
+  needs current_user : User?
+
   abstract def content
   abstract def page_title
 
@@ -19,10 +21,12 @@ abstract class AuthLayout
       mount Shared::LayoutHead, page_title: page_title
 
       body do
-        mount Shared::FlashMessages, context.flash
-
         header class: "navbar", style: "margin-bottom: 2px;" do
-          mount Navbar
+          mount Navbar, current_user: current_user
+        end
+
+        div class: "f-row justify-content:end" do
+          mount Shared::FlashMessages, context.flash
         end
 
         main do

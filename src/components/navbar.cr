@@ -1,4 +1,6 @@
 class Navbar < BaseComponent
+  needs current_user : User?
+
   def render
     div do
       a href: "/", class: "f-row justify-content:end align-items:center" do
@@ -41,12 +43,28 @@ class Navbar < BaseComponent
           a "Github", href: "https://github.com/orgs/crystal-china/repositories"
         end
 
-        li do
-          link "注册", to: SignUps::New
+        if !current_user
+          li do
+            link "注册", to: SignUps::New
+          end
         end
 
-        li do
-          link "登录", to: SignIns::New
+        if current_user
+          li do
+            link(
+              "登出",
+              to: SignIns::Delete,
+              hx_target: "body",
+              hx_push_url: "true",
+              hx_delete: SignIns::Delete.path,
+              hx_include: "next input"
+            )
+            input(type: "hidden", value: context.session.get("X-CSRF-TOKEN"), name: "_csrf")
+          end
+        else
+          li do
+            link "登录", to: SignIns::New
+          end
         end
       end
     end

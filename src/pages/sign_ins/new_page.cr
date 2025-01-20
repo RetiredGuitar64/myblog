@@ -18,7 +18,7 @@ class SignIns::NewPage < AuthLayout
 
           para do
             strong do
-              submit "登录", type: "button", flow_id: "sign-in-button", class: "<button>"
+              submit "登录", type: "submit", flow_id: "sign-in-button", class: "<button>"
             end
 
             strong do
