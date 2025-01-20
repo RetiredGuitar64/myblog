@@ -40,7 +40,7 @@ module PageHelpers
     end
   end
 
-  MARKDOWN_OPTIONS = Markd::Options.new(smart: true)
+  MARKDOWN_OPTIONS = Markd::Options.new(smart: true, gfm: true)
 
   def markdown(text)
     raw Markd.to_html(text, formatter: formatter, options: MARKDOWN_OPTIONS)
