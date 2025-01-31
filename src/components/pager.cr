@@ -1,24 +1,30 @@
 class Pager < BaseComponent
   def render
-    flex_direction = current_path == "/docs" ? "row-reverse" : "row"
-
     footer do
-      div class: "f-row justify-content:space-between", style: "padding-top: 3em; flex-direction:#{flex_direction};" do
+      div class: "f-row justify-content:space-between", style: "padding-top: 3em;" do
         if (path = PageHelpers::PAGE_URL_MAPPING[current_path]?)
-          if (prev_page = path[:prev_page]?)
-            div do
-              text "←"
-              strong do
+          div class: "<h3>" do
+            text "←"
+            strong do
+              if (prev_page = path[:prev_page]?)
                 a prev_page.first, href: prev_page.last
+              else
+                text "没有上一页了"
               end
             end
           end
 
-          if (next_page = path[:next_page]?)
-            div do
-              text "→"
-              strong do
+          h3 do
+            text path[:name]
+          end
+
+          div class: "<h3>" do
+            text "→"
+            strong do
+              if (next_page = path[:next_page]?)
                 a next_page.first, href: next_page.last
+              else
+                text "没有下一页了"
               end
             end
           end
