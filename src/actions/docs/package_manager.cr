@@ -1,5 +1,5 @@
 class Docs::PackageManager < DocAction
-  get "/docs/packagemanager" do
+  get "/docs/package_manager" do
     html Docs::PackageManagerPage
   end
 end
