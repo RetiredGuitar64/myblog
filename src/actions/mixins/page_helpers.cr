@@ -2,7 +2,8 @@ module PageHelpers
   PAGE_URL_MAPPING = {
     "/docs"              => {name: "前言", next_page: ["简介", "/docs/introduction"], parent: "root"},
     "/docs/introduction" => {name: "简介", prev_page: ["前言", "/docs"], next_page: ["安装", "/docs/install"], parent: "root"},
-    "/docs/install"      => {name: "安装", prev_page: ["简介", "/docs/introduction"], next_page: ["基础", "/docs/basic"], parent: "root"},
+    "/docs/install"      => {name: "安装", prev_page: ["简介", "/docs/introduction"], next_page: ["包管理", "/docs/packagemanager"], parent: "root"},
+    "/docs/packagemanager"=> {name: "包管理", prev_page: ["安装", "/docs/install"], next_page: ["基础", "/docs/basic"], parent: "root"},
     "/docs/basic"        => {name: "基础", prev_page: ["简介", "/docs/introduction"], next_page: ["下一个", "/docs/basic"], parent: "root"},
   }
 
