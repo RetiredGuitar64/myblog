@@ -4,7 +4,11 @@ class Sidebar < BaseComponent
       ul class: "margin" do
         ary.each do |child|
           li do
-            a child.name, href: child.path
+            if current_path == child.path
+              a child.name, href: child.path, class: "<button>"
+            else
+              a child.name, href: child.path
+            end
 
             render_child(child.child)
           end
