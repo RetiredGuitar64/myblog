@@ -1,5 +1,3 @@
-# shards 命令
-
 Crystal 通常会搭配其依赖管理器 Shards 使用。
 
 它负责管理 Crystal 项目和库的依赖，确保在不同计算机和系统上都能实现可重复安装。
@@ -22,7 +20,7 @@ make CRFLAGS=--release
 
 运行 `shards install` 命令会解析并安装指定的依赖。安装后，依赖的版本信息会记录在 `shard.lock` 文件中，以便下次执行 `shards install` 时确保使用相同的依赖版本。
 
-如果你的 shard 构建的是一个应用程序，建议将 `shard.yml` 和 `shard.lock` 一同提交到版本控制中，以保证依赖安装的可重复性；如果它仅仅是一个供其他 shard 依赖的库，则只需要提交 `shard.yml`，而不必提交 `shard.lock`。通常建议将 `shard.lock` 添加到 `.gitignore` 文件中（使用 `crystal init` 初始化库仓库时会自动处理这一点）。
+如果你的 shard 构建的是一个应用程序，建议将 `shard.yml` 和 `shard.lock` 一同提交到版本控制中，以保证依赖安装的可重复性；如果它仅仅是一个供其他 shard 依赖的库，则只需要提交 `shard.yml`，而不必提交 `shard.lock`。通常建议将 `shard.lock` 添加到 `.gitignore` 文件中（使用 `crystal init lib` 初始化库仓库时会自动处理这一点）。
 
 ## shards 命令
 
@@ -71,8 +69,8 @@ shards check
 检查所有依赖是否已安装且满足要求。
 
 退出状态：
-- `0`: 依赖满足
-- `1`: 依赖不满足
+- `0`: 成功，依赖满足
+- `1`: 失败，依赖不满足
 
 ## shards init
 
@@ -132,7 +130,7 @@ shards version [<path>]
 
 适用场景包括：本地开发副本、在依赖约束不匹配时强制使用特定版本、修复依赖问题、检查未发布版本的兼容性等。
 
-### 示例文件内容
+shard.override.yml 示例：
 
 ```yaml
 dependencies:
