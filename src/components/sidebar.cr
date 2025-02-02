@@ -5,7 +5,9 @@ class Sidebar < BaseComponent
         ary.each do |child|
           li do
             if current_path == child.path
-              a child.name, href: child.path, class: "<button>"
+              ins do
+                a child.name, href: child.path
+              end
             else
               a child.name, href: child.path
             end
@@ -26,7 +28,9 @@ class Sidebar < BaseComponent
           if v.parent == "root"
             li do
               if current_path == v.path
-                a v.name, href: k, class: "<button>"
+                ins do
+                  a v.name, href: k
+                end
               else
                 a v.name, href: k
               end
