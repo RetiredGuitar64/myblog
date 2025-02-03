@@ -1,7 +1,3 @@
-```crystal
-puts "hello Crystal!!"
-```
-
 [Crystal Programming Langauge](https://crystal-lang.org/), 由 [Manas](https://manas.tech/) 的
 [Ary Borenszweig @asterite](https://github.com/asterite) 作为一个业余个人项目在 **2012年9月4日** 被创建,
 当前主要维护者是来自 manas 的 Johannes Müller [@straight-shoota](https://github.com/straight-shoota)
