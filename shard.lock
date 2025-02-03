@@ -111,7 +111,7 @@ shards:
 
   markd:
     git: https://github.com/zw963/markd.git
-    version: 0.5.0+git.commit.6e8290e36e387be7c83b4c90ccefcd155883c59b
+    version: 0.5.0+git.commit.1e7ea3ec36ee6e3c8efa768ca0bb12a40b8dea55
 
   openssl_ext:
     git: https://github.com/spider-gazelle/openssl_ext.git
@@ -139,7 +139,7 @@ shards:
 
   sixteen:
     git: https://github.com/ralsina/sixteen.git
-    version: 0.4.2
+    version: 0.5.0
 
   splay_tree_map:
     git: https://github.com/wyhaines/splay_tree_map.cr.git
@@ -159,7 +159,7 @@ shards:
 
   tartrazine:
     git: https://github.com/ralsina/tartrazine.git
-    version: 0.11.1
+    version: 0.12.0
 
   webdrivers:
     git: https://github.com/crystal-loot/webdrivers.cr.git
