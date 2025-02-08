@@ -73,7 +73,9 @@ label {
 
 :root {
   --main-font: "Source Sans 3", -apple-system, system-ui, sans-serif;
+  --line-length: 50rem;
 }
+
 dfn > code {
   font-style: normal;
   text-decoration: 1px dashed var(--muted-fg) underline;
