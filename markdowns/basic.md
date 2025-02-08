@@ -181,7 +181,7 @@ foo(b: 100) # => foo(b)
 参数个数不同
 
 ```crystal
-def foo(a, b)
+def foo(a，b)
   puts "foo(a, b)"
 end
 
@@ -266,4 +266,50 @@ def add(y)
 end
 
 add(2)
+```
+
+-----
+
+## 真值
+
+类似于 Ruby, 除了 false 和 nil(代表没有值) 之外的所有值，甚至包含 0，都被认为是真(truthy)的。
+
+此外，在和 C 进行交互时，`Pointer(Void).null` 也作为 falsey 值对待。
+
+```crystal
+message = "Hello World"
+
+if message.starts_with?("Hello")
+  puts "Hello to you, too!"
+end
+```
+
+----
+
+## 数字类型
+
+证书和浮点数的默认类型是 Int32 和 Float64
+
+```crystal
+x = 1000_000
+y = 100.0
+
+p! typeof(x) # => Int32
+p! typeof(y) # => Float64
+
+p! 100 == 100.0 # => true
+
+p! 1 + 1, # addition 加法
+  1 - 1,  # subtraction 减法
+  2 * 3,  # multiplication 乘法
+  2 ** 4, # exponentiation 指数
+  2 / 3,  # division 除法
+  2 // 3, # floor division 整数除
+  3 % 2,  # modulus 取模
+  -1,     # negation (unary) 取负
+  -5.abs,   # absolute value
+  4.3.round, # round to nearest integer
+  5.even?,   # odd/even check
+  10.gcd(16) # greatest common divisor
+  Math::PI   # Archimedes' constant (TAU / 2)
 ```
