@@ -11,9 +11,9 @@
 Crystal 使用双引号来表示字符串，单引号是 Char 类型（在栈中分配）。
 
 ```crystal
-p! typeof("Hello") # => String
-p! typeof("汉") # => String
-p! typeof('汉') # => Char
+p typeof("Hello") # => String
+p typeof("汉") # => String
+p typeof('汉') # => Char
 ```
 
 这可能是从 Ruby 切换到 Crystal 遇到的最大的坑之一。
@@ -31,17 +31,17 @@ Crystal 字符串是不可变的, 因此，Ruby 中常用的方法 `String#<<` �
 
 ```crystal
 str = "Hello"
-p! str.object_id # => 104918042676384
+p str.object_id # => 104918042676384
 str = str.sub("H", "h")
-p! str.object_id # => 132565044809664
+p str.object_id # => 132565044809664
 ```
 
 你仍然可以使用 `%` 或 `%q` 来分别表示 Ruby 中等价的 `"双引号"` 和 `'单引号'` 
 
 ```crystal
 recipient = "Billy"
-p! %(Hello #{recipient}!) # => "Hello Billy!"
-p! %q(Hello #{recipient}!) # => "Hello \#{recipient}!"
+p %(Hello #{recipient}!) # => "Hello Billy!"
+p %q(Hello #{recipient}!) # => "Hello \#{recipient}!"
 ```
 
 ## Crystal 中没有全局变量
@@ -53,13 +53,13 @@ Crystal 不支持定义 $ 开头的全局变量，事实上 $ 开头的其实根
 ```crystal
 "hello" =~ /(ll)o/
 
-p! $~ # => Regex::MatchData("llo" 1:"ll")
-p! $0 # => llo, 等价于 $~[0]，等价于 Ruby 中的 $&
-p! $1 # => ll，等价于 $~[1]
-p! $2 # => Unhandled exception: Invalid capture group index: 2 (IndexError)
+p $~ # => Regex::MatchData("llo" 1:"ll")
+p $0 # => llo, 等价于 $~[0]，等价于 Ruby 中的 $&
+p $1 # => ll，等价于 $~[1]
+p $2 # => Unhandled exception: Invalid capture group index: 2 (IndexError)
 
 `ls -alh`
-p! $? # => Process::Status[0]
+p $? # => Process::Status[0]
 ```
 
 ## Bool 类型
@@ -69,14 +69,14 @@ p! $? # => Process::Status[0]
 整数类型细分为 8 个，而 Ruby 是 Integer 一个。
 
 ```crystal
-p! typeof(1_i8) # => Int8
-p! typeof(1_u8) # => UInt8
-p! typeof(1_i16) # => Int16
-p! typeof(1_u16) # => UInt16
-p! typeof(1) # => Int32 这是整数默认类型, 等价于：typeof(1_i32)
-p! typeof(1_u32) # => UInt32
-p! typeof(1_i64) # => Int64
-p! typeof(1_u64) # => UInt64
+p typeof(1_i8) # => Int8
+p typeof(1_u8) # => UInt8
+p typeof(1_i16) # => Int16
+p typeof(1_u16) # => UInt16
+p typeof(1) # => Int32 这是整数默认类型, 等价于：typeof(1_i32)
+p typeof(1_u32) # => UInt32
+p typeof(1_i64) # => Int64
+p typeof(1_u64) # => UInt64
 ```
 
 Ruby 中，当数字大到 Fixnum 无法容纳它时，会自动转化为 Bignum, Crystal 则抛出 OverflowError 异常
@@ -110,12 +110,12 @@ Crystal 当中：哈希火箭表示一个哈希，而 1.9 新哈希表示法
 x = {:foo => 100, :bar => "Hello"}
 y = {foo: 100, bar: "Hello"}
 
-p! typeof(x) # => Hash(Symbol, Int32 | String)
-p! typeof(y) # => NamedTuple(foo: Int32, bar: String), 编译时类型就是一个包含了整数类型属性 foo, 以及字符串类型属性 bar 的 NamedTuple
+p typeof(x) # => Hash(Symbol, Int32 | String)
+p typeof(y) # => NamedTuple(foo: Int32, bar: String), 编译时类型就是一个包含了整数类型属性 foo, 以及字符串类型属性 bar 的 NamedTuple
 
 # 通过符号和字符串取值都是可以的。
-p! y[:foo] # => 100
-p! y["foo"] # => 100
+p y[:foo] # => 100
+p y["foo"] # => 100
 ```
 
 个人认为这是对 Ruby 错误设计的完美修复，关键字参数本来就应该设计成这样。
@@ -181,10 +181,12 @@ class Bar < Foo
 end
 
 bar = Bar.new
-p! bar.value  # => Crystal 输出 100, Ruby 输出 nil
+p bar.value  # => Crystal 输出 100, Ruby 输出 nil
 ```
 
-结果为：上面的 @value 其实就是一个普通的实例变量，只不过在类定义中进行了初始化，如果这个类有签名不同的多个不同版本的构造器(initialize 方法)，它相当于为所有构造器初始化了变量 @value，避免了重复初始化。 而且当这样的类被 reopen 时，@value 值也是存在的。
+结果为：上面的 @value 其实就是一个普通的实例变量，只不过在类定义中进行了初始化，
+如果这个类有签名不同的多个不同版本的构造器(initialize 方法)，它相当于为所有构造器
+初始化了变量 @value，避免了重复初始化。 而且当这样的类被 reopen 时，@value 值也是存在的。
 
 由于目前编译器的限制，在方法定义中初始化一个的可空的实例变量是不合法的。
 
@@ -228,7 +230,7 @@ class A
   end
 end
 
-p! A.new # => #<A:0x7a69c688bfc0 @x=nil>
+p A.new # => #<A:0x7a69c688bfc0 @x=nil>
 ```
 
 当然，在方法中直接使用 literal 值初始化一个实例变量是可以的。
@@ -247,27 +249,8 @@ class A
   end
 end
 
-p!  A.new # => #<A:0x7d736b629ce0 @x=100, @hello=nil>
+p  A.new # => #<A:0x7d736b629ce0 @x=100, @hello=nil>
 ```
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th>Ruby 用法</th>
-<th>Crystal 用法</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td></td>
-<td>~~hello~~</td>
-<td>~~world~~</td>
-</tr>
-</tbody>
-</table>
-
 
 # 杂项
 ## 运行代码方式
@@ -379,10 +362,9 @@ nil.upcase.reverse # => NoMethodError: undefined method `upcase' for nil
 nil&.upcase&.reverse # => nil 之上使用 &. 调用，不会报错，而是总是返回 nil
 ```
 
-而 Crystal 中 &. 含义完全不同，如果代码块只有一个代码块参数，且 block 的内容是
-在这个参数之上调用一个方法，我们可以使用被称作 block Short one-parameter (invoke) syntax，
-
-我称之为 block 短调用形式，&. 中的 & 代表传递到代码块的第一个参数，在其之上调用
+而 Crystal 中 &. 含义完全不同，如果代码块只有一个代码块参数，且 block 里面只是
+在这个参数之上调用一个方法，我们可以使用被称作 block Short one-parameter (invoke) syntax 
+（block 短调用形式）的语法，&. 中的 & 代表传递到代码块的第一个参数，在其之上调用 upcase 
 方法，直接写做：`&.upcase`, 例如, 下面的两个用法是等价的。
 
 ```crystal
@@ -405,7 +387,7 @@ nil&.upcase&.reverse # => nil 之上使用 &. 调用，不会报错，而是总�
 
 方法的变更非常多，这里不一一列举，只是按照类别简要介绍下：
 
-### Ruby 中很多存在别名的方法, 例如：`Array#length` 和 `Array#size` 一样的，Crystal 仅保留其中之一，
+### Ruby 中很多存在别名的方法, 例如：`Array#length` 和 `Array#size` 一样的，Crystal 仅保留其中一个。
 
 例如：
 
@@ -419,11 +401,11 @@ Enumerable#~~collect~~ => Enumberable#**map**
 
 例如：
 
-Object#~~respond_to?~~ => Object#responds_to?
+Object#~~respond_to?~~ => Object#respond**s**_to?
 
-Array#~~include?~~ => Array#includes?
+Array#~~include?~~ => Array#include**s**?
 
-File#~~exist?~~ => File#exists?
+File#~~exist?~~ => File#exist**s**?
 
 ### 单纯的一些名称换了，换成 Crystal 开发者认为更合适的名字，
 
@@ -523,8 +505,9 @@ def self.write(filename, content, perm = DEFAULT_CREATE_PERMISSIONS, encoding = 
 File.write("out.txt", "content", mode: "a")
 ```
 
-### 一切写起来一样，但是完全不同的东西
+### 同名，但是完全不同的含义
 
+例如：
 
 ………………………………………………………………………………  Ruby   …………………………………………………………………………   Crystal
 
