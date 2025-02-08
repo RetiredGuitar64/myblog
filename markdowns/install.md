@@ -28,6 +28,60 @@ apk add crystal shards ${hello}
 ```bash
 sudo pacman -S crystal
 ```
+## 编译安装
+
+作为 Crystal 语言开发者，编译安装 Crystal 是首选的, 而且可以开启实现性的解释器支持。
+
+以当前最新的 1.15.1 为例, 假设我们希望安装 Crystal 到 ~/Crystal 
+
+### 安装必须的依赖
+
+```bash
+pacman -S automake \
+       git \
+       libevent \
+       gmp \
+       pcre2 \
+       openssl \
+       libtool \
+       libyaml \
+       llvm lld \
+       wasmer wasmtime \
+    ;
+```
+
+### 使用 git clone 官方 github repo
+
+```bash
+git clone https://github.com/crystal-lang/crystal.git && git checkout v1.15.1
+```
+
+### 编译 Crystal
+
+```bash
+install_target=~/Crystal &&
+mkdir -p output $install_target/bin $install_target/share $install_target/share/crystal/src/llvm/ext/ &&
+make clean
+FLAGS="-Dpreview_mt" make crystal interpreter=1 stats=1 release=1
+```
+
+### 安装 Crystal
+
+```bash
+rm -rf tmp
+DESTDIR=$PWD/tmp make install
+cp -v tmp/usr/local/bin/crystal $install_target/bin/
+rsync -ahP --delete tmp/usr/local/share/ $install_target/share/
+```
+
+### 生成并安装静态文档
+
+```bash
+rm -rf docs && make docs
+rsync -ahP --delete docs/ $install_target/docs
+```
+
+这样，你可以直接用浏览器浏览本地的文档 ~/Crystal/docs/index.html
 
 ---------
 
