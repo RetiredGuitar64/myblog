@@ -375,14 +375,14 @@ end # => ok
 Ruby 中，&. 被称作安全调用操作符(Safe Navigation Operator)，例如：
 
 ```ruby
-nil.upcase # => NoMethodError: undefined method `upcase' for nil
-nil&.upcase # => nil 之上使用 &. 调用，不会报错，而是总是返回 nil
+nil.upcase.reverse # => NoMethodError: undefined method `upcase' for nil
+nil&.upcase&.reverse # => nil 之上使用 &. 调用，不会报错，而是总是返回 nil
 ```
 
 而 Crystal 中 &. 含义完全不同，如果代码块只有一个代码块参数，且 block 的内容是
-在这个参数之上调用一个方法，叫做 block Short one-parameter (invoke) syntax，
+在这个参数之上调用一个方法，我们可以使用被称作 block Short one-parameter (invoke) syntax，
 
-我们称之为 block 短调用形式，&. 中的 & 代表传递到代码块的第一个参数，在其之上调用
+我称之为 block 短调用形式，&. 中的 & 代表传递到代码块的第一个参数，在其之上调用
 方法，直接写做：`&.upcase`, 例如, 下面的两个用法是等价的。
 
 ```crystal
@@ -401,15 +401,11 @@ nil&.upcase # => nil 之上使用 &. 调用，不会报错，而是总是返回 
 ```
 
 
-```crystal
-
-```
-
 ## 方法的变更
 
 方法的变更非常多，这里不一一列举，只是按照类别简要介绍下：
 
-### Ruby 中很多存在别名的方法, 例如：`Array#length` 和 `Array#size` 一样的，Crystal 保留了一个，
+### Ruby 中很多存在别名的方法, 例如：`Array#length` 和 `Array#size` 一样的，Crystal 仅保留其中之一，
 
 例如：
 
