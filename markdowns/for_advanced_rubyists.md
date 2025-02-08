@@ -353,6 +353,36 @@ Error: too many block parameters (given 2, expected maximum 1)
 end # => ok
 ```
 
+嵌套的 unpacking 也是可以的。(since 1.10.0)
+
+```crystal
+ary = [
+  {1, {2, {3, 4}}} # => A Tuple
+]
+
+ary.each do |(w, (x, (y, z)))|
+  w # => 1
+
+  x # => 2
+  y # => 3
+  z # => 4
+end
+```
+
+Ruby 里的 Splat 参数也是支持的。
+
+```crystal
+ary = [
+  [1, 2, 3, 4, 5],
+]
+
+ary.each do |(x, *y, z)|
+  x # => 1
+  y # => [2, 3, 4]
+  z # => 5
+end
+```
+
 ## &. 含义完全不同
 
 Ruby 中，&. 被称作安全调用操作符(Safe Navigation Operator)，例如：
