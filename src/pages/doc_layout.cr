@@ -48,7 +48,7 @@ abstract class DocLayout
           end
 
           div class: "col-2" do
-            main do
+            main style: "--density: 0.6" do
               h2 do
                 text page_title
                 if (msg = sub_title)
