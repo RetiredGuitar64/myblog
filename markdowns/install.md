@@ -32,14 +32,20 @@ sudo pacman -S crystal
 
 作为 Crystal 语言开发者，编译安装 Crystal 是首选的, 而且可以开启实现性的解释器支持。
 
-以当前最新的 1.15.1 为例, 假设我们希望安装 Crystal 到 ~/Crystal 
+以在 Arch Linux 编译当前最新的 Crystal 1.15.1 为例，假设我们希望编译并安装 Crystal 
+到 ~/Crystal 文件夹，你需要将 ~/Crystal/bin 加入 $PATH 靠前的位置来直接使用 crystal 命令
 
-### 安装必须的依赖
+### 安装编译及安装所需依赖
 
+作为新的 Fiber 多线程支持的一部分，版本 1.15.0 开始，为 UNIX 兼容的系统
+引入了一个[新的 Event Loop 实现](https://crystal-lang.org/2024/11/05/lifetime-event-loop),
+新的实现直接集成了 UNIX 的 systems selectors（Linux/Android 使用 epool，BSD/macOS 使用 kqueue）
+因此 libevent 不再作为外部依赖。
+ 
 ```bash
-pacman -S automake \
-       git \
-       libevent \
+pacman -S base-devel \
+       automake \
+       git rsync \
        gmp \
        pcre2 \
        openssl \
@@ -53,15 +59,16 @@ pacman -S automake \
 ### 使用 git clone 官方 github repo
 
 ```bash
-git clone https://github.com/crystal-lang/crystal.git && git checkout v1.15.1
+git clone https://github.com/crystal-lang/crystal.git && cd crystal
+git checkout 1.15.1
 ```
 
 ### 编译 Crystal
 
 ```bash
-install_target=~/Crystal &&
-mkdir -p output $install_target/bin $install_target/share $install_target/share/crystal/src/llvm/ext/ &&
 make clean
+install_target=~/Crystal
+mkdir -p output $install_target/bin $install_target/share $install_target/share/crystal/src/llvm/ext/
 FLAGS="-Dpreview_mt" make crystal interpreter=1 stats=1 release=1
 ```
 
@@ -82,6 +89,14 @@ rsync -ahP --delete docs/ $install_target/docs
 ```
 
 这样，你可以直接用浏览器浏览本地的文档 ~/Crystal/docs/index.html
+
+### 安装包管理工具 shards
+
+```bash
+git clone https://github.com/crystal-lang/shards.git && cd shards
+git checkout v0.19.1 && shards build --no-debug --release
+cp -v bin/shards ~/Crystal/bin/
+```
 
 ---------
 
