@@ -32,7 +32,7 @@ $ crystal build --release foo.cr
 
 `crystal build --help` 来获取更多的帮助。
 
-## 使用关键字参数调用方法
+## 调用方法时传递关键字参数
 
 ```
 Crystal 中，当定义一个方法时，无需特殊的语法来声明关键字参数类型，因为他和普通的位置参数是一样的。
@@ -42,7 +42,6 @@ Crystal 中，当定义一个方法时，无需特殊的语法来声明关键字
 
 
 ```crystal
-
 def say_hello(recipient)
   puts "Hello #{recipient}!"
 end

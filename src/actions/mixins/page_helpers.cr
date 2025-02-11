@@ -49,7 +49,7 @@ module PageHelpers
     end
   end
 
-  MARKDOWN_OPTIONS = Markd::Options.new(gfm: true)
+  MARKDOWN_OPTIONS = Markd::Options.new(gfm: true, toc: true)
 
   def markdown(text)
     # 这里替换文本是 fcitx 开启中文，输入的 ^，被替换的字符是 中文全角空格，U+3000
