@@ -5,7 +5,10 @@ class Pager < BaseComponent
     footer do
       div class: "f-row justify-content:space-between", style: "padding-top: 3em;" do
         item = PAGINATION_RELATION_MAPPING[current_path]?
-        current_idx = PAGINATION_URLS.index(current_path).not_nil!
+        current_idx = PAGINATION_URLS.index(current_path)
+
+        return unless current_idx
+
         prev_idx = [current_idx - 1, 0].max
         next_idx = [current_idx + 1, PAGINATION_URLS.size - 1].min
         prev_path = PAGINATION_URLS[prev_idx]
