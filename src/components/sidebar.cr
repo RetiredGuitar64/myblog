@@ -23,7 +23,7 @@ class Sidebar < BaseComponent
     div "目录", class: "<h1>"
 
     nav do
-      ul role: "list" do
+      ul role: "nested-list" do
         PageHelpers::SIDEBAR_LINKS.each do |k, v|
           if v.parent == "root"
             li do
