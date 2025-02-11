@@ -2,12 +2,16 @@ require "ecr"
 
 module PageHelpers
   PAGINATION_RELATION_MAPPING = {
-    "/docs"                       => {name: "前言", parent: "root"},
-    "/docs/introduction"          => {name: "简介", parent: "root"},
-    "/docs/install"               => {name: "安装", parent: "root"},
-    "/docs/package_manager"       => {name: "包管理", parent: "/docs/install"},
-    "/docs/for_advanced_rubyists" => {name: "写给 Rubyists", parent: "root"},
-    "/docs/basic"                 => {name: "基础知识", parent: "root"},
+    "/docs"                                          => {name: "前言", parent: "root"},
+    "/docs/introduction"                             => {name: "简介", parent: "root"},
+    "/docs/install"                                  => {name: "安装", parent: "root"},
+    "/docs/package_manager"                          => {name: "包管理", parent: "/docs/install"},
+    "/docs/for_advanced_rubyists"                    => {name: "写给 Rubyists", parent: "root"},
+    "/docs/for_advanced_rubyists/types"              => {name: "类型相关", parent: "/docs/for_advanced_rubyists"},
+    "/docs/for_advanced_rubyists/methods"            => {name: "方法相关", parent: "/docs/for_advanced_rubyists"},
+    "/docs/for_advanced_rubyists/miscs"              => {name: "杂项", parent: "/docs/for_advanced_rubyists"},
+    "/docs/for_advanced_rubyists/migrate_to_crystal" => {name: "迁移 Ruby 代码到 Crystal", parent: "/docs/for_advanced_rubyists"},
+    "/docs/basic"                                    => {name: "基础知识", parent: "root"},
   }
   PAGINATION_URLS = PAGINATION_RELATION_MAPPING.keys
 

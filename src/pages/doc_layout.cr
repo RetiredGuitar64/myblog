@@ -55,9 +55,9 @@ abstract class DocLayout
             mount Sidebar, current_user: current_user
           end
 
-          div class: "col-2" do
+          div do
             main style: "--density: 0.6" do
-              h2 do
+              h1 do
                 text page_title
                 if (msg = sub_title)
                   tag "sub-title" do
@@ -65,6 +65,9 @@ abstract class DocLayout
                   end
                 end
               end
+
+              hr "aria-orientation": "horizontal"
+
               content
               mount Pager
             end
