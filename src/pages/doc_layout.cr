@@ -8,7 +8,15 @@ abstract class DocLayout
   needs formatter : Tartrazine::Formatter
 
   macro load_markdown
-    {% class_name = @type.name.stringify.underscore.gsub(/_page$/, "").gsub(/docs::/, "markdowns/") %}
+    {%
+      class_name = @type
+        .name
+        .stringify
+        .underscore
+        .gsub(/_page$/, "")
+        .gsub(/docs::/, "markdowns/")
+        .gsub(/::/, "/")
+    %}
 
     markdown File.read("{{class_name.id}}.md")
   end
