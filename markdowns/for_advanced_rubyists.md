@@ -18,13 +18,6 @@ p typeof('汉') # => Char
 
 这可能是从 Ruby 切换到 Crystal 遇到的最大的坑之一。
 
-```
-如果你要迁移 Ruby 代码到 Crystal，作为第一步，一个很好的建议是：
-
-
-使用 [rubocop](https://github.com/rubocop/rubocop) 将代码中的所有字符串改为双引号。
-```
-
 Crystal 字符串是不可变的, 因此，Ruby 中常用的方法 `String#<<` 是没有的。
 
 尝试修改一个字符串，例如 String#+ 或 interpolation 都会产生新的字符串，你需要将修改后字符串重新赋值给一个变量。
@@ -520,15 +513,19 @@ nil&.upcase&.reverse # => nil 之上使用 &. 调用，不会报错，而是总�
 
 方法的变更非常多，这里不一一列举，只是按照类别简要介绍下：
 
-### Ruby 中很多存在别名的方法, 例如：`Array#length` 和 `Array#size` 一样的，Crystal 仅保留其中一个。
+### Ruby 中很多存在别名的方法，Crystal 仅保留其中一个。
 
-例如：
+Ruby 为了追求代码的可阅读性，存在很多适合于不同上下文的别名，例如：
+
 
 Array#~~lengh~~ => Array#**size**
 
 Enumerable#~~detect~~ => Enumerable#**find**
 
 Enumerable#~~collect~~ => Enumberable#**map**
+
+
+但是这反而会造成新手的困惑，增加了负担，我认为这个改动是合理的。
 
 ### 一些方法名称的语法（习惯）变更，更符合西方人说话的习惯，
 
@@ -554,8 +551,13 @@ Hash#~~key~~ => Hash#key_for
 
 ~~\_\_dir\_\_~~ => \_\_DIR\_\_
 
-这样的变更，使用脚本替换相对简单，可以参考 [port_ruby_to_crystal 脚本](https://github.com/crystal-china/port_ruby_to_crystal/blob/master/bin/port_ruby_to_crystal), 这是一个使用 Ruby 正则表达式编写的脚本，用来对一些 `常见的方法名变更` 做一些简单的替换, 这减少了从 Ruby 迁移到 Crystal 的摩擦。
 
+```
+类似这样的变更，使用脚本替换相对简单，可以参考 [port_ruby_to_crystal 脚本](https://github.com/crystal-china/port_ruby_to_crystal/blob/master/bin/port_ruby_to_crystal)。
+
+
+这是一个使用 Ruby 正则表达式编写的脚本，用来对一些 `常见的方法名变更` 做一些简单且安全地替换, 这减少了从 Ruby 迁移到 Crystal 的摩擦。
+```
 
 ### 看起来啥都没变，但是方法的部分行为改变了，这可能是个大坑，尤其值得注意
 
@@ -650,3 +652,88 @@ alias ………………………………………………………………�
 $0 …………………………………………………………………… 当前程序的名称 …………………前一个正则匹配的内容字符串 (Ruby 中同样的东西是 $&)
 
 &. ……………………………………………………………… 短路运算符 ………………………………………… block 调用简写形式
+
+--------------------
+
+
+# 迁移 Ruby 代码到 Crystal 的建议
+
+
+## 第一步：首先需要替换所有 '单引号字符串' 到 "双引号字符串"
+
+你可以使用 Ruby 社区中大名鼎鼎的 [rubocop](https://github.com/rubocop/rubocop) 来完成它。
+
+首先安装 rubocop gem, `gem install rubocop`
+
+然后你可以进入 gem 目录，运行[这个脚本](https://github.com/crystal-china/port_ruby_to_crystal/blob/master/bin/rubocop_double_quotes) 执行替换。
+
+
+## 第二步：对一些重命名的方法名做一些简单的替换。
+
+进入 gem 目录，执行前面提到的 [port_ruby_to_crystal 脚本](https://github.com/crystal-china/port_ruby_to_crystal/blob/master/bin/port_ruby_to_crystal) 即可。
+
+## 第三步：添加必要的类型
+
+作为一个高度依赖于类型推断的静态类型语言，大多数情况下，代码写起来和 Ruby 没什么不同，但是某些特殊的类型，强制类型声明是必须的。
+
+例如：
+
+### 空数组和空哈希
+
+```crystal
+ary = [] of String # => 空数组必须指定数组元素的类型。
+
+ary << "Hello" # => ["Hello"]
+ary << 123 # => Error: expected argument #1 to 'Array(String)#<<' to be String, not Int32
+
+h = {} of String => String
+```
+
+### 包含代码块参数的 block
+
+下面的代码是合法的 Ruby 代码，但是 Crystal 会报错。
+
+```crystal
+def foo(&block)
+  [1,2,3].map &block
+end
+
+foo {|x| x * 2 } # Error: wrong number of block parameters (given 1, expected 0)
+```
+
+因为，你没有为 &block 指定签名，默认假设这是一个没有代码块参数的 block，正确的做法是：
+
+
+```crystal
+def foo(&block : Int32 -> Int32)
+  [1,2,3].map &block
+end
+
+p foo {|x| x * 2 } # => [2, 4, 6]
+```
+
+等等
+
+## 第四步，如果 gem 使用了其他 gem，暂时移除或替换它
+
+当前 gem 依赖的其他 gem 可能在 Crystal 不支持或需要寻找替代库, 在这一步，
+你可以暂时隔离它，等编译通过后，再寻找 Crystal 中对应的库或自己实现它。
+
+Crystal 没有一个类似于 https://rubygems.org 这样的中心化网站，包含所有的 Ruby gem.
+
+但是社区仍然提供了几个网站，让你可以方便的查找存在的 shards
+
+https://shards.info/
+
+https://shardbox.org/
+
+上面的网站都尝试找一找，也可以去 [官方 forum](forum.crystal-lang.org) 去搜索或提问
+
+要明白的是，很多著名的 shards, 并非托管自 github，可能来自非常小众的托管平台，
+例如：https://codeberg.org，甚至使用 git 之外的其他 SCM 系统，例如：fossil
+
+
+## 第四步：修复编译时错误。
+
+取决于你的 Ruby 代码，如果你没有炫技，使用太多诸如元编程之类的动态特性，这一步可能很简单就可以达到。
+否则，可能需要大量的更改，甚至重写，这往往是最困难的一步。
