@@ -1,4 +1,6 @@
-Crystal 通常会搭配其依赖管理器 Shards 使用。
+这是 [**官方 shards 手册**](https://crystal-lang.org/reference/1.15/man/shards/index.html) 直接翻译的文档。
+
+Crystal 通常会搭配其依赖管理器 shards 命令使用。
 
 它负责管理 Crystal 项目和库的依赖，确保在不同计算机和系统上都能实现可重复安装。
 

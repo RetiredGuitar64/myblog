@@ -1,6 +1,102 @@
-## 方法的变更
+## 调用方法时传递关键字参数
 
-方法的变更非常多，这里不一一列举，只是按照类别简要介绍下：
+```
+Crystal 中，当定义一个方法时，无需特殊的语法来声明关键字参数类型，因为他和普通的位置参数是一样的。
+
+当调用一个方法并传递实参进来时，既可以使用正常的**位置参数方式**调用，也可以使用**关键字参数**方式调用
+```
+
+
+```crystal
+def say_hello(recipient)
+  puts "Hello #{recipient}!"
+end
+
+say_hello("Crystal") # => "Hello Crystal!"
+say_hello(recipient: "Crystal") # => "Hello Crystal!"
+```
+
+Crystal 中提供了一个特殊的语法强制某些参数只能使用关键字参数方式调用。
+
+```crystal
+def foo(x, *, y)
+end
+
+foo 1, y: 2    # OK
+foo y: 2, x: 3 # OK
+foo 1, 2 # => Error: missing argument: y
+```
+
+## 定义方法名同名的方法
+
+
+即使方法名相同的方法，可以通过 `参数名`不同、`参数个数`不同、`参数类型` 以及 `是否需要代码块 & ` 进行区分。
+
+
+参数名不同：(这里添加 *，强制要求必须使用关键字参数方式调用, 才能正确区分)
+
+```crystal
+def foo(*, a)
+  puts "foo(a)"
+end
+
+def foo(*, b)
+  puts "foo(b)"
+end
+
+foo(a: 100) # => foo(a)
+foo(b: 100) # => foo(b)
+```
+
+参数个数不同
+
+```crystal
+def foo(a，b)
+  puts "foo(a, b)"
+end
+
+def foo(a)
+  puts "foo(a)"
+end
+
+foo(100,200) # => foo(a, b)
+foo(100) # => foo(a)
+```
+
+参数类型不同
+
+```crystal
+def foo(a : String)
+  puts "foo(a : String)"
+end
+
+def foo(a : Int32)
+  puts "foo(a : Int32)"
+end
+
+foo(100) # => foo(a : Int32)
+foo("Hello") # => foo(a : String)
+```
+
+是否包含代码块
+
+```crystal
+def foo
+  puts "foo()"
+end
+
+def foo(&)
+  puts "foo(&)"
+end
+
+foo # => "foo()"
+foo {} # => "foo(&)"
+```
+
+
+## 方法名称的变更
+
+方法名称的变更非常多，这里不一一列举，这里只是简要按照类别介绍下：
 
 ### Ruby 中很多存在别名的方法，Crystal 仅保留其中一个。
 
@@ -70,6 +166,9 @@ File.write("out.txt", "content", mode = "a")
 
 但是，如果在 Crystal 下执行它，会抛出一大堆错误。
 
+<details>
+<summary>点击查看 backtrace</summary>
+
 ```sh
  error in line 0
 Error: expanding macro
@@ -113,6 +212,8 @@ Overloads are:
  - Crystal::System::File.open(filename : String, mode : String, perm : Int32 | ::File::Permissions, blocking)
  - Crystal::System::File.open(filename : String, flags : Int32, perm : ::File::Permissions, blocking _blocking)
 ```
+
+</details>
 
 新手会完全懵逼，不知道发生了什么！看上面第 15 行，会发现一些端倪。
 

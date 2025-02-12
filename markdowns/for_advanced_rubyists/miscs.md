@@ -32,35 +32,6 @@ $ crystal build --release foo.cr
 
 `crystal build --help` 来获取更多的帮助。
 
-## 调用方法时传递关键字参数
-
-```
-Crystal 中，当定义一个方法时，无需特殊的语法来声明关键字参数类型，因为他和普通的位置参数是一样的。
-
-当调用一个方法并传递实参进来时，既可以使用正常的**位置参数方式**调用，也可以使用**关键字参数**方式调用
-```
-
-
-```crystal
-def say_hello(recipient)
-  puts "Hello #{recipient}!"
-end
-
-say_hello("Crystal") # => "Hello Crystal!"
-say_hello(recipient: "Crystal") # => "Hello Crystal!"
-```
-
-Crystal 中提供了一个特殊的语法强制某些参数只能使用关键字参数方式调用。
-
-```crystal
-def foo(x, *, y)
-end
-
-foo 1, y: 2    # OK
-foo y: 2, x: 3 # OK
-foo 1, 2 # => Error: missing argument: y
-```
-
 ## 可枚举的(Enumerable)以及迭代器(Iterator)
 
 下面的 Ruby 代码是工作的： 
@@ -305,7 +276,6 @@ lib:/home/zw963/Crystal/bin/../share/crystal/src
 - CPATH/foo/bar/baz.cr
 - CPATH/foo/bar/baz/baz.cr
 - CPATH/foo/src/bar/baz.cr
-- 
 
 可见仍旧满足上面的策略，只不过将 foo 替换为 foo/bar/baz 而已。
 

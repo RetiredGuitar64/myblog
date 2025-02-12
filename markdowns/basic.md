@@ -102,22 +102,14 @@ String#[]			字符串切片，例如："hello"[1..3] => ell
 ## 方法
 
 定义一个方法使用 `def` 关键字，后面跟括号以及参数，括号是可选的，但是建议总是添加。
+
 调用传递参数的方法，括号也是可选的，通常只有在特定场景下，读起来像自然语言且更容易理解时才会省略括号。
 
 ```
-不同于 Ruby，Crystal 中一个方法，既可以使用**普通方式**调用，也可以使用**关键字参数**方式调用
+不同于 Ruby，Crystal 中调用一个方法并传递参数时，同一个实参既可以使用**普通方式**传递，也可以使用**关键字参数**方式调用
 
-```
+更多详情见 [**调用方法时传递关键字参数**](for_advanced_rubyists/methods#anchor-调用方法时传递关键字参数)
 
-
-```crystal
-def say_hello(recipient)
-  puts "Hello #{recipient}!"
-end
-
-say_hello("World") # => "Hello World!"
-say_hello "Crystal" # => "Hello Crystal!"
-say_hello recipient: "Crystal" # => "Hello Crystal!"
 ```
 
 方法参数允许指定默认值
@@ -159,54 +151,7 @@ end
 say_hello "Crystal" # => Error: method ::say_hello must return String but it is returning Nil
 ```
 
-
-同名方法，可以通过参数名不同，参数个数不同，以及参数类型不同进行区分。
-
-
-参数名不同：(这里添加 *，强制要求必须使用关键字参数方式调用 foo 方法)
-
-```crystal
-def foo(*, a)
-  puts "foo(a)"
-end
-
-def foo(*, b)
-  puts "foo(b)"
-end
-
-foo(a: 100) # => foo(a)
-foo(b: 100) # => foo(b)
-```
-
-参数个数不同
-
-```crystal
-def foo(a，b)
-  puts "foo(a, b)"
-end
-
-def foo(a)
-  puts "foo(a)"
-end
-
-foo(100,200) # => foo(a, b)
-foo(100) # => foo(a)
-```
-
-参数类型不同
-
-```crystal
-def foo(a : String)
-  puts "foo(a : String)"
-end
-
-def foo(a : Int32)
-  puts "foo(a : Int32)"
-end
-
-foo(100) # => foo(a : Int32)
-foo("Hello") # => foo(a : String)
-```
+更多有关方法签名的文档，参考 [**定义方法名同名的方法**](for_advanced_rubyists/methods#anchor-定义方法名同名的方法)
 
 --------
 
