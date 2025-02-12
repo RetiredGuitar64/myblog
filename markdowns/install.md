@@ -43,7 +43,7 @@ sudo pacman -S crystal
 因此 libevent 不再作为外部依赖。
  
 ```bash
-pacman -S base-devel \
+sudo pacman -S base-devel \
        automake \
        git rsync \
        gmp \
@@ -81,6 +81,8 @@ cp -v tmp/usr/local/bin/crystal $install_target/bin/
 rsync -ahP --delete tmp/usr/local/share/ $install_target/share/
 ```
 
+然后将 ~/Crystal/bin 加入 $PATH 即可。
+
 ### 生成并安装静态文档
 
 ```bash
@@ -92,11 +94,7 @@ rsync -ahP --delete docs/ $install_target/docs
 
 ### 安装包管理工具 shards
 
-```bash
-git clone https://github.com/crystal-lang/shards.git && cd shards
-git checkout v0.19.1 && shards build --no-debug --release
-cp -v bin/shards ~/Crystal/bin/
-```
+见 [package_manager](docs/package_manager)
 
 ---------
 

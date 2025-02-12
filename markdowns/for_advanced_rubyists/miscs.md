@@ -258,3 +258,33 @@ nil&.upcase&.reverse # => nil 之上使用 &. 调用，不会报错，而是总�
 (1..10).map &.**(3) # 等价于：(1..10).map {|x| x.**(3) }, 结果为：[1, 8, 27, 64, 125, 216, 343, 512, 729, 1000]
 ["hello", "world"].map(&.upcase.reverse) # => ["OLLEH", "DLROW"]
 ```
+ 
+ ## require 用法不同
+ 
+ 首先，Crystal 移除了 require_relative 方法，代之，可以直接使用 require 来引用相对路径的文件。
+ 
+ ```crystal
+require "./foo"
+```
+
+其次，类似于 Ruby 在 $RUBYLIB 从前往后中查找 lib 文件夹来确定引用的 gem, Crystal 等价的环境变量
+叫做 $CRYSTAL_PATH, 可以通过 `crystal env CRYSTAL_PATH` 来取得这个变量的默认值
+
+```bash
+ ╰──➤ $ crystal env CRYSTAL_PATH
+lib:/home/zw963/Crystal/bin/../share/crystal/src
+```
+
+可以看到，$CRYSTAL_PATH 默认仅仅包含 `当前目录下的 ./lib` 以及本地安装的编译器的 `标准库相对路径`.
+`~/Crystal/share/crystal/src`，我们可以文件夹到 $CRYSTAL_PATH，使用冒号（:) 分隔即可。
+
+我们假设这个加入 $CRYSTAL_PATH 的**文件夹**叫做 `CPATH`, 当我们 `require "foo"` 时，会按照如下顺序查找:
+
+- CPATH/foo.cr (1)
+- CPATH/foo/foo.cr (2)
+- CPATH/foo/src/foo.cr (3)
+
+
+
+
+
