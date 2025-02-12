@@ -259,15 +259,29 @@ nil&.upcase&.reverse # => nil 之上使用 &. 调用，不会报错，而是总�
 ["hello", "world"].map(&.upcase.reverse) # => ["OLLEH", "DLROW"]
 ```
  
- ## require 用法不同
+## require 用法不同
  
- 首先，Crystal 移除了 require_relative 方法，代之，可以直接使用 require 来引用相对路径的文件。
+### Crystal 移除了 require_relative 方法
+
+代之，可以直接使用 require 来引用相对路径的文件。
  
- ```crystal
+```crystal
 require "./foo"
 ```
 
-其次，类似于 Ruby 在 $RUBYLIB 从前往后中查找 lib 文件夹来确定引用的 gem, Crystal 等价的环境变量
+并且支持和 File.match? 一样的增强版的 shell filename globbing
+
+- `*` 支持任意数量的除了目录分隔符之外的任意字符。
+
+例如：`require "./foo/*"`，匹配 foo 目录下的所有 cr 文件, 但不含子目录。
+
+- `/**` 递归的匹配所有子目录中的 cr 文件
+
+例如：`require "./foo/**"`，匹配 foo 目录以及所有子目录下的所有 cr 文件。
+
+### $CRYSTAL_PATH
+
+类似于 Ruby 在 $RUBYLIB 从前往后中查找 lib 文件夹来确定引用的 gem, Crystal 等价的环境变量
 叫做 $CRYSTAL_PATH, 可以通过 `crystal env CRYSTAL_PATH` 来取得这个变量的默认值
 
 ```bash
@@ -278,13 +292,33 @@ lib:/home/zw963/Crystal/bin/../share/crystal/src
 可以看到，$CRYSTAL_PATH 默认仅仅包含 `当前目录下的 ./lib` 以及本地安装的编译器的 `标准库相对路径`.
 `~/Crystal/share/crystal/src`，我们可以文件夹到 $CRYSTAL_PATH，使用冒号（:) 分隔即可。
 
+### require 查找策略
+
 我们假设这个加入 $CRYSTAL_PATH 的**文件夹**叫做 `CPATH`, 当我们 `require "foo"` 时，会按照如下顺序查找:
 
-- CPATH/foo.cr (1)
-- CPATH/foo/foo.cr (2)
-- CPATH/foo/src/foo.cr (3)
+- CPATH/foo.cr					(1) 简单的 foo.cr
+- CPATH/foo/foo.cr				(2)	foo 替换为 foo/foo.cr
+- CPATH/foo/src/foo.cr			(3) 和 (2) 类似，只不过 `第一级` 文件夹后面加了一个 src 文件夹。
+
+上面的 foo 可以扩展成 `a/b/c` 这种形式，例如，`require "foo/bar/baz"`, 会查找：
+
+- CPATH/foo/bar/baz.cr
+- CPATH/foo/bar/baz/baz.cr
+- CPATH/foo/src/bar/baz.cr
+- 
+
+可见仍旧满足上面的策略，只不过将 foo 替换为 foo/bar/baz 而已。
 
 
+```
+注意：require 绝对路径是不支持的。例如：require "/some/aboslote/path"
+Crystal 没有类似于 Ruby 中 load 方法的等价物，但是可以通过下面的 
+read_file 宏(macro) 来达到同样的目的
+```
 
+```crystal
+# 这个 macro 相当于把文件 path.cr 里面的内容物理粘贴到宏调用位置
+{{ read_file("/some/alsolute/path.cr").id }} 
+```
 
 
