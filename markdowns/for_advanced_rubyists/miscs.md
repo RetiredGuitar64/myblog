@@ -261,7 +261,17 @@ lib:/home/zw963/Crystal/bin/../share/crystal/src
 ```
 
 可以看到，$CRYSTAL_PATH 默认仅仅包含 `当前目录下的 ./lib` 以及本地安装的编译器的 `标准库相对路径`.
-`~/Crystal/share/crystal/src`，我们可以文件夹到 $CRYSTAL_PATH，使用冒号（:) 分隔即可。
+`~/Crystal/share/crystal/src`，我们将指定的文件夹加入到到 $CRYSTAL_PATH中，使用冒号（:) 分隔即可。
+
+例如：
+
+```bash
+ ╰──➤ $ export CRYSTAL_PATH=new_folder:$(crystal env CRYSTAL_PATH)
+lib:/home/zw963/Crystal/bin/../share/crystal/src
+ ╰──➤ $ crystal env CRYSTAL_PATH
+new_folder:lib:/home/zw963/Crystal/bin/../share/crystal/src
+```
+
 
 ### require 查找策略
 
