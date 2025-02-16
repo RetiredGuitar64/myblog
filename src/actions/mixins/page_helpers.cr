@@ -2,7 +2,7 @@ require "ecr"
 
 module PageHelpers
   PAGINATION_RELATION_MAPPING = {
-    "/docs"                                          => {title: "前言", sub_title: "写在开始之前", parent: "root"},
+    "/docs/index"                                    => {title: "前言", sub_title: "写在开始之前", parent: "root"},
     "/docs/introduction"                             => {title: "简介", sub_title: "", parent: "root"},
     "/docs/install"                                  => {title: "安装", sub_title: "", parent: "root"},
     "/docs/package_manager"                          => {title: "包管理", sub_title: "shards 命令", parent: "/docs/install"},
