@@ -32,7 +32,7 @@ $ crystal build --release foo.cr
 
 `crystal build --help` 来获取更多的帮助。
 
-## 可枚举的(Enumerable)以及迭代器(Iterator)
+## 可枚举的(Enumerable)
 
 下面的 Ruby 代码是工作的： 
 
@@ -99,7 +99,33 @@ ary.each do |(x, *y, z)|
 end
 ```
 
----------
+不过，当 Hash 或 NamedTuple 作为可枚举对象传递**键值对**给代码块时，
+是不需要 unpacking 直接可以工作的（也比较符合直觉）。
+
+
+```crystal
+{1 => "A",2 => "B"}.each do |a, b|
+  p a, b
+end
+
+# 1
+# "A"
+# 2
+# "B"
+```
+
+```crystal
+{foo: 1, bar: 2}.each do |a, b|
+  p a, b
+end
+
+# :foo
+# 1
+# :bar
+# 2
+```
+
+## 迭代器(Iterator)
 
 Crystal 额外引入了 Iterator 类型（等价于 Ruby 中的 Enumerator::Lazy)
 
