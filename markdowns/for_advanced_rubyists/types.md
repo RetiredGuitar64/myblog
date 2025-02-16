@@ -8,9 +8,9 @@ p typeof("汉") # => String
 p typeof('汉') # => Char
 ```
 
-这可能是从 Ruby 切换到 Crystal 遇到的最大的坑之一。
+这几乎总是从 Ruby 切换到 Crystal 最先遇到的坑。
 
-Crystal 字符串是不可变的, 因此，Ruby 中常用的方法 `String#<<` 是没有的。
+而且，Crystal 字符串是不可变的, 因此，Ruby 中常用的方法 `String#<<` 是没有的。
 
 尝试修改一个字符串，例如 String#+ 或 interpolation 都会产生新的字符串，你需要将修改后字符串重新赋值给一个变量。
 

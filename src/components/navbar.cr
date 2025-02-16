@@ -26,14 +26,15 @@ class Navbar < BaseComponent
     # end
 
     nav class: "contents" do
-      # tag "search" do
-      #   strong do
-      #     button "Search", onclick: "document.querySelectorAll('dialog')[0].showModal();"
-      #   end
-      # end
-
-      div id: "docsearch" do
+      tag "search" do
+        strong do
+          button "Search", onclick: "document.querySelectorAll('dialog')[0].showModal();"
+        end
       end
+
+      # Used with @docsearch plugin
+      # div id: "docsearch" do
+      # end
 
       ul role: "list" do
         li do

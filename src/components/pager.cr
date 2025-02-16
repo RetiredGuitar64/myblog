@@ -21,13 +21,13 @@ class Pager < BaseComponent
               if prev_path == current_path
                 text "没有上一页了"
               else
-                a PAGINATION_RELATION_MAPPING[prev_path][:name], href: prev_path
+                a PAGINATION_RELATION_MAPPING[prev_path][:title], href: prev_path
               end
             end
           end
 
           h3 do
-            text item[:name]
+            text item[:title]
           end
 
           div class: "<h3>" do
@@ -36,7 +36,7 @@ class Pager < BaseComponent
               if next_path == current_path
                 text "没有下一页了"
               else
-                a PAGINATION_RELATION_MAPPING[next_path][:name], href: next_path
+                a PAGINATION_RELATION_MAPPING[next_path][:title], href: next_path
               end
             end
           end

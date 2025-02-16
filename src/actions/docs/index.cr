@@ -1,5 +1,5 @@
 class Docs::Index < DocAction
-  get "/docs" do
+  get "/docs/index" do
     html Docs::IndexPage
   end
 end

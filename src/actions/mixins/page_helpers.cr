@@ -2,16 +2,16 @@ require "ecr"
 
 module PageHelpers
   PAGINATION_RELATION_MAPPING = {
-    "/docs"                                          => {name: "前言", parent: "root"},
-    "/docs/introduction"                             => {name: "简介", parent: "root"},
-    "/docs/install"                                  => {name: "安装", parent: "root"},
-    "/docs/package_manager"                          => {name: "包管理", parent: "/docs/install"},
-    "/docs/for_advanced_rubyists"                    => {name: "写给 Rubyists", parent: "root"},
-    "/docs/for_advanced_rubyists/types"              => {name: "类型相关", parent: "/docs/for_advanced_rubyists"},
-    "/docs/for_advanced_rubyists/methods"            => {name: "方法相关", parent: "/docs/for_advanced_rubyists"},
-    "/docs/for_advanced_rubyists/miscs"              => {name: "杂项", parent: "/docs/for_advanced_rubyists"},
-    "/docs/for_advanced_rubyists/migrate_to_crystal" => {name: "迁移 Ruby 代码到 Crystal", parent: "/docs/for_advanced_rubyists"},
-    "/docs/basic"                                    => {name: "基础知识", parent: "root"},
+    "/docs/index"                                    => {title: "前言", sub_title: "写在开始之前", parent: "root"},
+    "/docs/introduction"                             => {title: "简介", sub_title: "", parent: "root"},
+    "/docs/install"                                  => {title: "安装", sub_title: "", parent: "root"},
+    "/docs/package_manager"                          => {title: "包管理", sub_title: "shards 命令", parent: "/docs/install"},
+    "/docs/for_advanced_rubyists"                    => {title: "写给 Rubyists", sub_title: "分类讨论 Crystal 和 Ruby 的异同", parent: "root"},
+    "/docs/for_advanced_rubyists/types"              => {title: "类型", sub_title: "", parent: "/docs/for_advanced_rubyists"},
+    "/docs/for_advanced_rubyists/methods"            => {title: "方法", sub_title: "", parent: "/docs/for_advanced_rubyists"},
+    "/docs/for_advanced_rubyists/miscs"              => {title: "杂项", sub_title: "", parent: "/docs/for_advanced_rubyists"},
+    "/docs/for_advanced_rubyists/migrate_to_crystal" => {title: "迁移 Ruby 代码到 Crystal", sub_title: "", parent: "/docs/for_advanced_rubyists"},
+    "/docs/basic"                                    => {title: "基础知识", sub_title: "一些基础知识的简单总结", parent: "root"},
   }
   PAGINATION_URLS = PAGINATION_RELATION_MAPPING.keys
 
@@ -32,7 +32,7 @@ module PageHelpers
 
     if parent == "root"
       SIDEBAR_LINKS[k] = PageMapping.new(
-        name: v[:name],
+        name: v[:title],
         path: k,
         next_page: v[:next_page]?,
         prev_page: v[:prev_page]?
@@ -40,7 +40,7 @@ module PageHelpers
     else
       if SIDEBAR_LINKS.has_key?(parent)
         SIDEBAR_LINKS[parent].child << PageMapping.new(
-          name: v[:name],
+          name: v[:title],
           path: k,
           next_page: v[:next_page]?,
           prev_page: v[:prev_page]?

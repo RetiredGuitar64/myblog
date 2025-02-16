@@ -1,28 +1,29 @@
 {
-  "license": "UNLICENSED",
-  "private": true,
-  "dependencies": {
-    "@docsearch/js": "3",
-    "asciinema-player": "^3.8.0",
-    "htmx.org": "^2.0.0",
-    "hyperscript.org": "^0.9.12",
-    "missing.css": "^1.1.3",
-    "modern-normalize": "^3.0.0"
-  },
-  "scripts": {
-    "heroku-postbuild": "yarn prod",
-    "dev": "yarn run mix",
-    "watch": "yarn run mix watch",
-    "prod": "yarn run mix --production"
-  },
-  "devDependencies": {
-    "@babel/compat-data": "^7.23.5",
-    "browser-sync": "^2.29.3",
-    "compression-webpack-plugin": "^10.0.0",
-    "laravel-mix": "^6.0.49",
-    "postcss": "^8.4.32",
-    "resolve-url-loader": "^5.0.0",
-    "sass": "^1.69.5",
-    "sass-loader": "^13.3.2"
-  }
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@docsearch/js": "3",
+        "asciinema-player": "^3.8.0",
+        "htmx.org": "^2.0.0",
+        "hyperscript.org": "^0.9.12",
+        "missing.css": "^1.1.3",
+        "modern-normalize": "^3.0.0"
+    },
+    "scripts": {
+        "heroku-postbuild": "yarn prod",
+        "dev": "yarn run mix",
+        "watch": "yarn run mix watch",
+        "prod": "yarn run mix --production",
+        "wasm": "bin/tinysearch public/docs/index.json -p public/docs"
+    },
+    "devDependencies": {
+        "@babel/compat-data": "^7.23.5",
+        "browser-sync": "^2.29.3",
+        "compression-webpack-plugin": "^10.0.0",
+        "laravel-mix": "^6.0.49",
+        "postcss": "^8.4.32",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.69.5",
+        "sass-loader": "^13.3.2"
+    }
 }

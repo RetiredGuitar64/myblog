@@ -7,7 +7,7 @@ abstract class DocLayout
   needs current_user : User?
   needs formatter : Tartrazine::Formatter
 
-  macro load_markdown
+  macro markdown_path
     {%
       class_name = @type
         .name
@@ -18,17 +18,19 @@ abstract class DocLayout
         .gsub(/::/, "/")
     %}
 
-    markdown File.read("{{class_name.id}}.md")
+    "{{class_name.id}}.md"
   end
 
   def content
-    load_markdown
+    markdown File.read(markdown_path)
   end
 
-  abstract def page_title
+  def page_title
+    PAGINATION_RELATION_MAPPING.dig(current_path, :title) || "首页"
+  end
 
   def sub_title
-    nil
+    PAGINATION_RELATION_MAPPING.dig(current_path, :sub_title)
   end
 
   def current_path
@@ -42,6 +44,17 @@ abstract class DocLayout
       mount Shared::LayoutHead, page_title: page_title
 
       body "hx-boost": true, style: "padding: 0px;" do
+        script type: "module" do
+          raw <<-'HEREDOC'
+import { search, default as wasminit } from '/docs/tinysearch_engine.js';
+window.search = search;
+async function run() {
+    await wasminit('/docs/tinysearch_engine_bg.wasm');
+}
+run();
+HEREDOC
+        end
+
         header class: "navbar", style: "margin-bottom: 2px;" do
           mount Navbar, current_user: current_user
         end
@@ -86,11 +99,12 @@ padding-bottom: 0;") do
         label "Search", for: "search-input", class: "titlebar", style: "margin-inline: calc(-1*var(--gap))"
 
         para do
-          input autofocus: "", id: "search-input", class: "block width:100%"
+          input type: "text", autofocus: "", id: "search-input", class: "block width:100%"
         end
 
-        div role: "listbox", "aria-label": "results", class: "flow-gap padding-inline", style: "overflow-y: auto; margin-inline: calc(-1*var(--gap))" do
-        end
+        # div role: "listbox", "aria-label": "results", class: "flow-gap padding-inline", style: "overflow-y: auto; margin-inline: calc(-1*var(--gap))" do
+        # end
+        ul id: "results"
       end
     end
   end

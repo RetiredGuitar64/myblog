@@ -8,6 +8,8 @@ authors:
 targets:
   crystal_china:
     main: src/crystal_china.cr
+  index:
+    main: src/build_doc_index.cr
 
 dependencies:
   lucky:
@@ -45,7 +47,6 @@ development_dependencies:
   lucky_flow:
     github: luckyframework/lucky_flow
     version: ~> 0.10.0
-    
 
 crystal: '>= 1.14.0'
 
