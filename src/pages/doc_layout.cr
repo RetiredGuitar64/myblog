@@ -42,6 +42,17 @@ abstract class DocLayout
       mount Shared::LayoutHead, page_title: page_title
 
       body "hx-boost": true, style: "padding: 0px;" do
+        script type: "module" do
+          raw <<-'HEREDOC'
+import { search, default as wasminit } from './tinysearch_engine.js';
+window.search = search;
+async function run() {
+    await wasminit('./tinysearch_engine_bg.wasm');
+}
+run();
+HEREDOC
+        end
+
         header class: "navbar", style: "margin-bottom: 2px;" do
           mount Navbar, current_user: current_user
         end
@@ -86,11 +97,12 @@ padding-bottom: 0;") do
         label "Search", for: "search-input", class: "titlebar", style: "margin-inline: calc(-1*var(--gap))"
 
         para do
-          input autofocus: "", id: "search-input", class: "block width:100%"
+          input type: "text", autofocus: "", id: "search-input", class: "block width:100%"
         end
 
-        div role: "listbox", "aria-label": "results", class: "flow-gap padding-inline", style: "overflow-y: auto; margin-inline: calc(-1*var(--gap))" do
-        end
+        # div role: "listbox", "aria-label": "results", class: "flow-gap padding-inline", style: "overflow-y: auto; margin-inline: calc(-1*var(--gap))" do
+        # end
+        ul id: "results"
       end
     end
   end
