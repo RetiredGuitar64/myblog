@@ -44,10 +44,10 @@ abstract class DocLayout
       body "hx-boost": true, style: "padding: 0px;" do
         script type: "module" do
           raw <<-'HEREDOC'
-import { search, default as wasminit } from './tinysearch_engine.js';
+import { search, default as wasminit } from '/docs/tinysearch_engine.js';
 window.search = search;
 async function run() {
-    await wasminit('./tinysearch_engine_bg.wasm');
+    await wasminit('/docs/tinysearch_engine_bg.wasm');
 }
 run();
 HEREDOC
