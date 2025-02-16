@@ -25,7 +25,9 @@ abstract class DocLayout
     markdown File.read(markdown_path)
   end
 
-  abstract def page_title
+  def page_title
+    PAGINATION_RELATION_MAPPING.dig(current_path, :name) || "首页"
+  end
 
   def sub_title
     nil
