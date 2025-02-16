@@ -30,7 +30,7 @@ abstract class DocLayout
   end
 
   def sub_title
-    nil
+    PAGINATION_RELATION_MAPPING.dig(current_path, :sub_title)
   end
 
   def current_path
