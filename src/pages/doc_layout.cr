@@ -7,7 +7,7 @@ abstract class DocLayout
   needs current_user : User?
   needs formatter : Tartrazine::Formatter
 
-  macro load_markdown
+  macro markdown_path
     {%
       class_name = @type
         .name
@@ -18,11 +18,11 @@ abstract class DocLayout
         .gsub(/::/, "/")
     %}
 
-    markdown File.read("{{class_name.id}}.md")
+    "{{class_name.id}}.md"
   end
 
   def content
-    load_markdown
+    markdown File.read(markdown_path)
   end
 
   abstract def page_title
