@@ -1,5 +1,5 @@
 function copyCodeButton () {
-    const copyButtonLabel = "Copy Code";
+    const copyButtonLabel = "Copy"
 
     // use a class selector if available
     let blocks = document.querySelectorAll("pre.b");
@@ -35,7 +35,7 @@ function copyCodeButton () {
 
         await navigator.clipboard.writeText(text);
 
-        button.innerText = "Code Copied";
+        button.innerText = "Copied";
 
         setTimeout(() => {
             button.innerText = copyButtonLabel;
