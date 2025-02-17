@@ -14,7 +14,7 @@
         "dev": "yarn run mix",
         "watch": "yarn run mix watch",
         "prod": "yarn run mix --production",
-        "wasm": "bin/tinysearch public/docs/index.json -p public/docs"
+        "wasm": "bin/tinysearch tmp/index.json -p public/docs"
     },
     "devDependencies": {
         "@babel/compat-data": "^7.23.5",

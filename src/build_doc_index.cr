@@ -1,7 +1,7 @@
 require "json"
 require "./actions/mixins/page_helpers"
 
-File.open("public/docs/index.json", "w") do |file|
+File.open("tmp/index.json", "w") do |file|
   string = JSON.build(file) do |json|
     json.array do
       PageHelpers::PAGINATION_RELATION_MAPPING.each do |k, v|
