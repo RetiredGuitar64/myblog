@@ -69,7 +69,7 @@ https://shardbox.org/
 上面的网站都尝试找一找，也可以去 [官方 forum](forum.crystal-lang.org) 去搜索或提问
 
 要明白的是，很多著名的 shards, 并非托管自 github，可能来自非常小众的托管平台，
-例如：https://codeberg.org，甚至使用 git 之外的其他 SCM 系统，例如：fossil
+例如：https://codeberg.org，https://sr.ht, 甚至使用 git 之外的其他 SCM 系统，例如：fossil
 
 
 ## 第四步：修复编译时错误。
