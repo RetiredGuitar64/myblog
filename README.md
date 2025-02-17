@@ -28,11 +28,14 @@ Following is the process for create the static binary:
 4. copy the built binary(`bin/crystal_china`) into remote linux host as `bin/crystal_china`, then 
    set the necessary ENV in file `.env`, check the [.env.sample](/.env.sample) for a example.
    You will have the following directory structure:
-```
-   .
-   ├── .env
-   └── bin/crystal_china
-```
+	```
+	   .
+	   ├── .env
+	   └── bin/crystal_china
+	```
+    If server was started, you have to stop it before copy the binary. a more robust way to do this 
+    is use a [binary diff tools](https://github.com/petervas/bsdifflib/) create patch locally, and then apply it on server.
+    this way the server no stop requried, just need reboot after done patching.
 
 5. Add a systemd service to start the server, review the configuration for the [crystal_china.service](/nginx/crystal_china.service)
 
