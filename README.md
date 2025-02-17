@@ -4,30 +4,43 @@
 
 - Crystal Progrmaming Language
 - postgresql
-- node(yarn)
-- wasm-pack (only for bin/tinysearch create index for docs)
+- nodejs(yarn)
+- (Optional)wasm-pack (only for used with bin/tinysearch to create search index for markdowns)
 
 ## Development
 
-Install all necessry development dependencies, then run `lucky dev`
+Install all necessary development dependencies, then run `lucky dev`.
 
 ## deployment
 
-There is no any dependenies when deploy to a remote linux server,
-except one static binary, with assets baked into the bianry itself.
+There are no runtime dependencies when deploying to a remote Linux environment except
+one static binary with assets baked into it, and will auto mount when running.
 
 Following is the process for create the static binary:
 
-1. `shards run index` to create a [tinysearch](https://github.com/tinysearch/tinysearch) index file into tmp/index.json.
-2. `yarn wasm` create wasm file from index.json which used in doc search.
-3. `yarn prod` to package the assets use mix with webpack.
-4.  built static binary use [sb_static](https://github.com/crystal-china/magic-haversack/blob/main/bin/sb_static) script.
-    more details about how to built a static binary use zigcc check [use zig gcc as an an alternative linker](https://github.com/crystal-china/magic-haversack/blob/main/docs/use_zig_cc_as_an_alternative_linker.md)
-5. copy this binary(e.g. crystal china) into remote linux host, use following form.
+1. Run `shards run index` to create a [tinysearch](https://github.com/tinysearch/tinysearch) index file in `tmp/index.json`.
+
+2. Run `yarn wasm` to generate a wasm file from index.json for document(markdowns) search.
+
+3. Run `yarn prod` to package assets with mix(webpack).
+
+4. To built a static binary use [sb_static](https://github.com/crystal-china/magic-haversack/blob/main/bin/sb_static) script.
+   for more details instructions on building a static binary use zigcc, check [use zig gcc as an an alternative linker](https://github.com/crystal-china/magic-haversack/blob/main/docs/use_zig_cc_as_an_alternative_linker.md)
+
+5. copy the built binary(`bin/crystal_china`) into remote linux host as `bin/crystal_china`, then 
+   set the necessary ENV in file `.env`, check the [.env.sample](/.env.sample) for a example.
+   You will have the following directory structure:
+```
    .
    ├── .env
    └── bin/crystal_china
-6. set the necessory ENV into .env
+```
+
+6. Add a systemd service to start the server, review the configuration for the [crystal_china.service](/nginx/crystal_china.service)
+
+7. Consider using [procodile](https://github.com/crystal-china/procodile) as an alternative for above .env and systemd services.
+
+8. Optionally, use nginx as a reverse proxy. You can find configuration details in [nginx folder](/nginx)
 
 ## Contributing
 
