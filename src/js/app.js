@@ -41,8 +41,7 @@ function init () {
         }
     }
 
-    let input = document.getElementById("search-input");
-    input.addEventListener('keyup', (event) => {
+    document.getElementById("search-input")?.addEventListener('keyup', (event) => {
         const value = event.target.value;
         doTinySearch(value);
     });
