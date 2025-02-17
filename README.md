@@ -35,7 +35,7 @@ Following is the process for create the static binary:
 	```
     If server was started, you have to stop it before copy the binary. a more robust way to do this 
     is use a [binary diff tools](https://github.com/petervas/bsdifflib/) create patch locally, and then apply it on server.
-    this way the server no stop requried, just need reboot after done patching.
+    this way the server no stop requried, just need reboot systemd service after done patching.
 
 5. Add a systemd service to start the server, review the configuration for the [crystal_china.service](/nginx/crystal_china.service)
 

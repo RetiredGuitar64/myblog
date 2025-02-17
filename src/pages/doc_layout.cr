@@ -96,7 +96,7 @@ HEREDOC
         style: "max-width: 100%; width: 30em;
 max-height: 100%; height: 40em;
 padding-bottom: 0;") do
-        label "Search", for: "search-input", class: "titlebar", style: "margin-inline: calc(-1*var(--gap))"
+        label "Search English word only (for now)", for: "search-input", class: "titlebar", style: "margin-inline: calc(-1*var(--gap))"
 
         para do
           input type: "text", autofocus: "", id: "search-input", class: "block width:100%"
