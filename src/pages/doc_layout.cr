@@ -55,7 +55,7 @@ run();
 HEREDOC
         end
 
-        header class: "navbar", style: "margin-bottom: 2px;" do
+        header class: "navbar", style: "margin-bottom: 2px; margin-top: 0px;" do
           mount Navbar, current_user: current_user
         end
 
