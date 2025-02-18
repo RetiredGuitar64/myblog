@@ -1,5 +1,5 @@
 function copyCodeButton () {
-    const copyButtonLabel = "Copy"
+    const copyButtonLabel = "📄"
 
     // use a class selector if available
     let blocks = document.querySelectorAll("pre.b");
@@ -12,6 +12,7 @@ function copyCodeButton () {
             if (button === null) {
                 button = document.createElement("button");
                 button.className = "copyBtn";
+                button.setAttribute("style", "background: #24273a; color: white; border: none;");
                 button.innerText = copyButtonLabel;
                 button.addEventListener("click", async () => {
                     await copyCode(block, button);
@@ -35,7 +36,7 @@ function copyCodeButton () {
 
         await navigator.clipboard.writeText(text);
 
-        button.innerText = "Copied";
+        button.innerText = "copied";
 
         setTimeout(() => {
             button.innerText = copyButtonLabel;
