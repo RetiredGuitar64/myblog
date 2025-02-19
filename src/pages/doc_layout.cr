@@ -92,7 +92,7 @@ padding-bottom: 0;") do
           div data_stork: "docs-output", class: "stork-output"
         end
 
-        js_link "stork.js"
+        js_link "/docs/stork.js"
 
         script do
           raw <<-'HEREDOC'
