@@ -44,17 +44,6 @@ abstract class DocLayout
       mount Shared::LayoutHead, page_title: page_title
 
       body "hx-boost": true, style: "padding: 0px;" do
-        script type: "module" do
-          raw <<-'HEREDOC'
-import { search, default as wasminit } from '/docs/tinysearch_engine.js';
-window.search = search;
-async function run() {
-    await wasminit('/docs/tinysearch_engine_bg.wasm');
-}
-run();
-HEREDOC
-        end
-
         header class: "navbar", style: "margin-bottom: 2px; margin-top: 0px;" do
           mount Navbar, current_user: current_user
         end
@@ -96,15 +85,23 @@ HEREDOC
         style: "max-width: 100%; width: 30em;
 max-height: 100%; height: 40em;
 padding-bottom: 0;") do
-        label "Search English word only (for now)", for: "search-input", class: "titlebar", style: "margin-inline: calc(-1*var(--gap))"
+        label "注意：中文搜索结果通常不准确, 请使用英文关键字！", for: "search-input", class: "titlebar", style: "margin-inline: calc(-1*var(--gap))"
 
-        para do
-          input type: "text", autofocus: "", id: "search-input", class: "block width:100%"
+        div class: "stork-wrapper-flat" do
+          input data_stork: "docs", class: "stork-input", id: "search-input"
+          div data_stork: "docs-output", class: "stork-output"
         end
 
-        # div role: "listbox", "aria-label": "results", class: "flow-gap padding-inline", style: "overflow-y: auto; margin-inline: calc(-1*var(--gap))" do
-        # end
-        ul id: "results"
+        js_link "https://assets.crystal-china.org/docs/stork.js"
+
+        script do
+          raw <<-'HEREDOC'
+              stork.register(
+                "docs",
+                "https://assets.crystal-china.org/docs/index.st"
+              );
+        HEREDOC
+        end
       end
     end
   end

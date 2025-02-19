@@ -22,30 +22,6 @@ function init () {
     //     }
     // };
 
-    function doTinySearch(value) {
-        // Retrieve 5 results
-        const results = search(value, 5);
-        let ul = document.getElementById("results");
-        ul.innerHTML = "";
-
-        for (let i = 0; i < results.length; i++) {
-            var li = document.createElement("li");
-
-            let [title, url] = results[i];
-            let elemlink = document.createElement('a');
-            elemlink.innerHTML = title;
-            elemlink.setAttribute('href', url);
-            li.appendChild(elemlink);
-
-            ul.appendChild(li);
-        }
-    }
-
-    document.getElementById("search-input")?.addEventListener('keyup', (event) => {
-        const value = event.target.value;
-        doTinySearch(value);
-    });
-
     // Delete 请求仍旧使用 form-encoded body 来传递参数。
     // htmx 2.0, 对于 DELETE 请求，将使用 params （根据 spec 规定）
     // 这里设定，仅仅 get 请求使用 params
