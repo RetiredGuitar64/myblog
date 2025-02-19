@@ -85,7 +85,7 @@ abstract class DocLayout
         style: "max-width: 100%; width: 30em;
 max-height: 100%; height: 40em;
 padding-bottom: 0;") do
-        label "注意：中文搜索结果通常不准确", for: "search-input", class: "titlebar", style: "margin-inline: calc(-1*var(--gap))"
+        label "注意：中文搜索结果通常不准确, 请使用英文关键字！", for: "search-input", class: "titlebar", style: "margin-inline: calc(-1*var(--gap))"
 
         div class: "stork-wrapper-flat" do
           input data_stork: "docs", class: "stork-input", id: "search-input"

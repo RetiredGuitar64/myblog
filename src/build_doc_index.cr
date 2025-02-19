@@ -1,44 +1,71 @@
 require "json"
 require "./actions/mixins/page_helpers"
 require "compress/gzip"
+require "brotli"
 require "file_utils"
 
-File.open("tmp/index.json", "w") do |file|
-  string = JSON.build(file) do |json|
-    json.array do
-      PageHelpers::PAGINATION_RELATION_MAPPING.each do |k, v|
-        json.object do
-          json.field "title", v[:title]
-          json.field "url", k
-          json.field "body", File.read("#{k.sub("/docs/", "markdowns/")}.md")
-        end
-      end
-    end
+str = String.build do |io|
+  io << "[input]\n"
+  io << %(base_directory = "markdowns"\n)
+  io << "files = [\n"
+  PageHelpers::PAGINATION_RELATION_MAPPING.each do |k, v|
+    markdown = "#{k.sub("/docs/", "")}.md"
+    io << %(    {path = "#{markdown}", url = "#{k}", title = "#{v[:title]}"},\n)
   end
+  io << "]"
 end
 
-FileUtils.rm_r("public/docs")
+File.write("tmp/index.toml", str)
 
-system("bin/tinysearch tmp/index.json -p public/docs")
+if !Process.find_executable("cargo")
+  abort "Install Rust toolchain is required!"
+end
 
-File.open("public/docs/tinysearch_engine.js", "r") do |input_file|
-  File.open("public/docs/tinysearch_engine.js.gz", "w") do |output_file|
+if !Process.find_executable("wasm-pack")
+  abort "Install wasm-pack is required!
+Try: pacman -S wasm-pack if you use Arch Linux.
+"
+end
+
+if !Process.find_executable("stork")
+  system("cargo install stork-search --locked")
+end
+
+if !Process.find_executable("stork")
+  abort "Install stork is required for create the doc index.
+Checking https://github.com/jameslittle230/stork for details"
+end
+
+system("stork build --input tmp/index.toml --output public/docs/index.st")
+
+File.open("public/docs/stork.js", "r") do |input_file|
+  File.open("public/docs/stork.js.gz", "w") do |output_file|
     Compress::Gzip::Writer.open(output_file) do |gz|
       IO.copy(input_file, gz)
     end
   end
 end
 
-File.open("public/docs/tinysearch_engine_bg.wasm", "r") do |input_file|
-  File.open("public/docs/tinysearch_engine_bg.wasm.gz", "w") do |output_file|
+File.open("public/docs/stork.js", "r") do |input_file|
+  File.open("public/docs/stork.js.br", "w") do |output_file|
+    Compress::Brotli::Writer.open(output_file) do |br|
+      IO.copy(input_file, br)
+    end
+  end
+end
+
+File.open("public/docs/index.st", "r") do |input_file|
+  File.open("public/docs/index.st.gz", "w") do |output_file|
     Compress::Gzip::Writer.open(output_file) do |gz|
       IO.copy(input_file, gz)
     end
   end
 end
 
-File.delete?("public/docs/demo.html")
-File.delete?("public/docs/package.json")
-File.delete?("public/docs/tinysearch_engine.d.ts")
-File.delete?("public/docs/tinysearch_engine_bg.wasm.d.ts")
-File.delete?("public/docs/.gitignore")
+File.open("public/docs/index.st", "r") do |input_file|
+  File.open("public/docs/index.st.br", "w") do |output_file|
+    Compress::Brotli::Writer.open(output_file) do |br|
+      IO.copy(input_file, br)
+    end
+  end
+end
