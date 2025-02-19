@@ -1,3 +1,5 @@
+本文部分内容直接翻译自[官方语言简介](https://crystal-lang.org/reference/1.15/tutorials/basics/index.html)
+
 学习一门语言的第一件事情，就是打印 `Hello World!`, 虽然这在 Crystal 里实在有点无聊。
 
 ```crystal

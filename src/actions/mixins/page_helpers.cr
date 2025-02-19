@@ -10,6 +10,7 @@ module PageHelpers
     "/docs/for_advanced_rubyists/types"              => {title: "类型", sub_title: "", parent: "/docs/for_advanced_rubyists"},
     "/docs/for_advanced_rubyists/methods"            => {title: "方法", sub_title: "", parent: "/docs/for_advanced_rubyists"},
     "/docs/for_advanced_rubyists/miscs"              => {title: "杂项", sub_title: "", parent: "/docs/for_advanced_rubyists"},
+    "/docs/for_advanced_rubyists/performances"       => {title: "性能因素", sub_title: "", parent: "/docs/for_advanced_rubyists"},
     "/docs/for_advanced_rubyists/migrate_to_crystal" => {title: "迁移 Ruby 代码到 Crystal", sub_title: "", parent: "/docs/for_advanced_rubyists"},
     "/docs/basic"                                    => {title: "基础知识", sub_title: "一些基础知识的简单总结", parent: "root"},
   }
