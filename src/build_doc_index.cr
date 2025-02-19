@@ -54,6 +54,22 @@ File.open("public/docs/stork.js", "r") do |input_file|
   end
 end
 
+File.open("public/docs/stork.wasm", "r") do |input_file|
+  File.open("public/docs/stork.wasm.gz", "w") do |output_file|
+    Compress::Gzip::Writer.open(output_file) do |gz|
+      IO.copy(input_file, gz)
+    end
+  end
+end
+
+File.open("public/docs/stork.wasm", "r") do |input_file|
+  File.open("public/docs/stork.wasm.br", "w") do |output_file|
+    Compress::Brotli::Writer.open(output_file) do |br|
+      IO.copy(input_file, br)
+    end
+  end
+end
+
 File.open("public/docs/index.st", "r") do |input_file|
   File.open("public/docs/index.st.gz", "w") do |output_file|
     Compress::Gzip::Writer.open(output_file) do |gz|
