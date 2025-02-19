@@ -29,6 +29,10 @@ shards:
     git: https://github.com/spider-gazelle/bindata.git
     version: 2.1.0
 
+  brotli:
+    git: https://github.com/naqvis/brotli.cr.git
+    version: 0.1.5
+
   cadmium_transliterator:
     git: https://github.com/cadmiumcr/transliterator.git
     version: 0.1.0+git.commit.46c4c14594057dbcfaf27e7e7c8c164d3f0ce3f1
