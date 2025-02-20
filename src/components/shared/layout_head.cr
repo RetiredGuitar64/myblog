@@ -6,12 +6,6 @@ class Shared::LayoutHead < BaseComponent
       utf8_charset
       title "Crystal China - #{@page_title}"
 
-      if LuckyEnv.production?
-        js_link "https://kit.fontawesome.com/84b6da8eb9.js", crossorigin: "anonymous"
-      else
-        css_link "/css/all.css"
-      end
-
       css_link asset("css/app.css")
       js_link asset("js/app.js"), defer: "true"
 
