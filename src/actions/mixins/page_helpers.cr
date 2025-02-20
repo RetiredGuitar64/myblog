@@ -62,4 +62,12 @@ module PageHelpers
       options: MARKDOWN_OPTIONS
     )
   end
+
+  def current_path
+    context.request.path
+  end
+
+  def asset_host
+    Lucky::Server.settings.asset_host
+  end
 end

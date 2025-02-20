@@ -1,7 +1,4 @@
 abstract class BaseComponent < Lucky::BaseComponent
+  include PageHelpers
   needs current_user : User?
-
-  def current_path
-    context.request.path
-  end
 end
