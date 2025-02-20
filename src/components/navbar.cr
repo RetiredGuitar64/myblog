@@ -32,10 +32,6 @@ class Navbar < BaseComponent
         end
       end
 
-      # Used with @docsearch plugin
-      # div id: "docsearch" do
-      # end
-
       ul role: "list" do
         li do
           link "文档", to: Docs::Index
