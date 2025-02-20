@@ -17,26 +17,13 @@ end
 
 File.write("tmp/index.toml", str)
 
-if !Process.find_executable("cargo")
-  abort "Install Rust toolchain is required!"
-end
-
 if !Process.find_executable("wasm-pack")
   abort "Install wasm-pack is required!
 Try: pacman -S wasm-pack if you use Arch Linux.
 "
 end
 
-if !Process.find_executable("stork")
-  system("cargo install stork-search --locked")
-end
-
-if !Process.find_executable("stork")
-  abort "Install stork is required for create the doc index.
-Checking https://github.com/jameslittle230/stork for details"
-end
-
-system("stork build --input tmp/index.toml --output public/docs/index.st")
+system("bin/stork build --input tmp/index.toml --output public/docs/index.st")
 
 File.open("public/docs/stork.js", "r") do |input_file|
   File.open("public/docs/stork.js.gz", "w") do |output_file|
