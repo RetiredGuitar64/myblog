@@ -96,6 +96,7 @@ padding-bottom: 0;") do
 
         script do
           raw <<-'HEREDOC'
+              stork.initialize("https://assets.crystal-china.org/docs/stork.wasm");
               stork.register(
                 "docs",
                 "https://assets.crystal-china.org/docs/index.st"
