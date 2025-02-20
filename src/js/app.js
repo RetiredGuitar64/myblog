@@ -4,7 +4,7 @@ window.htmx = htmx;
 import _hyperscript from 'hyperscript.org';
 _hyperscript.browserInit();
 import { copyCodeButton } from './copy_code_button.js';
-import * as AsciinemaPlayer from 'asciinema-player';
+// import * as AsciinemaPlayer from 'asciinema-player';
 // AsciinemaPlayer.create('/demo.cast', document.getElementById('demo'));
 
 function init () {
