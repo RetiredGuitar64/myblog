@@ -4,16 +4,8 @@ window.htmx = htmx;
 import _hyperscript from 'hyperscript.org';
 _hyperscript.browserInit();
 import { copyCodeButton } from './copy_code_button.js';
-import * as AsciinemaPlayer from 'asciinema-player';
+// import * as AsciinemaPlayer from 'asciinema-player';
 // AsciinemaPlayer.create('/demo.cast', document.getElementById('demo'));
-
-// import docsearch from '@docsearch/js';
-// docsearch({
-//     container: '#docsearch',
-//     appId: 'X22A7U5SSD',
-//     indexName: 'crystal-china',
-//     apiKey: '02c343ec068a94b17e13b96f1b4b5a7a',
-// });
 
 function init () {
     // htmx.logger = function (elt, event, data) {
