@@ -11,7 +11,7 @@ class Footer < BaseComponent
       a href: "https://x.com/crystalchinaorg", target: "_blank", rel: "nofollow", title: "本站的 Twitter 账号" do
         img src: "#{App::ASSET_HOST}/svgs/twitter-icon.svg", alt: "twitter"
       end
-      a href: "https://crystal-lang.org/", target: "_blank", rel: "nofollow", title: "Crystal 官方账号" do
+      a href: "https://crystal-lang.org/", target: "_blank", rel: "nofollow", title: "Crystal 官方网站" do
         img src: "#{App::ASSET_HOST}/svgs/crystal-lang-icon.svg", alt: "crystal-lang"
       end
     end

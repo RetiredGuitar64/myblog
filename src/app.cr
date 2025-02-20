@@ -5,6 +5,7 @@ module App
               `git rev-parse --short HEAD`.chomp.stringify +
               ")"
             }}
+  ASSET_HOST = LuckyEnv.production? ? "https://assets.crystal-china.org" : ""
 end
 
 require "./shards"

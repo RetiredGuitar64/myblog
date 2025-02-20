@@ -92,14 +92,14 @@ padding-bottom: 0;") do
           div data_stork: "docs-output", class: "stork-output"
         end
 
-        js_link "https://assets.crystal-china.org/docs/stork.js"
+        js_link "#{App::ASSET_HOST}/docs/stork.js"
 
         script do
-          raw <<-'HEREDOC'
-              stork.initialize("https://assets.crystal-china.org/docs/stork.wasm");
+          raw <<-HEREDOC
+              stork.initialize("#{App::ASSET_HOST}/docs/stork.wasm");
               stork.register(
                 "docs",
-                "https://assets.crystal-china.org/docs/index.st"
+                "#{App::ASSET_HOST}/docs/index.st"
               );
         HEREDOC
         end
