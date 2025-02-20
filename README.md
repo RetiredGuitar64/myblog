@@ -3,8 +3,8 @@
 # Development dependencies
 
 - Crystal Progrmaming Language
-- postgresql
-- nodejs(yarn)
+- postgresql(Only used for user login for now)
+- nodejs(with yarn)
 - (Optional)wasm-pack (only for used with bin/tinysearch to create search index for markdowns)
 
 ## Development
@@ -18,30 +18,29 @@ one static binary with assets baked into it, and will auto mount when running.
 
 Following is the process for create the static binary:
 
-1. Run `shards run index` to create a [tinysearch](https://github.com/tinysearch/tinysearch) index for doc search.
+1. Run `shards run index` to create a index for all markdowns docs into `public/docs/index.st`, use bin/stork.
 
-2. Run `yarn prod` to package assets with mix(webpack).
+2. Run `yarn prod` to package assets use laravel mix.
 
 3. To built a static binary use [sb_static](https://github.com/crystal-china/magic-haversack/blob/main/bin/sb_static) script.
    for more details instructions on building a static binary use zigcc, check [use zig gcc as an an alternative linker](https://github.com/crystal-china/magic-haversack/blob/main/docs/use_zig_cc_as_an_alternative_linker.md)
 
-4. copy the built binary(`bin/crystal_china`) into remote linux host as `bin/crystal_china`, then 
+4. copy the built static binary(`bin/crystal_china`) into remote linux host as `bin/crystal_china`, then 
    set the necessary ENV in file `.env`, check the [.env.sample](/.env.sample) for a example.
-   You will have the following directory structure:
+   You will have the following directory structure.
 	```
 	   .
 	   ├── .env
 	   └── bin/crystal_china
 	```
-    If server was started, you have to stop it before copy the binary. a more robust way to do this 
-    is use a [binary diff tools](https://github.com/petervas/bsdifflib/) create patch locally, and then apply it on server.
-    this way the server no stop requried, just need reboot systemd service after done patching.
+    If server was started, you have to stop it before copy the binary successful. a more robust way to do this is
+    use a [binary diff tools](https://github.com/petervas/bsdifflib/) create patch locally, and then send patch file
+    to remote server apply it, this way you can update the binary on the fly, then reboot systemd service is all done.
 
 5. Add a systemd service to start the server, review the configuration for the [crystal_china.service](/nginx/crystal_china.service)
+   consider using [procodile](https://github.com/crystal-china/procodile) as an alternative for above .env and systemd services.
 
-6. Consider using [procodile](https://github.com/crystal-china/procodile) as an alternative for above .env and systemd services.
-
-7. Optionally, use nginx as a reverse proxy. You can find configuration details in [nginx folder](/nginx)
+6. Optionally, use nginx as a reverse proxy. You can find configuration details in [nginx folder](/nginx)
 
 ## Contributing
 
