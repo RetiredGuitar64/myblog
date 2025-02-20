@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+for i in $(ls -1 public/docs/images/{*.png,*.jpg} 2>/dev/null); do
+    basename=$(basename $i)
+    dirname=$(dirname $i)
+    cwebp $i -o $dirname/$basename.webp && rm -v $i
+done
