@@ -43,9 +43,8 @@ HEREDOC
               hx_target: "body",
               hx_push_url: "true",
               hx_delete: SignIns::Delete.path,
-              hx_include: "next input"
+              hx_include: "next input#csrf"
             )
-            input(type: "hidden", value: context.session.get("X-CSRF-TOKEN"), name: "_csrf")
           end
         else
           li do

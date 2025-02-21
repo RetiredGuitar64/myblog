@@ -75,6 +75,7 @@ abstract class DocLayout
             end
           end
         end
+        mount Shared::Common
       end
 
       dialog(class: "margin f-col",
