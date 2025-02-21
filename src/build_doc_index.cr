@@ -19,7 +19,7 @@ File.write("tmp/index.toml", str)
 system("bin/stork build --input tmp/index.toml --output public/docs/index.st")
 
 Dir.glob(
-  "public/docs/stork.js",
+  "public/docs/index.st",
   "public/docs/stork.wasm",
   "public/svgs/*.svg",
 ).each do |file|

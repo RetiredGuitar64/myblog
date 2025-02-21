@@ -88,18 +88,6 @@ padding-bottom: 0;") do
           input data_stork: "docs", class: "stork-input", id: "search-input"
           div data_stork: "docs-output", class: "stork-output"
         end
-
-        js_link "#{asset_host}/docs/stork.js"
-
-        script do
-          raw <<-HEREDOC
-              stork.initialize("#{asset_host}/docs/stork.wasm");
-              stork.register(
-                "docs",
-                "#{asset_host}/docs/index.st"
-              );
-        HEREDOC
-        end
       end
     end
   end
