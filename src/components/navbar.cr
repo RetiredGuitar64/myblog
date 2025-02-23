@@ -16,7 +16,7 @@ HEREDOC
     nav class: "contents" do
       tag "search" do
         strong do
-          button "Search", onclick: "document.querySelectorAll('dialog')[0].showModal();"
+          button "搜索", onclick: "document.querySelectorAll('dialog')[0].showModal();"
         end
       end
 
@@ -26,7 +26,7 @@ HEREDOC
         end
 
         li do
-          a "Github", href: "https://github.com/orgs/crystal-china/repositories"
+          a "访问本站 Github", href: "https://github.com/orgs/crystal-china/repositories"
         end
 
         if !current_user
