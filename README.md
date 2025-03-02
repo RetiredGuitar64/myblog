@@ -2,10 +2,9 @@
 
 # Development dependencies
 
-- Crystal Progrmaming Language
-- postgresql(Only used for user login for now)
-- nodejs(with yarn)
-- (Optional)wasm-pack (only for used with bin/tinysearch to create search index for markdowns)
+- Crystal
+- pg
+- node (with yarn)
 
 ## Development
 
@@ -14,7 +13,7 @@ Install all necessary development dependencies, then run `lucky dev`.
 ## deployment
 
 There are no runtime dependencies when deploying to a remote Linux environment except
-one static binary with assets baked into it, and will auto mount when running.
+one static binary with all assets baked into it, and will auto mount when running.
 
 Following is the process for create the static binary:
 
