@@ -26,11 +26,11 @@ abstract class DocLayout
   end
 
   def page_title
-    PAGINATION_RELATION_MAPPING.dig(current_path, :title) || "首页"
+    PAGINATION_RELATION_MAPPING.dig?(current_path, :title) || "首页"
   end
 
   def sub_title
-    PAGINATION_RELATION_MAPPING.dig(current_path, :sub_title)
+    PAGINATION_RELATION_MAPPING.dig?(current_path, :sub_title)
   end
 
   def render
