@@ -143,11 +143,12 @@ Codegen (bc+obj):
 文件，然后在目标的 stage 执行 linking，会更加复杂一些，这里不做赘述。
 
 因为我们有更好的方案，使用 zig cc, 甚至无需 Docker 容器，也可以在 Linux/OSX 下
-交叉编译生成如下平台的静态可执行文件！
+使用交叉编译来生成下面平台的静态可执行文件！
 
-aarch64-darwin x86_64-darwin
-
-x86_64-linux-musl aarch64-linux-musl
+- aarch64-darwin 
+- x86_64-darwin
+- x86_64-linux-musl 
+- aarch64-linux-musl
 
 ## 使用 zig cc 来实现交叉编译
 
@@ -254,9 +255,11 @@ lib
 
 </details>
 
-另一个更好的选择是，你无需配置 Ruby ，也许需梯子，直接从 [项目 release 页面](https://github.com/crystal-china/magic-haversack/releases/tag/latest)
-下载并解压缩即可。
 
+```
+另一个更好的选择是，你无需配置 Ruby ，也无需搭梯子，直接从 [项目 release 页面](https://github.com/crystal-china/magic-haversack/releases/latest)
+下载 `libs.tar.gz` 并解压缩到项目根目录即可。
+```
 
 ### 4. 将 bin/ 加入 $PATH 
 
