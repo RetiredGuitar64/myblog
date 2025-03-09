@@ -9,6 +9,7 @@ module PageHelpers
     "/docs/for_advanced_rubyists"                    => {title: "写给 Rubyists", sub_title: "分类讨论 Crystal 和 Ruby 的异同", parent: "root"},
     "/docs/for_advanced_rubyists/types"              => {title: "类型", sub_title: "", parent: "/docs/for_advanced_rubyists"},
     "/docs/for_advanced_rubyists/methods"            => {title: "方法", sub_title: "", parent: "/docs/for_advanced_rubyists"},
+    "/docs/for_advanced_rubyists/block"              => {title: "代码块", sub_title: "", parent: "/docs/for_advanced_rubyists"},
     "/docs/for_advanced_rubyists/miscs"              => {title: "杂项", sub_title: "", parent: "/docs/for_advanced_rubyists"},
     "/docs/for_advanced_rubyists/performances"       => {title: "性能因素（WIP）", sub_title: "", parent: "/docs/for_advanced_rubyists"},
     "/docs/for_advanced_rubyists/migrate_to_crystal" => {title: "迁移 Ruby 代码到 Crystal", sub_title: "", parent: "/docs/for_advanced_rubyists"},
