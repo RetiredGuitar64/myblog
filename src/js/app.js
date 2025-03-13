@@ -39,9 +39,16 @@ function init () {
             "https://assets.crystal-china.org/docs/index.st"
         );
     }
-    stork.attach("docs");
 
-    tabs(document.querySelector("#tabs"));
+    let stork_container = document.querySelector("input[data-stork='docs']");
+    if (stork_container != null) {
+        stork.attach("docs");
+    }
+
+    let tabs_div = document.querySelector("#tabs");
+    if (tabs_div != null) {
+        tabs(document.querySelector("#tabs"));
+    }
 }
 
 htmx.onLoad(init);
