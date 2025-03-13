@@ -4,7 +4,7 @@ class User < BaseModel
 
   table do
     column email : String
-    column name : String?
+    column name : String
     column avatar : String?
     column encrypted_password : String
 

@@ -39,7 +39,7 @@ HEREDOC
         if current_user
           li do
             link(
-              "登出",
+              "退出",
               to: SignIns::Delete,
               hx_target: "body",
               hx_push_url: "true",

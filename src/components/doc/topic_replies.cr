@@ -72,10 +72,10 @@ class TopicReplies < BaseComponent
       div role: "tabpanel", id: "panel-1", aria_labelledby: "tab-1" do
         form do
           fieldset do
-            legend legend_text
+            # legend legend_text
 
             para do
-              # label "测试", id: "text_area"
+              label legend_text, id: "text_area", style: "margin-bottom: 8px;"
 
               textarea textarea_opt
             end
