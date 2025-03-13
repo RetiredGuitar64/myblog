@@ -72,6 +72,8 @@ abstract class DocLayout
                 text "欢迎在评论区留下你的见解、问题或建议"
               end
 
+              mount Docs::ReplyForm, current_user: current_user
+
               div id: "reply", hx_get: current_reply_path, hx_trigger: "revealed" do
                 mount Shared::Spinner, text: "正在读取评论..."
                 mount Pager

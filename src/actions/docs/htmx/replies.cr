@@ -7,7 +7,7 @@ class Docs::Htmx::Replies < DocAction
 
     if page_number && page_number > 1
       component(
-        ReplyMore,
+        Docs::ReplyMore,
         formatter: formatter,
         pagination: pagination,
         page_number: page_number,
@@ -16,7 +16,7 @@ class Docs::Htmx::Replies < DocAction
       )
     else
       component(
-        TopicReplies,
+        Docs::TopicReplies,
         formatter: formatter,
         pagination: pagination,
         current_user: current_user,

@@ -12,7 +12,7 @@ class Docs::Htmx::Reply < DocAction
     SaveReply.create(user_id: user_id, doc_id: doc_id, content: content) do |op, saved_reply|
       if op.saved?
         component(
-          TopicReplies,
+          Docs::TopicReplies,
           formatter: formatter,
           pagination: replies_pagination(doc_path: doc_path),
           current_user: me,
