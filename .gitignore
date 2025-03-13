@@ -8,3 +8,4 @@
 /latest_released/*
 /.env
 /tmp
+/.tool-versions
