@@ -4,7 +4,11 @@ class User < BaseModel
 
   table do
     column email : String
+    column name : String?
+    column avatar : String?
     column encrypted_password : String
+
+    has_many replies : Reply
   end
 
   def emailable : Carbon::Address

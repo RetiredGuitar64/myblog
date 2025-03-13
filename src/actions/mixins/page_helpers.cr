@@ -59,7 +59,8 @@ module PageHelpers
     # 这里替换文本是 fcitx 开启中文，输入的 ^，被替换的字符是 中文全角空格，U+3000
     # 主要，输入的 …… 是双字节，删除调整时，可能存在半个字符，…，会被替换为空。
     raw Markd.to_html(
-      text.gsub(/……(?=……| )/, "‏　").gsub("…", ""),
+      # text.gsub(/……(?=……| )/, "‏　").gsub("…", ""),
+      text,
       formatter: formatter,
       options: MARKDOWN_OPTIONS
     )
@@ -67,6 +68,14 @@ module PageHelpers
 
   def current_path
     context.request.path
+  end
+
+  # def current_doc_path
+  #   current_path.sub("/replies", "")
+  # end
+
+  def current_reply_path
+    current_path.sub("/docs", "/docs/htmx/replies")
   end
 
   def asset_host

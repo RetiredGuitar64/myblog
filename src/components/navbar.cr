@@ -6,6 +6,7 @@ class Navbar < BaseComponent
 <canvas height="30" id="logo-canvas" style="cursor:move" width="130"></canvas>
 HEREDOC
         img src: "#{asset_host}/svgs/crystal.svg", alt: "crystal-china"
+
         span "China", class: "allcaps", style: "color: black;"
       end
     end
@@ -16,7 +17,7 @@ HEREDOC
     nav class: "contents" do
       tag "search" do
         strong do
-          button "搜索", onclick: "document.querySelectorAll('dialog')[0].showModal();"
+          button "搜索文档", onclick: "document.querySelectorAll('dialog')[0].showModal();"
         end
       end
 
@@ -26,7 +27,7 @@ HEREDOC
         end
 
         li do
-          a "访问本站 Github", href: "https://github.com/orgs/crystal-china/repositories"
+          a "Github", href: "https://github.com/orgs/crystal-china/repositories"
         end
 
         if !current_user
@@ -43,7 +44,7 @@ HEREDOC
               hx_target: "body",
               hx_push_url: "true",
               hx_delete: SignIns::Delete.path,
-              hx_include: "next input#csrf"
+              hx_include: "[name='_csrf']"
             )
           end
         else

@@ -67,15 +67,23 @@ abstract class DocLayout
               hr "aria-orientation": "horizontal"
 
               content
-              mount Pager
-            end
 
-            footer class: "f-row flex-wrap:wrap justify-content:center" do
-              mount Footer
+              div class: "<h5> f-row justify-content:center", style: "color: #BEBEBE" do
+                text "欢迎在评论区留下你的见解、问题或建议"
+              end
+
+              div id: "reply", hx_get: current_reply_path, hx_trigger: "revealed" do
+                mount Shared::Spinner, text: "正在读取评论..."
+                mount Pager
+              end
+
+              footer class: "f-row flex-wrap:wrap justify-content:center" do
+                mount Footer
+              end
             end
           end
+          mount Shared::Common
         end
-        mount Shared::Common
       end
 
       dialog(class: "margin f-col",

@@ -6,6 +6,8 @@ _hyperscript.browserInit();
 import { copyCodeButton } from './copy_code_button.js';
 // 这里我修改了源码，在最后加了一行才 `export default stork;` 才 import 成功
 import stork from './stork.js';
+import tabs from 'missing.css/www/missing-js/tabs.js';
+
 // import * as AsciinemaPlayer from 'asciinema-player';
 // AsciinemaPlayer.create('/demo.cast', document.getElementById('demo'));
 
@@ -38,6 +40,8 @@ function init () {
         );
     }
     stork.attach("docs");
+
+    tabs(document.querySelector("#tabs"));
 }
 
 htmx.onLoad(init);
