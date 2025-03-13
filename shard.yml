@@ -49,6 +49,9 @@ development_dependencies:
     version: ~> 0.10.0
   brotli:
     github: naqvis/brotli.cr
+  timecop:
+    github: crystal-community/timecop.cr
+
 
 crystal: '>= 1.14.0'
 

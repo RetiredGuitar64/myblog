@@ -115,7 +115,7 @@ shards:
 
   markd:
     git: https://github.com/zw963/markd.git
-    version: 0.5.0+git.commit.84aad91e730915fb5337ea364e18623bbce7efef
+    version: 0.5.0+git.commit.eb110667836da9b1a76f2696233799169b7a4a89
 
   openssl_ext:
     git: https://github.com/spider-gazelle/openssl_ext.git
@@ -164,6 +164,10 @@ shards:
   tartrazine:
     git: https://github.com/ralsina/tartrazine.git
     version: 0.13.0
+
+  timecop:
+    git: https://github.com/crystal-community/timecop.cr.git
+    version: 0.5.0
 
   webdrivers:
     git: https://github.com/crystal-loot/webdrivers.cr.git
