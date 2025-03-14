@@ -21,7 +21,7 @@ class Docs::TopicReplies < BaseComponent
       doc = DocQuery.new.path_index(doc_path).first
       input_opt = input_opt.merge(
         hx_post: "/docs/htmx/reply",
-        hx_target: "#reply",
+        hx_target: "#form_with_replies",
         hx_include: "[name='_csrf'],#text_area",
         hx_vals: %({"user_id": #{me.id}, "doc_id": #{doc.id}, "doc_path": "#{doc_path}"})
       )
@@ -34,7 +34,8 @@ class Docs::TopicReplies < BaseComponent
     selected = "background-color: white; font-weight: bold; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);"
     unselected = "background-color: #E2E7EB; border: none; text-decoration: none;"
 
-    # fieldset class: "f-col align-items:end" do
+    # ---------------- page start ----------------
+
     div class: "f-row align-items:center justify-content:space-between" do
       div class: "<h4>" do
         text "共 #{count} 条回复"
@@ -47,7 +48,7 @@ class Docs::TopicReplies < BaseComponent
           class: "chip",
           herf: "",
           hx_get: "#{reply_path}?order_by=asc",
-          hx_target: "#reply",
+          hx_target: "#replies",
           hx_include: "#order_by",
           style: order_by == "asc" ? selected : unselected
         )
@@ -57,7 +58,7 @@ class Docs::TopicReplies < BaseComponent
           class: "chip",
           href: "",
           hx_get: "#{reply_path}?order_by=desc",
-          hx_target: "#reply",
+          hx_target: "#replies",
           hx_include: "#order_by",
           style: order_by == "desc" ? selected : unselected
         )
