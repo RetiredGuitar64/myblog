@@ -21,13 +21,7 @@ abstract class AuthLayout
       mount Shared::LayoutHead, page_title: page_title
 
       body do
-        header class: "navbar", style: "margin-bottom: 2px;" do
-          mount Navbar, current_user: current_user
-        end
-
-        div class: "f-row justify-content:end" do
-          mount Shared::FlashMessages, context.flash
-        end
+        mount Navbar, current_user: current_user
 
         main do
           content

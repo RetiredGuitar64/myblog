@@ -40,13 +40,7 @@ abstract class DocLayout
       mount Shared::LayoutHead, page_title: page_title
 
       body "hx-boost": true, style: "padding: 0px;" do
-        header class: "navbar", style: "margin-bottom: 2px; margin-top: 0px;" do
-          mount Navbar, current_user: current_user
-        end
-
-        div class: "f-row justify-content:end" do
-          mount Shared::FlashMessages, context.flash
-        end
+        mount Navbar, current_user: current_user
 
         div class: "sidebar-layout fullscreen" do
           header do
