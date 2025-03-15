@@ -24,6 +24,7 @@ class Reply < BaseModel
     belongs_to doc : Doc?
     belongs_to user : User
 
+    column user_name : String?
     column content : String
 
     polymorphic target, associations: [:doc]
