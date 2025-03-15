@@ -2,6 +2,7 @@ class UserAudit < BaseModel
   enum SyncStatus
     Pending = 1
     Handled = 2
+    Staled  = 3
   end
 
   table do
