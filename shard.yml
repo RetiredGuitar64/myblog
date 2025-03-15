@@ -43,12 +43,17 @@ dependencies:
   markd:
     github: zw963/markd
     branch: missing.style
+  cron_scheduler:
+    github: kostya/cron_scheduler
 development_dependencies:
   lucky_flow:
     github: luckyframework/lucky_flow
     version: ~> 0.10.0
   brotli:
     github: naqvis/brotli.cr
+  timecop:
+    github: crystal-community/timecop.cr
+
 
 crystal: '>= 1.14.0'
 

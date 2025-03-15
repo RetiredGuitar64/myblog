@@ -45,6 +45,14 @@ shards:
     git: https://github.com/luckyframework/carbon_sendgrid_adapter.git
     version: 0.6.0
 
+  cron_parser:
+    git: https://github.com/kostya/cron_parser.git
+    version: 0.4.0
+
+  cron_scheduler:
+    git: https://github.com/kostya/cron_scheduler.git
+    version: 0.4.0
+
   cry:
     git: https://github.com/luckyframework/cry.git
     version: 0.4.3
@@ -115,7 +123,7 @@ shards:
 
   markd:
     git: https://github.com/zw963/markd.git
-    version: 0.5.0+git.commit.84aad91e730915fb5337ea364e18623bbce7efef
+    version: 0.5.0+git.commit.eb110667836da9b1a76f2696233799169b7a4a89
 
   openssl_ext:
     git: https://github.com/spider-gazelle/openssl_ext.git
@@ -163,7 +171,11 @@ shards:
 
   tartrazine:
     git: https://github.com/ralsina/tartrazine.git
-    version: 0.12.0
+    version: 0.13.0
+
+  timecop:
+    git: https://github.com/crystal-community/timecop.cr.git
+    version: 0.5.0
 
   webdrivers:
     git: https://github.com/crystal-loot/webdrivers.cr.git

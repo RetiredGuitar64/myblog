@@ -10,5 +10,12 @@ class SignUpUser < User::SaveOperation
   before_save do
     validate_uniqueness_of email
     Authentic.copy_and_encrypt(password, to: encrypted_password) if password.valid?
+
+    while (user_name = "User#{rand(100000..999999)}")
+      if UserQuery.new.name(user_name).none?
+        self.name.value = user_name
+        break
+      end
+    end
   end
 end

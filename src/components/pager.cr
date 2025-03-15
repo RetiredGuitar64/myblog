@@ -15,8 +15,9 @@ class Pager < BaseComponent
         next_path = PAGINATION_URLS[next_idx]
 
         if item
-          div class: "<h3>" do
-            text "←"
+          div do
+            img src: "#{asset_host}/svgs/previous_page.svg", alt: "previous_page", style: "height: 24px; vertical-align: middle;"
+
             strong do
               if prev_path == current_path
                 text "没有上一页了"
@@ -30,8 +31,9 @@ class Pager < BaseComponent
             text item[:title]
           end
 
-          div class: "<h3>" do
-            text "→"
+          div do
+            img src: "#{asset_host}/svgs/next_page.svg", alt: "next_page", style: "height: 24px; vertical-align: middle;"
+
             strong do
               if next_path == current_path
                 text "没有下一页了"

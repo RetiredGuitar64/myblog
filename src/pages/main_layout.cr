@@ -31,9 +31,11 @@ abstract class MainLayout
       mount Shared::LayoutHead, page_title: page_title
 
       body do
-        mount Shared::FlashMessages, context.flash
-        render_signed_in_user
-        content
+        mount Navbar, current_user: current_user
+
+        main do
+          content
+        end
         mount Shared::Common
       end
     end

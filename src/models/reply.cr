@@ -1,0 +1,32 @@
+class Reply < BaseModel
+  struct Preferences
+    include JSON::Serializable
+
+    property? path_for_doc : String?
+  end
+
+  struct Votes
+    include JSON::Serializable
+
+    property 👍 : Int32 = 0
+    property 👎 : Int32 = 0
+    property 😄 : Int32 = 0
+    property ❤️ : Int32 = 0
+    property 🎉 : Int32 = 0
+    property 😕 : Int32 = 0
+    property 👀️ : Int32 = 0
+  end
+
+  table do
+    belongs_to doc : Doc?
+    belongs_to user : User
+
+    column content : String
+    column user_name : String
+    column user_avatar : String?
+
+    polymorphic target, associations: [:doc]
+    column preferences : Reply::Preferences, serialize: true
+    column votes : Reply::Votes, serialize: true
+  end
+end

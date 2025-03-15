@@ -3,6 +3,13 @@ require "compress/gzip"
 require "brotli"
 require "./actions/mixins/page_helpers"
 
+original_size = PageHelpers::PAGINATION_URLS.size
+size = PageHelpers::PAGINATION_URLS.size.uniq
+
+if original_size != size
+  abort "duplicated pages for doc, exit!"
+end
+
 str = String.build do |io|
   io << "[input]\n"
   io << %(base_directory = "markdowns"\n)
