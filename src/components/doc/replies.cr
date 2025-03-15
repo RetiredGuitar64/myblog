@@ -9,60 +9,10 @@ class Docs::Replies < BaseComponent
     reply_path = doc_path.sub("/docs", "/docs/htmx/replies")
     me = current_user
 
-    input_opt = {
-      type:  "submit",
-      value: "评论",
-      style: "margin-right: 25px;",
-    }
-
-    if me.nil?
-      input_opt = input_opt.merge(disabled: "")
-    else
-      doc = DocQuery.new.path_index(doc_path).first
-      input_opt = input_opt.merge(
-        hx_post: "/docs/htmx/reply",
-        hx_target: "#form_with_replies",
-        hx_include: "[name='_csrf'],#text_area",
-        hx_vals: %({"user_id": #{me.id}, "doc_id": #{doc.id}, "doc_path": "#{doc_path}"})
-      )
-    end
-
-    # 这里利用了一个狡黠的 htmx hack，点击下面的连接，生成的 url 如下：
-    # /docs/replies/index?order_by=asc&order_by=desc
-    # 此时有两个 order_by，第一个来自于 hx_get, 第二个来自于 hx_include
-    # 此时，总是第一个生效。
-    selected = "background-color: white; font-weight: bold; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);"
-    unselected = "background-color: #E2E7EB; border: none; text-decoration: none;"
-
-    # ---------------- page start ----------------
-
     div class: "f-row align-items:center justify-content:space-between" do
-      div class: "<h4>" do
-        text "共 #{count} 条回复"
-      end
+      span "共 #{count} 条回复"
 
-      div class: "f-row align-items:center justify-content:end" do
-        input(input_opt)
-        a(
-          "最早",
-          class: "chip",
-          herf: "",
-          hx_get: "#{reply_path}?order_by=asc",
-          hx_target: "#replies",
-          hx_include: "#order_by",
-          style: order_by == "asc" ? selected : unselected
-        )
-
-        a(
-          "最新",
-          class: "chip",
-          href: "",
-          hx_get: "#{reply_path}?order_by=desc",
-          hx_target: "#replies",
-          hx_include: "#order_by",
-          style: order_by == "desc" ? selected : unselected
-        )
-      end
+      render_sort_buttons(current_user: me, reply_path: reply_path)
     end
 
     input type: "hidden", name: "order_by", value: order_by, id: "order_by"
@@ -77,7 +27,56 @@ class Docs::Replies < BaseComponent
         reply_path: reply_path
       )
     end
+  end
 
-    # ---------------- page end ----------------
+  private def render_sort_buttons(current_user : User?, reply_path : String)
+    input_opt = {
+      type:  "submit",
+      value: "评论",
+      style: "margin-right: 25px;",
+    }
+
+    if current_user.nil?
+      input_opt = input_opt.merge(disabled: "")
+    else
+      doc = DocQuery.new.path_index(doc_path).first
+      input_opt = input_opt.merge(
+        hx_post: "/docs/htmx/reply",
+        hx_target: "#form_with_replies",
+        hx_include: "[name='_csrf'],#text_area",
+        hx_vals: %({"user_id": #{current_user.id}, "doc_id": #{doc.id}, "doc_path": "#{doc_path}"})
+      )
+    end
+
+    div class: "f-row align-items:center justify-content:end" do
+      input(input_opt)
+
+      selected = "background-color: white; font-weight: bold; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);"
+      unselected = "background-color: #E2E7EB; border: none; text-decoration: none;"
+
+      # 这里利用了一个狡黠的 htmx hack，点击下面的连接，生成的 url 如下：
+      # /docs/replies/index?order_by=asc&order_by=desc
+      # 此时有两个 order_by，第一个来自于 hx_get 中的 ? 参数, 第二个来自于 hx_include
+      # 此时，总是第一个生效。
+      a(
+        "最早",
+        class: "chip",
+        herf: "",
+        hx_get: "#{reply_path}?order_by=asc",
+        hx_target: "#replies",
+        hx_include: "#order_by",
+        style: order_by == "asc" ? selected : unselected
+      )
+
+      a(
+        "最新",
+        class: "chip",
+        href: "",
+        hx_get: "#{reply_path}?order_by=desc",
+        hx_target: "#replies",
+        hx_include: "#order_by",
+        style: order_by == "desc" ? selected : unselected
+      )
+    end
   end
 end
