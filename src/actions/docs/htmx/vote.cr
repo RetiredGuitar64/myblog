@@ -3,6 +3,8 @@ class Docs::Htmx::Vote < BrowserAction
   param vote_type : String
 
   patch "/docs/htmx/vote" do
+    return head 401 if current_user.nil?
+
     reply = ReplyQuery.find(reply_id)
     h = Hash(String, Int32).from_json(reply.votes.to_json)
 
