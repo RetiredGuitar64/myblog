@@ -25,7 +25,13 @@ class Docs::Form < BaseComponent
           hx_target: "#markdown-preview",
           hx_include: "[name='_csrf'],#text_area",
           hx_indicator: "next img.htmx-indicator",
-          style: "pointer-events: none;cursor: not-allowed;"
+          script: "on mouseover set x to (<#text_area/>).value
+then if x[1] == ''
+   add @disabled to me
+else
+  remove @disabled from me
+end
+"
         )
       end
 
@@ -54,13 +60,10 @@ class Docs::Form < BaseComponent
       textarea_opt = textarea_opt.merge(disabled: "")
     else
       legend_text = "支持 markdown 格式"
-      textarea_opt = textarea_opt.merge(script: "on change set @style of <#tab-2/> to ''")
     end
 
     form do
       fieldset do
-        # legend legend_text
-
         para do
           label legend_text, id: "text_area", style: "margin-bottom: 8px;"
 
