@@ -5,7 +5,7 @@ class Docs::FormWithReplies < BaseComponent
   needs order_by : String
 
   def render
-    mount Docs::ReplyForm, current_user: current_user
+    mount Docs::Form, current_user: current_user
 
     div id: "replies" do
       mount(

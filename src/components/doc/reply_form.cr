@@ -1,4 +1,4 @@
-class Docs::ReplyForm < BaseComponent
+class Docs::Form < BaseComponent
   def render
     me = current_user
 

@@ -67,7 +67,7 @@ abstract class DocLayout
               end
 
               div id: "form_with_replies" do
-                mount Docs::ReplyForm, current_user: current_user
+                mount Docs::Form, current_user: current_user
 
                 div id: "replies", hx_get: current_reply_path, hx_trigger: "revealed" do
                   mount Shared::Spinner, text: "正在读取评论..."
