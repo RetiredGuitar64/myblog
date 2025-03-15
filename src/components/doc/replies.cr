@@ -69,7 +69,7 @@ class Docs::Replies < BaseComponent
 
     div id: "replies" do
       mount(
-        Docs::ReplyMore,
+        Docs::RepliesMore,
         formatter: formatter,
         pagination: pagination,
         page_number: 1,

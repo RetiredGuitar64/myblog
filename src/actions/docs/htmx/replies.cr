@@ -7,7 +7,7 @@ class Docs::Htmx::Replies < DocAction
 
     if page_number && page_number > 1
       component(
-        Docs::ReplyMore,
+        Docs::RepliesMore,
         formatter: formatter,
         pagination: pagination,
         page_number: page_number,
