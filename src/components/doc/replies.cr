@@ -5,17 +5,17 @@ class Docs::Replies < BaseComponent
   needs order_by : String
 
   def render
-    count = pagination[:count]
     reply_path = doc_path.sub("/docs", "/docs/htmx/replies")
-    me = current_user
 
     div class: "f-row align-items:center justify-content:space-between" do
-      span "共 #{count} 条回复"
+      span "共 #{pagination[:count]} 条回复"
 
-      render_sort_buttons(current_user: me, reply_path: reply_path)
+      div class: "f-row align-items:center justify-content:end" do
+        render_submit_button
+
+        render_order_buttons(reply_path)
+      end
     end
-
-    input type: "hidden", name: "order_by", value: order_by, id: "order_by"
 
     div id: "replies" do
       mount(
@@ -29,14 +29,16 @@ class Docs::Replies < BaseComponent
     end
   end
 
-  private def render_sort_buttons(current_user : User?, reply_path : String)
+  private def render_submit_button
+    me = current_user
+
     input_opt = {
       type:  "submit",
       value: "评论",
       style: "margin-right: 25px;",
     }
 
-    if current_user.nil?
+    if me.nil?
       input_opt = input_opt.merge(disabled: "")
     else
       doc = DocQuery.new.path_index(doc_path).first
@@ -44,39 +46,42 @@ class Docs::Replies < BaseComponent
         hx_post: "/docs/htmx/reply",
         hx_target: "#form_with_replies",
         hx_include: "[name='_csrf'],#text_area",
-        hx_vals: %({"user_id": #{current_user.id}, "doc_id": #{doc.id}, "doc_path": "#{doc_path}"})
+        hx_vals: %({"user_id": #{me.id}, "doc_id": #{doc.id}, "doc_path": "#{doc_path}"})
       )
     end
 
-    div class: "f-row align-items:center justify-content:end" do
-      input(input_opt)
+    input(input_opt)
+  end
 
-      selected = "background-color: white; font-weight: bold; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);"
-      unselected = "background-color: #E2E7EB; border: none; text-decoration: none;"
+  private def render_order_buttons(reply_path : String)
+    selected = "background-color: white; font-weight: bold; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);"
+    unselected = "background-color: #E2E7EB; border: none; text-decoration: none;"
 
-      # 这里利用了一个狡黠的 htmx hack，点击下面的连接，生成的 url 如下：
-      # /docs/replies/index?order_by=asc&order_by=desc
-      # 此时有两个 order_by，第一个来自于 hx_get 中的 ? 参数, 第二个来自于 hx_include
-      # 此时，总是第一个生效。
-      a(
-        "最早",
-        class: "chip",
-        herf: "",
-        hx_get: "#{reply_path}?order_by=asc",
-        hx_target: "#replies",
-        hx_include: "#order_by",
-        style: order_by == "asc" ? selected : unselected
-      )
+    # 这里利用了一个狡黠的 htmx hack，点击下面的连接，生成的 url 如下：
+    # /docs/replies/index?order_by=asc&order_by=desc
+    # 此时有两个 order_by，第一个来自于 hx_get 中的 ? 参数, 第二个来自于 hx_include
+    # 此时，总是第一个生效。
+    a(
+      "最早",
+      class: "chip",
+      herf: "",
+      hx_get: "#{reply_path}?order_by=asc",
+      hx_target: "#replies",
+      hx_include: "#order_by",
+      style: order_by == "asc" ? selected : unselected
+    )
 
-      a(
-        "最新",
-        class: "chip",
-        href: "",
-        hx_get: "#{reply_path}?order_by=desc",
-        hx_target: "#replies",
-        hx_include: "#order_by",
-        style: order_by == "desc" ? selected : unselected
-      )
-    end
+    a(
+      "最新",
+      class: "chip",
+      href: "",
+      hx_get: "#{reply_path}?order_by=desc",
+      hx_target: "#replies",
+      hx_include: "#order_by",
+      style: order_by == "desc" ? selected : unselected
+    )
+
+    # 为了记录上次点击的 order_by 顺序，传递 order_by 到服务器，并重新写入隐藏 input
+    input type: "hidden", name: "order_by", value: order_by, id: "order_by"
   end
 end
