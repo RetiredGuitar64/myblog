@@ -43,6 +43,8 @@ dependencies:
   markd:
     github: zw963/markd
     branch: missing.style
+  cron_scheduler:
+    github: kostya/cron_scheduler
 development_dependencies:
   lucky_flow:
     github: luckyframework/lucky_flow
