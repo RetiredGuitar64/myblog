@@ -1,4 +1,4 @@
-class Docs::TopicReplies < BaseComponent
+class Docs::Replies < BaseComponent
   needs formatter : Tartrazine::Formatter
   needs pagination : {count: Int32 | Int64, replies: ReplyQuery, page: Lucky::Paginator?}
   needs doc_path : String

@@ -16,7 +16,7 @@ class Docs::Htmx::Replies < DocAction
       )
     else
       component(
-        Docs::TopicReplies,
+        Docs::Replies,
         formatter: formatter,
         pagination: pagination,
         current_user: current_user,

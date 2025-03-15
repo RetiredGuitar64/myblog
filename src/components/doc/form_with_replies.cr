@@ -9,7 +9,7 @@ class Docs::FormWithReplies < BaseComponent
 
     div id: "replies" do
       mount(
-        Docs::TopicReplies,
+        Docs::Replies,
         formatter: formatter,
         pagination: pagination,
         current_user: current_user,
