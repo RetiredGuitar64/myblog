@@ -24,8 +24,9 @@ class Reply < BaseModel
     belongs_to doc : Doc?
     belongs_to user : User
 
-    column user_name : String?
     column content : String
+    column user_name : String
+    column user_avatar : String?
 
     polymorphic target, associations: [:doc]
     column preferences : Reply::Preferences, serialize: true
