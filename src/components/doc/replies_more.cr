@@ -7,7 +7,7 @@ class Docs::RepliesMore < BaseComponent
   def render
     pagination[:replies].each do |reply|
       div class: "box f-col" do
-        render_avatar_name_and_time(reply.preferences)
+        render_avatar_name_and_time(reply)
 
         hr style: "border: none; border-top: 1px solid darkgray;"
 
@@ -20,14 +20,14 @@ class Docs::RepliesMore < BaseComponent
     render_more_link
   end
 
-  private def render_avatar_name_and_time(preferences)
+  private def render_avatar_name_and_time(reply)
     div class: "f-row justify-content:space-between", style: "" do
       div class: "f-row" do
-        img src: preferences.user_avatar? || "#{asset_host}/svgs/crystal-lang-icon.svg"
-        span preferences.user_name
+        img src: reply.user_avatar || "#{asset_host}/svgs/crystal-lang-icon.svg"
+        span reply.user_name
       end
 
-      span preferences.posted_at.to_s("%F %T")
+      span reply.created_at.to_s("%F %T")
     end
   end
 

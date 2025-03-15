@@ -7,12 +7,7 @@ class Me::Update < BrowserAction
         flash.success = "成功"
         redirect Docs::Index
       else
-        msg = String.build do |io|
-          op.errors.each do |(k, v)|
-            io << "#{k} #{v.first}\n"
-          end
-        end
-        flash.failure = msg
+        build_failed_flash(op)
         html Me::EditPage, op: op
       end
     end

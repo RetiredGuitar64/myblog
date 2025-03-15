@@ -2,10 +2,7 @@ class Reply < BaseModel
   struct Preferences
     include JSON::Serializable
 
-    property user_name : String
-    property posted_at : Time
     property? path_for_doc : String?
-    property? user_avatar : String? = nil
   end
 
   struct Votes

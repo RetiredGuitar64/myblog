@@ -2,23 +2,20 @@ class SaveReply < Reply::SaveOperation
   permit_columns user_id, doc_id, content
 
   before_save do
+    validate_required user_id, doc_id, content
+
     user = UserQuery.find(user_id.value.not_nil!)
     doc = DocQuery.find(doc_id.value.not_nil!)
 
+    user_name.value = user.name
+
     if id.value
       user.avatar.try do |avatar|
-        if (prefs = preferences.value)
-          prefs.user_avatar = avatar
-        end
+        user_avatar.value = avatar
       end
     else
       preferences.value = Reply::Preferences.from_json(
-        {
-          user_name:    user.name,
-          posted_at:    Time.local,
-          path_for_doc: doc.path_index,
-          user_avtar:   user.avatar,
-        }.to_json
+        {path_for_doc: doc.path_index}.to_json
       )
       votes.value = Reply::Votes.from_json(
         {
