@@ -4,9 +4,9 @@ require "brotli"
 require "./actions/mixins/page_helpers"
 
 original_size = PageHelpers::PAGINATION_URLS.size
-size = PageHelpers::PAGINATION_URLS.size.uniq
+new_size = PageHelpers::PAGINATION_URLS.uniq.size
 
-if original_size != size
+if original_size != new_size
   abort "duplicated pages for doc, exit!"
 end
 
