@@ -70,10 +70,6 @@ module PageHelpers
     context.request.path
   end
 
-  # def current_doc_path
-  #   current_path.sub("/replies", "")
-  # end
-
   def current_reply_path
     current_path.sub("/docs", "/docs/htmx/replies")
   end

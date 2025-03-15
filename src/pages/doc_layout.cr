@@ -69,10 +69,7 @@ abstract class DocLayout
               div id: "form_with_replies" do
                 mount Docs::Form, current_user: current_user
 
-                div id: "replies", hx_get: current_reply_path, hx_trigger: "revealed" do
-                  mount Shared::Spinner, text: "正在读取评论..."
-                  mount Pager
-                end
+                show_replies_when_revealed
               end
 
               footer class: "f-row flex-wrap:wrap justify-content:center" do
@@ -84,16 +81,28 @@ abstract class DocLayout
         end
       end
 
-      dialog(class: "margin f-col",
-        style: "max-width: 100%; width: 30em;
+      doc_search_dialog
+    end
+  end
+
+  private def show_replies_when_revealed
+    div id: "replies", hx_get: current_reply_path, hx_trigger: "revealed" do
+      mount Shared::Spinner, text: "正在读取评论..."
+      mount Pager
+    end
+  end
+
+  private def doc_search_dialog
+    dialog(
+      class: "margin f-col",
+      style: "max-width: 100%; width: 30em;
 max-height: 100%; height: 40em;
 padding-bottom: 0;") do
-        label "注意：中文搜索结果通常不准确, 请使用英文关键字！", for: "search-input", class: "titlebar", style: "margin-inline: calc(-1*var(--gap))"
+      label "注意：中文搜索结果通常不准确, 请使用英文关键字！", for: "search-input", class: "titlebar", style: "margin-inline: calc(-1*var(--gap))"
 
-        div class: "stork-wrapper-flat" do
-          input data_stork: "docs", class: "stork-input", id: "search-input"
-          div data_stork: "docs-output", class: "stork-output"
-        end
+      div class: "stork-wrapper-flat" do
+        input data_stork: "docs", class: "stork-input", id: "search-input"
+        div data_stork: "docs-output", class: "stork-output"
       end
     end
   end
