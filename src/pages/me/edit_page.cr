@@ -12,7 +12,7 @@ class Me::EditPage < MainLayout
         end
 
         para do
-          label_for op.avatar, "头像链接"
+          label_for op.avatar, "头像（目前仅支持 http/https 链接）"
           text_input op.avatar
           if (avatar = op.avatar.value)
             img src: avatar
