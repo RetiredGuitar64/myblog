@@ -21,9 +21,8 @@ dependencies:
   carbon:
     github: luckyframework/carbon
     version: ~> 0.6.0
-  carbon_sendgrid_adapter:
-    github: luckyframework/carbon_sendgrid_adapter
-    version: ~> 0.6.0
+  carbon_smtp_adapter:
+    github: luckyframework/carbon_smtp_adapter
   lucky_env:
     github: luckyframework/lucky_env
     version: ~> 0.2.0

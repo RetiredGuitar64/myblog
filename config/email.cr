@@ -1,4 +1,4 @@
-require "carbon_sendgrid_adapter"
+require "carbon_smtp_adapter"
 
 BaseEmail.configure do |settings|
   if LuckyEnv.production?
@@ -8,7 +8,14 @@ BaseEmail.configure do |settings|
     #
     # If you do need emails, get a key from SendGrid and set an ENV variable
     send_grid_key = send_grid_key_from_env
-    settings.adapter = Carbon::SendGridAdapter.new(api_key: send_grid_key)
+    settings.adapter = Carbon::SmtpAdapter.new
+    Carbon::SmtpAdapter.configure do |settings|
+      settings.host = ENV.fetch("CARBON_SMTP_SERVER", "localhost")
+      settings.port = ENV["CARBON_SMTP_PORT"]?.try(&.to_i) || 25
+      settings.use_tls = true
+      settings.username = ENV["CARBON_SMTP_USER"]?
+      settings.password = ENV["CARBON_SMTP_PASSWORD"]?
+    end
   elsif LuckyEnv.development?
     settings.adapter = Carbon::DevAdapter.new(print_emails: true)
   else
