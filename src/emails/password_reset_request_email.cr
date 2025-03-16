@@ -7,7 +7,6 @@ class PasswordResetRequestEmail < BaseEmail
   end
 
   to @user
-  from "myapp@support.com" # or set a default in src/emails/base_email.cr
-  subject "Reset your password"
+  subject "重置你的密码"
   templates html, text
 end
