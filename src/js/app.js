@@ -12,11 +12,11 @@ import tabs from 'missing.css/www/missing-js/tabs.js';
 // AsciinemaPlayer.create('/demo.cast', document.getElementById('demo'));
 
 function init () {
-    // htmx.logger = function (elt, event, data) {
-    //     if (console) {
-    //         console.log(event, elt, data);
-    //     }
-    // };
+    htmx.logger = function (elt, event, data) {
+        if (console) {
+            console.log(event, elt, data);
+        }
+    };
 
     // Delete 请求仍旧使用 form-encoded body 来传递参数。
     // htmx 2.0, 对于 DELETE 请求，将使用 params （根据 spec 规定）

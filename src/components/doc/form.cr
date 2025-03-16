@@ -24,15 +24,15 @@ class Docs::Form < BaseComponent
           hx_put: "/docs/htmx/markdown_render",
           hx_target: "#markdown-preview",
           hx_include: "[name='_csrf'],#text_area",
-          hx_indicator: "next img.htmx-indicator",
-          script: "on mouseover set x to (<#text_area/>).value
-then log x[0]
-then if x[0] == ''
-   add @disabled to me
-else
-  remove @disabled from me
-end
-"
+          hx_indicator: "next img.htmx-indicator"
+          #           script: "on mouseover set x to (<#text_area/>).value
+          # then log x[0]
+          # then if x[0] == ''
+          #    add @disabled to me
+          # else
+          #   remove @disabled from me
+          # end
+          # "
         )
       end
 
@@ -75,7 +75,9 @@ end
   end
 
   private def render_preview
-    para id: "markdown-preview"
+    para id: "markdown-preview" do
+      text "testing the preview bug ..."
+    end
     mount Shared::Spinner, text: "正在预览..."
   end
 end
