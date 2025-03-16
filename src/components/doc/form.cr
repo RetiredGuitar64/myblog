@@ -26,7 +26,8 @@ class Docs::Form < BaseComponent
           hx_include: "[name='_csrf'],#text_area",
           hx_indicator: "next img.htmx-indicator",
           script: "on mouseover set x to (<#text_area/>).value
-then if x[1] == ''
+then log x[0]
+then if x[0] == ''
    add @disabled to me
 else
   remove @disabled from me
@@ -57,7 +58,7 @@ end
 
     if me.nil?
       legend_text = "登录后添加评论"
-      textarea_opt = textarea_opt.merge(disabled: "")
+      # textarea_opt = textarea_opt.merge(disabled: "")
     else
       legend_text = "支持 markdown 格式"
     end
@@ -65,7 +66,7 @@ end
     form do
       fieldset do
         para do
-          label legend_text, id: "text_area", style: "margin-bottom: 8px;"
+          label legend_text, for: "text_area", style: "margin-bottom: 8px;"
 
           textarea textarea_opt
         end
