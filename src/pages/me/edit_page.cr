@@ -19,6 +19,16 @@ class Me::EditPage < MainLayout
           end
         end
 
+        para do
+          label_for op.password, "密码"
+          password_input op.password, auto_focus: true
+        end
+
+        para do
+          label_for op.password, "确认密码"
+          password_input op.password_confirmation
+        end
+
         para class: "f-row align-items:center" do
           submit "保存"
 

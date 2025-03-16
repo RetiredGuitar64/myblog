@@ -1,8 +1,14 @@
 class UpdateUser < User::SaveOperation
   permit_columns name, avatar
+  attribute password : String
+  attribute password_confirmation : String
 
   before_save do
     validate_uniqueness_of name
+    if !password.value.nil?
+      validate_confirmation_of password, with: password_confirmation
+      Authentic.copy_and_encrypt password, to: encrypted_password
+    end
   end
 
   after_save do |saved_user|
