@@ -10,6 +10,8 @@ if original_size != new_size
   abort "duplicated pages for doc, exit!"
 end
 
+system("cd public && git clean -fdxq")
+
 str = String.build do |io|
   io << "[input]\n"
   io << %(base_directory = "markdowns"\n)
