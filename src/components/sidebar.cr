@@ -44,10 +44,10 @@ class Sidebar < BaseComponent
           li do
             if (avatar = user.avatar)
               div class: "f-row align-items:center", style: "padding-right: 50px;
-background-image:url(#{avatar});height:50px;width:300px;border-radius:20px;background-size: contain; background-repeat: no-repeat; background-position:left center;
+background-image:url(#{avatar});height:24px;width:300px;border-radius:20px;background-size: contain; background-repeat: no-repeat; background-position:left center;
 color: white;text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 " do
-                strong user.name, style: "margin-left: 55px;"
+                strong user.name, style: "margin-left: 30px;"
               end
             else
               text user.name

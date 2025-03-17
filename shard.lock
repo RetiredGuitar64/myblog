@@ -41,9 +41,9 @@ shards:
     git: https://github.com/luckyframework/carbon.git
     version: 0.6.0
 
-  carbon_sendgrid_adapter:
-    git: https://github.com/luckyframework/carbon_sendgrid_adapter.git
-    version: 0.6.0
+  carbon_smtp_adapter:
+    git: https://github.com/luckyframework/carbon_smtp_adapter.git
+    version: 0.5.0
 
   cron_parser:
     git: https://github.com/kostya/cron_parser.git
@@ -72,6 +72,10 @@ shards:
   docopt:
     git: https://github.com/chenkovsky/docopt.cr.git
     version: 0.2.0+git.commit.620fce4f334ff15d7321e5ecb6665ad258fe9297
+
+  email:
+    git: https://github.com/arcage/crystal-email.git
+    version: 0.7.1
 
   exception_page:
     git: https://github.com/crystal-loot/exception_page.git

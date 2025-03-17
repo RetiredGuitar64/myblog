@@ -9,15 +9,15 @@ class SignUps::NewPage < AuthLayout
 
         form_for SignUps::Create, class: "table rows" do
           para do
-            mount Shared::Field, attribute: op.email, label_text: "Email", &.email_input(autofocus: "true")
+            mount Shared::Field, attribute: op.email, label_text: "电子邮件", &.email_input(autofocus: "true")
           end
 
           para do
-            mount Shared::Field, attribute: op.password, label_text: "Password", &.password_input
+            mount Shared::Field, attribute: op.password, label_text: "密码", &.password_input
           end
 
           para do
-            mount Shared::Field, attribute: op.password_confirmation, label_text: "Confirm Password", &.password_input
+            mount Shared::Field, attribute: op.password_confirmation, label_text: "确认密码", &.password_input
           end
 
           para do

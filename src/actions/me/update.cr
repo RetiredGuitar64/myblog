@@ -4,7 +4,7 @@ class Me::Update < BrowserAction
 
     UpdateUser.update(me, params) do |op, user|
       if op.saved?
-        flash.success = "更新成功, 可能需要几分钟来更新评论中用户信息！"
+        flash.success = "更新成功！"
         redirect Docs::Index
       else
         build_failed_flash(op)
