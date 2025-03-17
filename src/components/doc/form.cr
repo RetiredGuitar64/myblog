@@ -1,46 +1,43 @@
 class Docs::Form < BaseComponent
   def render
-    render_tabs
+    div style: "border:0.5px solid gray; padding: 5px;" do
+      render_tabs
+    end
   end
 
   private def render_tabs
-    div id: "tabs" do
-      div role: "tablist", tableindex: "-1", aria_label: "" do
-        button(
-          "输入",
-          role: "tab",
-          id: "tab-1",
-          aria_controls: "panel-1",
-          tabindex: "0",
-          aria_selected: "true"
-        )
+    div class: "tab-frame" do
+      input type: "radio", checked: "", name: "tab", id: "tab1"
+      label "输入", for: "tab1"
 
-        button(
-          "预览",
-          role: "tab",
-          id: "tab-2",
-          aria_controls: "panel-2",
-          tabindex: "-1",
-          hx_put: "/docs/htmx/markdown_render",
-          hx_target: "#markdown-preview",
-          hx_include: "[name='_csrf'],#text_area",
-          hx_indicator: "next img.htmx-indicator"
-          #           script: "on mouseover set x to (<#text_area/>).value
-          # then log x[0]
-          # then if x[0] == ''
-          #    add @disabled to me
-          # else
-          #   remove @disabled from me
-          # end
-          # "
-        )
-      end
+      input(
+        type: "radio",
+        name: "tab",
+        id: "tab2",
+        hx_put: "/docs/htmx/markdown_render",
+        hx_target: "#markdown-preview",
+        hx_include: "[name='_csrf'],#text_area",
+        hx_indicator: "next img.htmx-indicator",
+      )
+      label(
+        "预览",
+        for: "tab2",
+        script: "on mouseover set x to (<#text_area/>).value
+        then log x[0]
+        then if x[0] == ''
+           add @disabled to <#tab2/>
+           then set the style of me to 'cursor: not-allowed;'
+        else
+          remove @disabled from <#tab2/>
+          then remove @style from me
+        end
+        "
+      )
 
-      div role: "tabpanel", id: "panel-1", aria_labelledby: "tab-1" do
+      div class: "tab" do
         render_form
       end
-
-      div role: "tabpanel", id: "panel-2", aria_labelledby: "tab-2", hidden: "" do
+      div class: "tab" do
         render_preview
       end
     end
