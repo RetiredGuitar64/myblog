@@ -1,11 +1,11 @@
 /* eslint no-console:0 */
 import htmx from 'htmx.org';
 window.htmx = htmx;
-import _hyperscript from 'hyperscript.org';
-_hyperscript.browserInit();
-import { copyCodeButton } from './copy_code_button.js';
+// import _hyperscript from 'hyperscript.org';
+// _hyperscript.browserInit();
+// import { copyCodeButton } from './copy_code_button.js';
 // 这里我修改了源码，在最后加了一行才 `export default stork;` 才 import 成功
-import stork from './stork.js';
+// import stork from './stork.js';
 import tabs from 'missing.css/www/missing-js/tabs.js';
 
 // import * as AsciinemaPlayer from 'asciinema-player';
@@ -29,21 +29,21 @@ function init () {
     // setIPhoneDataAttribute();
     // startLogoAnimation();
 
-    copyCodeButton();
+    // copyCodeButton();
 
     // 确保下面的函数，只在 body 重新改变时才触发
-    if (event.detail.elt.nodeName == "BODY") {
-        stork.initialize("https://assets.crystal-china.org/docs/stork.wasm");
-        stork.downloadIndex(
-            "docs",
-            "https://assets.crystal-china.org/docs/index.st"
-        );
-    }
+    // if (event.detail.elt.nodeName == "BODY") {
+    //     stork.initialize("https://assets.crystal-china.org/docs/stork.wasm");
+    //     stork.downloadIndex(
+    //         "docs",
+    //         "https://assets.crystal-china.org/docs/index.st"
+    //     );
+    // }
 
-    let stork_container = document.querySelector("input[data-stork='docs']");
-    if (stork_container != null) {
-        stork.attach("docs");
-    }
+    // let stork_container = document.querySelector("input[data-stork='docs']");
+    // if (stork_container != null) {
+    //     stork.attach("docs");
+    // }
 
     let tabs_div = document.querySelector("#tabs");
     if (tabs_div != null) {

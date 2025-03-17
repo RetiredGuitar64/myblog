@@ -42,7 +42,7 @@ abstract class DocLayout
       body "hx-boost": true, style: "padding: 0px;" do
         mount Navbar, current_user: current_user
 
-        div class: "sidebar-layout fullscreen" do
+        div class: "sidebar-layout" do
           header do
             mount Sidebar, current_user: current_user
           end
