@@ -72,9 +72,7 @@ class Docs::Form < BaseComponent
   end
 
   private def render_preview
-    para id: "markdown-preview" do
-      text "testing the preview bug ..."
-    end
+    para id: "markdown-preview"
     mount Shared::Spinner, text: "正在预览..."
   end
 end

@@ -6,12 +6,12 @@ AppDatabase.configure do |settings|
   else
     settings.credentials = Avram::Credentials.parse?(ENV["DATABASE_URL"]?) || Avram::Credentials.new(
       database: database_name,
-      hostname: ENV.fetch("DB_HOST", "localhost"),
+      hostname: ENV["DB_HOST"]? || "localhost",
       port: ENV["DB_PORT"]?.try(&.to_i) || 5432,
       # Some common usernames are "postgres", "root", or your system username (run 'whoami')
-      username: ENV.fetch("DB_USERNAME", "postgres"),
+      username: ENV["DB_USERNAME"]? || "postgres",
       # Some Postgres installations require no password. Use "" if that is the case.
-      password: ENV.fetch("DB_PASSWORD", "postgres")
+      password: ENV["DB_PASSWORD"]? || "postgres"
     )
   end
   p! settings.credentials.url

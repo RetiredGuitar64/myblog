@@ -8,7 +8,7 @@ class PasswordResetRequests::NewPage < AuthLayout
 
   private def render_form(op)
     form_for PasswordResetRequests::Create do
-      mount Shared::Field, attribute: op.email, label_text: "邮箱地址", &.email_input
+      mount Shared::Field, attribute: op.email, label_text: "电子邮件", &.email_input
       submit "重置", flow_id: "request-password-reset-button"
     end
   end
