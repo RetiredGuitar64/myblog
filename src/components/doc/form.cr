@@ -55,7 +55,7 @@ class Docs::Form < BaseComponent
 
     if me.nil?
       legend_text = "登录后添加评论"
-      # textarea_opt = textarea_opt.merge(disabled: "")
+      textarea_opt = textarea_opt.merge(disabled: "")
     else
       legend_text = "支持 markdown 格式"
     end
