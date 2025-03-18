@@ -1,18 +1,25 @@
 class Sidebar < BaseComponent
-  def render_child(ary)
+  def render_child(ary, this_path)
     if !ary.empty?
-      ul class: "margin" do
-        ary.each do |child|
-          li do
-            if current_path == child.path
-              ins do
-                a child.name, href: child.path
-              end
-            else
-              a child.name, href: child.path
-            end
+      ul_attr = {class: "margin nested"}
 
-            render_child(child.child)
+      if ary.any? { |child| current_path.in? [this_path, child.path] }
+        ul_attr = ul_attr.merge(style: "display: block;")
+      end
+
+      ul ul_attr do
+        ary.each do |child|
+          a_attr = {
+            href: child.path,
+          }
+
+          if current_path == child.path
+            a_attr = a_attr.merge(class: "active")
+          end
+
+          li do
+            a child.name, a_attr
+            render_child(child.child, child.path)
           end
         end
       end
@@ -25,18 +32,28 @@ class Sidebar < BaseComponent
     nav do
       ul role: "nested-list" do
         PageHelpers::SIDEBAR_LINKS.each do |k, v|
-          if v.parent == "root"
-            li do
-              if current_path == v.path
-                ins do
-                  a v.name, href: k
-                end
-              else
-                a v.name, href: k
-              end
-            end
+          _child = v.child
+          li_attr = {} of Symbol => String
 
-            render_child(v.child)
+          if _child.empty?
+            a_name = v.name
+          else
+            a_name = "#{v.name}         ➤"
+          end
+
+          a_attr = {
+            href: k,
+          }
+
+          if current_path == v.path
+            a_attr = a_attr.merge(class: "active")
+          end
+
+          if v.parent == "root"
+            li li_attr do
+              a a_name, a_attr
+              render_child(_child, v.path)
+            end
           end
         end
 

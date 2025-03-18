@@ -43,7 +43,7 @@ abstract class DocLayout
         mount Navbar, current_user: current_user
 
         div class: "sidebar-layout fullscreen" do
-          header do
+          header id: "sidebar" do
             mount Sidebar, current_user: current_user
           end
 

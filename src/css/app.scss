@@ -30,6 +30,7 @@ body {
   margin: 0 auto;
   max-width: 1920px;
   padding: 20px 40px;
+  overflow-x: hidden; /* 防止侧边栏展开时页面产生横向滚动 */
 }
 
 label, input {
@@ -111,6 +112,8 @@ tr:nth-child(even) {
   background-color: #ffffff; /* 浅灰色 */
 }
 
+/* 文档评论表单 */
+
 div.tab-frame {
   input {display:none; }
 
@@ -120,18 +123,20 @@ div.tab-frame {
     padding:5px 10px;
     cursor:pointer;
     border-radius: 12px;
-    background-color: #D1D6D8
+    background-color: #D1D6D8;
+    color: gray;
   }
 
   > label:hover {
     border: 1px solid gray;
   }
 
-  // + 表示相邻的兄弟
+  // + 表示相邻的兄弟，~ 表示同辈兄弟，未必相邻
   input:checked + label {
     background:white;
-    border: 0.5px solid #D1D6D8;
+    border: 0.5px solid #63b3ed;
     cursor:default;
+    color: black;
   }
 
   div.tab {
@@ -144,4 +149,29 @@ div.tab-frame {
   input:nth-of-type(2):checked ~ .tab:nth-of-type(2) {
     display:block;
   }
+}
+
+// 侧边栏
+
+#sidebar a {
+  font-weight: 500;
+}
+
+.nested {
+  display: none;
+  padding-left: 20px;
+  font-size: 16px;
+  font-weight: 0;
+}
+
+nav a.active,
+nav a:active,
+nav a:focus {
+  background-color: #63b3ed; /* 点击时的背景颜色 */
+  /* background-color: #3182ce; */
+  color: #fff; /* 改变文字颜色 */
+  border-radius: 5px; /* 加圆角 */
+  text-decoration: underline; /* 或者自定义样式，如下划��� */
+  text-underline-offset: 5px; /* 调整下划线位置（现代浏览器支持） */
+  text-decoration-thickness: 2px; /* 下划线粗细 */
 }
