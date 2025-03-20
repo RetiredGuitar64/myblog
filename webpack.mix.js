@@ -7,6 +7,7 @@
  | Docs: https://github.com/JeffreyWay/laravel-mix/tree/master/docs#readme
  */
 
+require('laravel-mix-version-filename');
 let mix = require("laravel-mix");
 let plugins = [];
 
@@ -59,7 +60,7 @@ mix
     clearConsole: false
   })
   // Add assets to the manifest
-  .version(["public/assets"])
+  .versionFilenames(["public/assets"])
   // Reduce noise in Webpack output
   .webpackConfig({
     stats: "errors-only",
