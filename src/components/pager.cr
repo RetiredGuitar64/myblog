@@ -16,7 +16,7 @@ class Pager < BaseComponent
 
         if item
           div do
-            img src: "#{asset_host}/svgs/previous_page.svg", alt: "previous_page", style: "height: 24px; vertical-align: middle;"
+            img src: asset("svgs/previous_page.svg"), alt: "previous_page", style: "height: 24px; vertical-align: middle;"
 
             strong do
               if prev_path == current_path
@@ -32,7 +32,7 @@ class Pager < BaseComponent
           end
 
           div do
-            img src: "#{asset_host}/svgs/next_page.svg", alt: "next_page", style: "height: 24px; vertical-align: middle;"
+            img src: asset("svgs/next_page.svg"), alt: "next_page", style: "height: 24px; vertical-align: middle;"
 
             strong do
               if next_path == current_path

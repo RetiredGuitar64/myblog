@@ -1,6 +1,3 @@
-require "json"
-require "compress/gzip"
-require "brotli"
 require "./actions/mixins/page_helpers"
 
 original_size = PageHelpers::PAGINATION_URLS.size
@@ -26,25 +23,3 @@ end
 File.write("tmp/index.toml", str)
 
 system("bin/stork build --input tmp/index.toml --output public/docs/index.st")
-
-Dir.glob(
-  "public/docs/index.st",
-  "public/docs/stork.wasm",
-  "public/svgs/*.svg",
-).each do |file|
-  File.open(file, "r") do |input_file|
-    File.open("#{file}.gz", "w") do |output_file|
-      Compress::Gzip::Writer.open(output_file) do |gz|
-        IO.copy(input_file, gz)
-      end
-    end
-
-    input_file.rewind
-
-    File.open("#{file}.br", "w") do |output_file|
-      Compress::Brotli::Writer.open(output_file) do |br|
-        IO.copy(input_file, br)
-      end
-    end
-  end
-end

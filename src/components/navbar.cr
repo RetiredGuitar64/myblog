@@ -6,7 +6,7 @@ class Navbar < BaseComponent
           raw <<-'HEREDOC'
 <canvas height="30" id="logo-canvas" style="cursor:move" width="130"></canvas>
 HEREDOC
-          img src: "#{asset_host}/svgs/crystal.svg", alt: "crystal-china"
+          img src: asset("svgs/crystal.svg"), alt: "crystal-china"
 
           span "China", class: "allcaps", style: "color: black;"
         end
