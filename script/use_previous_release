@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -eu
+
+project_name=${1?Error: Input binary name, e.g. $0 crystal_china}
+
+ROOT=${0%/*}
+
+cd $ROOT
+
+if ! [ -x ${project_name} ]; then
+    echo "There is no binary name: $1 in $ROOT"
+    exit
+fi
+
+previous_release=$(ls -1 ${project_name}-* |sort |tail -n1)
+
+if [ -z "$previous_release" ]; then
+    echo 'There is no previous release available.'
+    exit
+else
+    echo "previous release file is: ${previous_release}"
+fi
+
+mv -v ${project_name} ${project_name}_$(date '+%Y-%m-%d_%H_%M')
+mv -v ${previous_release} ${project_name}
+
+sudo systemctl restart ${project_name}
+systemctl status ${project_name}
