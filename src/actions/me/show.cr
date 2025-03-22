@@ -1,5 +1,5 @@
 class Me::Show < BrowserAction
   get "/me" do
-    html ShowPage
+    html Me::ShowPage
   end
 end

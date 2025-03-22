@@ -18,7 +18,7 @@ class SignIns::NewPage < AuthLayout
 
           para class: "f-row align-items:center tool-bar" do
             strong do
-              submit "登录", type: "submit", class: "<button>"
+              submit "登录", type: "submit", class: "<button>", flow_id: "sign-in-button"
             end
 
             strong do

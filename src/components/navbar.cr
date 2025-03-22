@@ -37,10 +37,11 @@ HEREDOC
               link(
                 "退出",
                 to: SignIns::Delete,
+                flow_id: "sign-out-button",
                 hx_target: "body",
                 hx_push_url: "true",
                 hx_delete: SignIns::Delete.path,
-                hx_include: "[name='_csrf']"
+                hx_include: "[name='_csrf']",
               )
             end
 

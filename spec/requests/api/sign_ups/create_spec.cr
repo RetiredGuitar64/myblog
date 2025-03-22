@@ -20,7 +20,7 @@ describe Api::SignUps::Create do
     response.should send_json(
       400,
       param: "password_confirmation",
-      details: "password_confirmation must match"
+      details: "password_confirmation 必须匹配"
     )
   end
 end
