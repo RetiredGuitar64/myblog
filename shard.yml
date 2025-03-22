@@ -48,8 +48,6 @@ development_dependencies:
   lucky_flow:
     github: luckyframework/lucky_flow
     version: ~> 0.10.0
-  brotli:
-    github: naqvis/brotli.cr
   timecop:
     github: crystal-community/timecop.cr
 

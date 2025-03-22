@@ -1,4 +1,4 @@
-BakedFileSystemMounter.assemble(["public", "markdowns"])
+BakedFileSystemMounter.assemble(["dist", "markdowns"])
 
 if LuckyEnv.production?
   STDERR.puts "Mounting from baked file system ..."

@@ -62,6 +62,8 @@ abstract class DocLayout
 
               content
 
+              mount Pager
+
               div class: "<h5> f-row justify-content:center", style: "color: #BEBEBE" do
                 text "欢迎在评论区留下你的见解、问题或建议"
               end
@@ -88,7 +90,6 @@ abstract class DocLayout
   private def show_replies_when_revealed
     div id: "replies", hx_get: current_reply_path, hx_trigger: "revealed" do
       mount Shared::Spinner, text: "正在读取评论..."
-      mount Pager
     end
   end
 

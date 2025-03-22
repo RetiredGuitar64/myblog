@@ -6,6 +6,7 @@ _hyperscript.browserInit();
 import { copyCodeButton } from './copy_code_button.js';
 // 这里我修改了源码，在最后加了一行才 `export default stork;` 才 import 成功
 import stork from './stork.js';
+import mixManifest from 'virtual:mix-manifest';
 
 // import * as AsciinemaPlayer from 'asciinema-player';
 // AsciinemaPlayer.create('/demo.cast', document.getElementById('demo'));
@@ -25,17 +26,15 @@ function init () {
     // 取消注释来允许它正常发送请求。
     // htmx.config.selfRequestsOnly = false;
 
-    // setIPhoneDataAttribute();
-    // startLogoAnimation();
-
     copyCodeButton();
+    const assetHost = IS_WATCH_MODE ? '' : 'https://assets.crystal-china.org/'
 
     // 确保下面的函数，只在 body 重新改变时才触发
     if (event.detail.elt.nodeName == "BODY") {
-        stork.initialize("https://assets.crystal-china.org/docs/stork.wasm");
+        stork.initialize(`${assetHost}${mixManifest['/docs/stork.wasm'] ?? '/docs/stork.wasm'}`);
         stork.downloadIndex(
             "docs",
-            "https://assets.crystal-china.org/docs/index.st"
+            `${assetHost}${mixManifest['/docs/index.st'] ?? '/docs/index.st'}`
         );
     }
 

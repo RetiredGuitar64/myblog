@@ -5,7 +5,7 @@ class Shared::Spinner < BaseComponent
     div class: "f-col align-items:center" do
       img(
         class: "htmx-indicator",
-        src: "/svgs/spinning-circles.svg",
+        src: asset("svgs/spinning-circles.svg"),
         alt: text
       )
     end

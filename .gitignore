@@ -4,8 +4,9 @@
 *.dwarf
 /website
 /node_modules
-/public/*
+/public/docs/index.st
 /latest_released/*
 /.env
 /tmp
 /.tool-versions
+/dist

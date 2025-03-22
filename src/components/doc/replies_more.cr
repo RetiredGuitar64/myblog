@@ -23,7 +23,7 @@ class Docs::RepliesMore < BaseComponent
   private def render_avatar_name_and_time(reply)
     div class: "f-row justify-content:space-between", style: "" do
       div class: "f-row" do
-        img src: reply.user_avatar || "#{asset_host}/svgs/crystal-lang-icon.svg", style: "height:24px;width:24px;"
+        img src: reply.user_avatar || asset("svgs/crystal-lang-icon.svg"), style: "height:24px;width:24px;"
         span reply.user_name
       end
 
