@@ -44,6 +44,4 @@ function copyCodeButton () {
     }
 }
 
-export {
-    copyCodeButton
-}
+export default copyCodeButton
