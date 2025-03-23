@@ -21,7 +21,7 @@ function init () {
     // htmx.config.selfRequestsOnly = false;
 
     copyCodeButton();
-    const assetHost = IS_WATCH_MODE ? '' : 'https://assets.crystal-china.org/'
+    const assetHost = IS_WATCH_MODE ? '' : 'https://assets.crystal-china.org'
 
     // 确保下面的函数，只在 body 重新改变时才触发
     if (event.detail.elt.nodeName == "BODY") {
