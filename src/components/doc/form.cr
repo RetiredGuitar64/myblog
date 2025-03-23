@@ -23,7 +23,6 @@ class Docs::Form < BaseComponent
         "预览",
         for: "tab2",
         script: "on mouseover set x to (<#text_area/>).value
-        then log x[0]
         then if x[0] == ''
            add @disabled to <#tab2/>
            then set the style of me to 'cursor: not-allowed;'

@@ -12,6 +12,7 @@ require "./shards"
 
 # Load the asset manifest
 Lucky::AssetHelpers.load_manifest "dist/mix-manifest.json"
+# Lucky::AssetHelpers.load_manifest("public/manifest.json", use_vite: true)
 
 require "../config/server"
 require "./app_database"

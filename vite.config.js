@@ -6,6 +6,7 @@ import path from 'path';
 import fs from 'fs';
 const zlib = require('zlib');
 import viteCompression from 'vite-plugin-compression';
+import inject from '@rollup/plugin-inject'
 
 export default defineConfig(({ command, mode }) => {
     const isWatch = mode === 'watch';
@@ -23,16 +24,15 @@ export default defineConfig(({ command, mode }) => {
                     "css/app.css": resolve(__dirname, 'src/css/app.scss'), // 指定 CSS 文件
                 },
                 output: {
-                    entryFileNames: mode === 'watch' ? 'js/app.js' : 'js/app-[hash].js',
-                    chunkFileNames: mode === 'watch' ? '[name].js' : '[name]-[hash].js', // 动态导入的 JS 文件名
-                    assetFileNames: mode === 'watch' ? '[name].[ext]' : '[name]-[hash].[ext]', // 静态资源（例如 CSS）命名规则，带 hash
+                    entryFileNames: isWatch ? 'js/app.js' : 'js/app-[hash].js',
+                    chunkFileNames: isWatch ? '[name].js' : '[name]-[hash].js', // 动态导入的 JS 文件名
+                    assetFileNames: isWatch ? '[name].[ext]' : '[name]-[hash].[ext]', // 静态资源（例如 CSS）命名规则，带 hash
                 },
             },
             manifest: true,
             watch: isWatch,
             minify: !isWatch,
             sourcemap: isWatch, // 开启 sourcemap 便于调试
-            cssCodeSplit: true, // 分离 CSS 文件
         },
         css: {
             postcss: {
@@ -47,6 +47,15 @@ export default defineConfig(({ command, mode }) => {
                 viteCompression({algorithm: 'gzip', ext: '.gz'}),
                 viteCompression({ algorithm: 'brotliCompress', ext: '.br',})
             ] : []),
+            inject({
+                exclude: ['src/**/*.scss', 'src/**/*.css'],
+                htmx: 'htmx.org',
+                _hyperscript: 'hyperscript.org',
+                copyCodeButton: './copyCodeButton.js',
+                // 这里我修改了源码，在最后加了一行才 `export default stork;` 才 import 成功
+                stork: './stork.js',
+                mixManifest: 'virtual:mix-manifest'
+            }),
             {
                 name: 'generate-mix-manifest',
                 enforce: 'post',
@@ -134,6 +143,7 @@ export default defineConfig(({ command, mode }) => {
             },
             {
                 name: 'virtual-mix-manifest',
+                enforce: 'post',
                 // 定义一个虚拟模块内容，生产模式下，返回 mixManifest 的内容到 app.js
                 resolveId(id) {
                     if (id === 'virtual:mix-manifest') return id; // 虚拟模块 ID

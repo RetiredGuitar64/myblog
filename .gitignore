@@ -4,7 +4,6 @@
 *.dwarf
 /website
 /node_modules
-/public/docs/index.st
 /latest_released/*
 /.env
 /tmp
