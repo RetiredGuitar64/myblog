@@ -1,12 +1,6 @@
 /* eslint no-console:0 */
-import htmx from 'htmx.org';
-window.htmx = htmx;
-import _hyperscript from 'hyperscript.org';
+
 _hyperscript.browserInit();
-import { copyCodeButton } from './copy_code_button.js';
-// 这里我修改了源码，在最后加了一行才 `export default stork;` 才 import 成功
-import stork from './stork.js';
-import mixManifest from 'virtual:mix-manifest';
 
 // import * as AsciinemaPlayer from 'asciinema-player';
 // AsciinemaPlayer.create('/demo.cast', document.getElementById('demo'));
