@@ -41,6 +41,14 @@ export default defineConfig(({ command, mode }) => {
                     ...(isWatch ? [] : [require('cssnano')({ preset: 'default' })])
                 ],
             },
+            preprocessorOptions: {
+                scss: {
+                    // 直接在 app.scss 中，按照 $dynamic-color 使用
+                    additionalData: `
+                    $dynamic-color: #63b3ed;
+        `,
+                },
+            },
         },
         plugins: [
             ...(mode !== 'watch' ? [
