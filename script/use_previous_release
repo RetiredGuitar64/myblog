@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# 注意：恢复前一版本成功后，因为本地 latest_released/ 下面的文件和远程不一致，
+# 会导致下一次运行 binary_patch_crystal_china，尝试拷贝覆盖正在运行的文件失败。
+# 此时，需要首先执行下面的命令同步远程 binary 即可。
+#
+# scp_crystal_china :bin/crystal_china latest_released/bin/
+
 set -eu
 
 project_name=${1?Error: Input binary name, e.g. $0 crystal_china}
