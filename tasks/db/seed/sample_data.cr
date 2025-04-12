@@ -13,10 +13,12 @@ class Db::Seed::SampleData < LuckyTask::Task
       print_exit("\n按下 Ctrl C")
     end
 
-    print "重置所有开发数据？（y/yes 继续）"
-    input = gets.try &.rstrip
+    unless ENV.fetch("RUN_SCRIPT_SETUP") == "true"
+      print "重置所有开发数据？（y/yes 继续）"
+      input = gets.try &.rstrip
 
-    print_exit("拒绝执行") unless input.to_s.downcase.in? ["y", "yes"]
+      print_exit("拒绝执行") unless input.to_s.downcase.in? ["y", "yes"]
+    end
 
     DocQuery.truncate(cascade: true)
     UserQuery.truncate(cascade: true)

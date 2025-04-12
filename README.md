@@ -10,9 +10,7 @@
 
 1. First, install Crystal. You can check out the instructions here: https://crystal-lang.org/install/
 
-2. Next, run `shards install` to install shards dependencies.
-
-3. Run `script/setup`, Just make sure you’ve got PostgreSQL (pg) and nodejs/yarn installed before running this.
+3. Run `script/setup`, Just make sure you’ve got `pg` and `yarn` installed before running this.
 
 4. Finally, run `lucky dev`, and you're all set!
 
