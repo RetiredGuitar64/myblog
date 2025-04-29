@@ -27,7 +27,7 @@ class Docs::RepliesMore < BaseComponent
         span reply.user_name
       end
 
-      span reply.created_at.to_s("%F %T")
+      span TimeInWords::Helpers(TimeInWords::I18n::ZH_CN).from(past_time: reply.created_at)
     end
   end
 

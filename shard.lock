@@ -173,6 +173,10 @@ shards:
     git: https://github.com/ralsina/tartrazine.git
     version: 0.13.0
 
+  time_in_words:
+    git: https://github.com/crystal-china/time_in_words.git
+    version: 0.1.0+git.commit.a4ad85b7e3c96ec1e62b8ccb9296f304cdae6ea8
+
   timecop:
     git: https://github.com/crystal-community/timecop.cr.git
     version: 0.5.0
