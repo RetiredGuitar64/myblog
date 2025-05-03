@@ -13,7 +13,7 @@ class Db::Seed::SampleData < LuckyTask::Task
       print_exit("\n按下 Ctrl C")
     end
 
-    unless ENV.fetch("RUN_SCRIPT_SETUP") == "true"
+    unless ENV.fetch("RUN_SCRIPT_SETUP", "false") == "true"
       print "重置所有开发数据？（y/yes 继续）"
       input = gets.try &.rstrip
 
