@@ -26,7 +26,7 @@
 
 - [baked_file_system_mounter](https://github.com/crystal-china/baked_file_system_mounter), 用于将本站所需的 assets 文件（包含 js, css, 字体，markdown 等）打包进可执行文件，并在部署到新机器后自动 mount。
 - [lucky](https://github.com/luckyframework/lucky) 是一个全功能的 web 框架，用来搭建本站以及计划中的论坛。
-- [magic-haversack](https://github.com/crystal-china/magic-haversack) 使用 zig cc 来 built 一个 Crystal 静态 bianry（无需 docker ）
+- [magic-haversack](https://github.com/crystal-china/magic-haversack) 使用 zig cc 来 build 一个 Crystal 静态 bianry（无需 docker）
 - [markd](https://github.com/icyleaf/markd) 用于转换 markdown 格式到网页。
 - [tartrazine](https://github.com/ralsina/tartrazine), 用于高亮 markdown 中的代码块。
 

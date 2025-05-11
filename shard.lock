@@ -11,7 +11,7 @@ shards:
 
   backtracer:
     git: https://github.com/sija/backtracer.cr.git
-    version: 1.2.2
+    version: 1.2.4
 
   baked_file_system: # Overridden
     git: https://github.com/schovi/baked_file_system.git
@@ -175,7 +175,7 @@ shards:
 
   time_in_words:
     git: https://github.com/crystal-china/time_in_words.git
-    version: 0.1.0+git.commit.a4ad85b7e3c96ec1e62b8ccb9296f304cdae6ea8
+    version: 0.1.0+git.commit.48cd1cf0eb0b71c026fa2af836259adbfd012352
 
   timecop:
     git: https://github.com/crystal-community/timecop.cr.git
@@ -183,7 +183,7 @@ shards:
 
   webdrivers:
     git: https://github.com/crystal-loot/webdrivers.cr.git
-    version: 0.4.3
+    version: 0.4.4
 
   webless:
     git: https://github.com/crystal-loot/webless.git
