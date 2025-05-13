@@ -29,6 +29,22 @@ abstract class DocLayout
     PAGINATION_RELATION_MAPPING.dig?(current_path, :title) || "首页"
   end
 
+  def print_edit_date
+    timestamp = "dist/docs/markdowns_timpstamps.yml"
+
+    if File.exists?(timestamp)
+      date = YAML.parse(File.read(timestamp))[markdown_path]?.try do |date|
+        return <<-HEREDOC
+<blockquote>
+最后编辑于: #{Time.unix(date.as_i64).to_local.to_s("%Y年%m月%d日")}
+</blockquote>
+HEREDOC
+      end
+    end
+
+    ""
+  end
+
   def sub_title
     PAGINATION_RELATION_MAPPING.dig?(current_path, :sub_title)
   end
@@ -58,7 +74,7 @@ abstract class DocLayout
                 end
               end
 
-              hr "aria-orientation": "horizontal"
+              raw print_edit_date
 
               content
 

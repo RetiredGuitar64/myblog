@@ -28,12 +28,12 @@ system("bin/stork build --input tmp/index.toml --output public/docs/index.st")
 
 require "yaml"
 
-map = {} of String => String
+map = {} of String => Int64
 
 Dir["markdowns/**/*.md"].each do |file|
   date = `git --no-pager log -1 --format=%ct #{file}`.chomp
 
-  map[file] = date
+  map[file] = date.to_i64
 end
 
-File.write("dist/markdowns_timpstamps.yml", map.to_yaml)
+File.write("public/docs/markdowns_timpstamps.yml", map.to_yaml)
