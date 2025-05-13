@@ -23,3 +23,17 @@ end
 File.write("tmp/index.toml", str)
 
 system("bin/stork build --input tmp/index.toml --output public/docs/index.st")
+
+# 创建一个 yaml 文件, 包含文章的修改日期.
+
+require "yaml"
+
+map = {} of String => String
+
+Dir["markdowns/**/*.md"].each do |file|
+  date = `git --no-pager log -1 --format=%ct #{file}`.chomp
+
+  map[file] = date
+end
+
+File.write("dist/markdowns_timpstamps.yml", map.to_yaml)
