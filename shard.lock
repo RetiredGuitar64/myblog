@@ -123,7 +123,7 @@ shards:
 
   markd:
     git: https://github.com/zw963/markd.git
-    version: 0.5.0+git.commit.98b33f8877e973b1ba85546ac7a964ffbe94e287
+    version: 0.5.0+git.commit.1373b05e7aace9cc0b1a2e58f9a516e2c533d751
 
   openssl_ext:
     git: https://github.com/spider-gazelle/openssl_ext.git
