@@ -3,7 +3,7 @@ class Reply < BaseModel
     include JSON::Serializable
 
     property? path_for_doc : String?
-    property floor : Int32?
+    property floor : Int32
   end
 
   struct Votes
