@@ -15,8 +15,12 @@ class SaveReply < Reply::SaveOperation
       end
     else
       preferences.value = Reply::Preferences.from_json(
-        {path_for_doc: doc.path_index}.to_json
+        {
+          path_for_doc: doc.path_index,
+          floor:        doc.replies.size + 1,
+        }.to_json
       )
+
       votes.value = Reply::Votes.from_json(
         {
           👍:  0,

@@ -27,7 +27,12 @@ class Docs::RepliesMore < BaseComponent
         span reply.user_name
       end
 
-      span TimeInWords::Helpers(TimeInWords::I18n::ZH_CN).from(past_time: reply.created_at)
+      div do
+        span TimeInWords::Helpers(TimeInWords::I18n::ZH_CN).from(past_time: reply.created_at)
+        raw <<-HEREDOC
+<chip style="margin-left: 10px; border-color: #ccc;">#{reply.preferences.floor} 楼</chip>
+HEREDOC
+      end
     end
   end
 
