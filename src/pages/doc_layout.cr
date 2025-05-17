@@ -33,7 +33,7 @@ abstract class DocLayout
     timestamp = "dist/docs/markdowns_timpstamps.yml"
 
     if File.exists?(timestamp)
-      date = YAML.parse(File.read(timestamp))[markdown_path]?.try do |date|
+      YAML.parse(File.read(timestamp))[markdown_path]?.try do |date|
         return <<-HEREDOC
 <blockquote>
 最后编辑于: #{Time.unix(date.as_i64).to_local.to_s("%Y年%m月%d日")}
