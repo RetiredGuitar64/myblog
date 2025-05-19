@@ -24,16 +24,30 @@
 // Delete these when you're ready to bring in your own CSS.
 
 body {
-  font-family: "微软雅黑", "文泉驿微米黑", "宋体", system-ui, BlinkMacSystemFont, -apple-system, Segoe UI,
-               Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-               sans-serif;
+  font-family:
+    "微软雅黑",
+    "文泉驿微米黑",
+    "宋体",
+    system-ui,
+    BlinkMacSystemFont,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    Fira Sans,
+    Droid Sans,
+    Helvetica Neue,
+    sans-serif;
   margin: 0 auto;
   max-width: 1920px;
   padding: 20px 40px;
   overflow-x: hidden; /* 防止侧边栏展开时页面产生横向滚动 */
 }
 
-label, input {
+label,
+input {
   display: flex;
 }
 
@@ -65,7 +79,7 @@ label {
 /*   width: 100%; */
 /* } */
 
-[type='submit'] {
+[type="submit"] {
   font-weight: 900;
   margin: 9px 0;
   padding: 6px 9px;
@@ -89,14 +103,15 @@ button.copyBtn {
 }
 
 table {
-  border: 2px solid #D1D9E0; /* 边框颜色：绿色 */
+  border: 2px solid #d1d9e0; /* 边框颜色：绿色 */
   border-radius: 10px; /* 添加圆角 */
   border-collapse: collapse; /* 合并边框 */
   box-shadow: 2px 2px 5px gray; /* 添加阴影 */
 }
 
-th, td {
-  border: 1px solid #D1D9E0; /* 单元格边框 */
+th,
+td {
+  border: 1px solid #d1d9e0; /* 单元格边框 */
   padding: 10px;
   text-align: left;
 }
@@ -115,15 +130,17 @@ tr:nth-child(even) {
 /* 文档评论表单 */
 
 div.tab-frame {
-  input {display:none; }
+  input {
+    display: none;
+  }
 
   > label {
-    display:block;
-    float:left;
-    padding:5px 10px;
-    cursor:pointer;
+    display: block;
+    float: left;
+    padding: 5px 10px;
+    cursor: pointer;
     border-radius: 12px;
-    background-color: #D1D6D8;
+    background-color: #d1d6d8;
     color: gray;
   }
 
@@ -133,21 +150,21 @@ div.tab-frame {
 
   // + 表示相邻的兄弟，~ 表示同辈兄弟，未必相邻
   input:checked + label {
-    background:white;
+    background: white;
     border: 0.5px solid #63b3ed;
-    cursor:default;
+    cursor: default;
     color: black;
   }
 
   div.tab {
-    display:none;
-    padding:5px 10px;
-    clear:left;
+    display: none;
+    padding: 5px 10px;
+    clear: left;
   }
 
   input:nth-of-type(1):checked ~ .tab:nth-of-type(1),
   input:nth-of-type(2):checked ~ .tab:nth-of-type(2) {
-    display:block;
+    display: block;
   }
 }
 
@@ -174,4 +191,9 @@ nav a:focus {
   text-decoration: underline; /* 或者自定义样式，如下划��� */
   text-underline-offset: 5px; /* 调整下划线位置（现代浏览器支持） */
   text-decoration-thickness: 2px; /* 下划线粗细 */
+}
+
+.emoji:hover {
+  cursor: pointer; /* 鼠标悬停时设置为手型 */
+  /* background-color: #e0e0e0; /\* 可选效果：改变背景色 *\/ */
 }

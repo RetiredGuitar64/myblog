@@ -10,7 +10,7 @@ class Shared::VoteButton < BaseComponent
 
       voted = emoji.in?(voted_types) ? "border: 1px solid #000;" : ""
       config = {
-        class: "iconbutton f-col align-items:center",
+        class: "iconbutton f-col align-items:center emoji",
         type:  "button",
         style: "width: 35px; height: 15px; font-size:12px;#{gray}#{voted}",
       }
