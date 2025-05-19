@@ -29,6 +29,27 @@ abstract class DocLayout
     PAGINATION_RELATION_MAPPING.dig?(current_path, :title) || "首页"
   end
 
+  def print_votes
+    doc = DocQuery.new.path_index(current_path).first
+    me = current_user
+
+    voted_types = if me.nil?
+                    [] of String
+                  else
+                    VoteQuery.new.user_id(me.id).doc_id(doc.id).map &.vote_type
+                  end
+
+    div class: "f-row", style: "margin-bottom: 0px;" do
+      mount(
+        Shared::VoteButton,
+        votes: Hash(String, Int32).from_json(doc.votes.to_json),
+        doc_id: doc.id,
+        current_user: me,
+        voted_types: voted_types
+      )
+    end
+  end
+
   def print_edit_date
     timestamp = "dist/docs/markdowns_timpstamps.yml"
 
@@ -74,7 +95,10 @@ HEREDOC
                 end
               end
 
-              raw print_edit_date
+              div class: "f-row justify-content:space-between" do
+                raw print_edit_date
+                print_votes
+              end
 
               content
 

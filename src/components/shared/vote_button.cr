@@ -1,6 +1,7 @@
 class Shared::VoteButton < BaseComponent
   needs votes : Hash(String, Int32)
-  needs reply_id : Int64
+  needs reply_id : Int64?
+  needs doc_id : Int64?
   needs voted_types : Array(String)
 
   def render
@@ -15,11 +16,17 @@ class Shared::VoteButton < BaseComponent
       }
 
       if current_user
+        if reply_id
+          hx_values = "{\"user_id\": #{current_user.not_nil!.id}, \"reply_id\": #{reply_id.not_nil!}, \"vote_type\": \"#{emoji}\"}"
+        else
+          hx_values = "{\"user_id\": #{current_user.not_nil!.id}, \"doc_id\": #{doc_id.not_nil!}, \"vote_type\": \"#{emoji}\"}"
+        end
+
         config = config.merge(
           {
             hx_patch:   "/docs/htmx/vote",
             hx_include: "[name='_csrf']",
-            hx_vals:    "{\"user_id\": #{current_user.not_nil!.id}, \"reply_id\": #{reply_id}, \"vote_type\": \"#{emoji}\"}",
+            hx_vals:    hx_values,
             hx_target:  "closest div",
           },
         )
