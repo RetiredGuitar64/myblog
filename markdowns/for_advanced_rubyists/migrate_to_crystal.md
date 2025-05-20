@@ -54,10 +54,10 @@ p foo {|x| x * 2 } # => [2, 4, 6]
 
 等等
 
-## 第四步，如果 gem 使用了其他 gem，暂时移除或替换它
+## 第四步，如果使用了第三方 gem，替换它或暂时移除它
 
-当前 gem 依赖的其他 gem 可能在 Crystal 不支持或需要寻找替代库, 在这一步，
-你可以暂时隔离它，等编译通过后，再寻找 Crystal 中对应的库或自己实现它。
+当前 Ruby 项目依赖的第三方库，Crystal 可能需要寻找或没有替代库, 此时，你不得不暂时
+隔离它，等编译通过后，再寻找替代或自己实现它。
 
 Crystal 没有一个类似于 https://rubygems.org 这样的中心化网站，包含所有的 Ruby gem.
 
@@ -70,7 +70,8 @@ https://shardbox.org/
 上面的网站都尝试找一找，也可以去 [官方 forum](forum.crystal-lang.org) 去搜索或提问
 
 要明白的是，很多著名的 shards, 并非托管自 github，可能来自非常小众的托管平台，
-例如：https://codeberg.org，https://sr.ht, 甚至使用 git 之外的其他 SCM 系统，例如：fossil
+例如：https://codeberg.org，https://sr.ht, 甚至有些项目使用 git 之外的其他 SCM 系统，
+例如：fossil
 
 
 ## 第五步：修复编译时错误，尤其是类型相关错误。
