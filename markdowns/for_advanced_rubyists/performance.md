@@ -11,7 +11,8 @@
 > We should forget about small efficiencies, say about 97% of the time: premature optimization is the root of all evil. 
 > Yet we should not pass up our opportunities in that critical 3%.
 
-我们应该忽略那些小效率问题，大约有 97% 的时间：过早优化是万恶之源。然而，在那关键的 3% 时刻，我们不能错失机会。
+我们应该忽略那些细微的效率优化，例如：在 97% 的情况下，过早优化是万恶之源。
+然而，我们也不能放过那关键的 3% 的优化机会。
 ```
 
 然而，如果你正在编写一个程序，并意识到通过进行一些微小的修改就可以写出一个语义相同且运行速度更快的版本时，你绝对不应该错过这个机会。
@@ -66,21 +67,20 @@ end
 ```
 
 ```bash
- ╰──➤ $ cr run --release class_vs_struct.cr
+ ╰──➤ $ crystal run --release class_vs_struct.cr
  class 134.44M (  7.44ns) (± 6.40%)  16.0B/op   4.74× slower
 struct 637.87M (  1.57ns) (±20.96%)   0.0B/op        fastest
 ```
 
-但是 struct 也不是万能的，struct 按照值的方式传递（而不是大多数对象采用的引用方式）
+但是 struct 也不是万能的，struct 按照值的方式传递（而不是大多数对象采用的引用方式传递）
 
 ```
-记住：
-
-任何时候，传递（或返回）一个 struct 对象，都是一个新的副本。
+任何时候，一个 struct 对象（作为参数）被 `传递` 或 `返回` 时，都会创建一个新的副本。
+如果恰巧在传递后修改了它，则只是修改的副本，这点极容易引起 bug。
 ```
 
 例如：如果你传递一个 struct 给一个方法，并且在方法内部修改了它，方法的调用者(caller) 无法
-看到这些改变，这极容易引起 bug，看下面这个例子：
+看到这些改变，看下面这个例子：
 
 
 ```crystal
@@ -227,7 +227,7 @@ Benchmark.ips do |bm|
 end
 ```
 
-```crystal
+```bash
  ╰──➤ $ crystal run --release 1.cr
 String.build   1.92M (519.54ns) (± 7.71%)  5.88kB/op        fastest
   IO::Memory 870.79k (  1.15µs) (± 6.98%)  5.88kB/op   2.21× slower
@@ -256,10 +256,10 @@ puts "Lines that mention crystal, ruby or java: #{lines_with_language_reference}
 
 解决办法：
 
-1. 使用 tuple {"crystal", "ruby", "java"}，它在 stack 中被创建，占用内存很少，
+1. 使用 tuple `{"crystal", "ruby", "java"}` 代替数组，它在 stack 中被创建，占用内存很少，
    而且，编译器大概率会将它优化掉, 因此这是首选的方式。
 
-2. 将数组作为一个常量, 并移出循环。
+2. 将数组作为一个常量, 并移到循环外面。
 
 ```crystal
 LANGS = ["crystal", "ruby", "java"]

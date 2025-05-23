@@ -5,48 +5,69 @@ RFC PR: "https://github.com/crystal-lang/rfcs/pull/2"
 Issue: "https://github.com/crystal-lang/crystal/issues/15342"
 ---
 
-# Summary
+# 概述
 
-Reinvent MT support in Crystal to be more efficient, for example by avoiding blocked fibers while there are sleeping threads, all the while empowering developers with different Execution Contexts to run fibers in.
+重新设计 Crystal 中的 MT(multi-method support) 以提高效率.
+例如, 在存在 sleeping 线程的时候, 总是避免 block 纤程, 同时允许开发者手动的
+创建以及选择不同的 execution contexts 来运行 Fiber.
 
-Note: this proposal takes inspiration from Go and Kotlin.
+```
+注意: 这个特性灵感来自于: Golang 以及 Kotlin
+```
 
-# Motivation (analysis of current situation)
+# 动机 (以及当前情况分析)
 
-## Terminology
+## 术语
 
-- **Thread**: program whose execution is controlled by the operating system ([wikipedia](https://en.wikipedia.org/wiki/Thread_(computing))).
-- **Fiber**: unit of works or “functions whose execution you can pause” ([wikipedia](https://en.wikipedia.org/wiki/Coroutine)), we can run multiple fibers per thread.
-- **Scheduler**: manages fibers’ executions inside the program (controlled by Crystal), unlike threads that are scheduled by the operating system (outside of the accessibility of the program).
-- **Event Loop**: an abstraction to wait on specific events, such as timers (e.g. wait until a certain amount of time has passed) or IO (e.g. wait for an socket to be readable or writable).
-- **Multi-threaded (MT)**: the environment uses multiple threads, fibers can run both concurrently and in parallel on different CPU cores.
-- **Single-threaded (ST)**: the environment uses only one thread, fibers can never run in parallel but still run concurrently.
+- **Thread**: 线程, 被操作系统管理的程序 ([wikipedia](https://en.wikipedia.org/wiki/Thread_(computing))).
+- **Fiber**: 纤程, 可以 “暂停并稍后恢复” 的工作单元,  ([wikipedia](https://en.wikipedia.org/wiki/Coroutine)), 每个线程上可以同时运行多个纤程。
+- **Scheduler**: 调度器，管理程序内部 Fiber 的执行，由 Crystal 内部控制，而非和线程一样，在程序之外由操作系统调度。
+- **Event Loop**: 等待特定事件的抽象，例如： timer （等待一小段时间）或 IO （等待一个 socket 变得可读或可写的）
+- **Multi-threaded (MT)**: 使用多个线程，Fiber 可以不同的 CPU 核心上并发的(concurrently)以及并行的(parallel)运行
+- **Single-threaded (ST)**: 使用单个纤程，Fiber 无法并行(in parallel), 但是并发是可能的。
 
-## Concurrency
+## 并发（Concurrency）
 
-> [!NOTE]
-> I only quickly sum up the concurrency model. There are very interesting topics about concurrency to consider (e.g. structured concurrency, fiber cancellation), but this RFC focuses on parallelism.
+```
+本 RFC 主要讨论 parallelism, 这里仅快速总结一下 concurrency.
+```
 
-Fibers, also commonly named coroutines, lightweight- or user-threads, are the basis of the concurrency system in Crystal.
+Fibers(纤程)，其他语言可能被称为 coroutines, lightweight-threds 或 user-threads，是 Crystal 中实现 concurrency 的基础。
 
-Fibers are designed around blocks. The runtime of the fiber is the code executed within that block. Fibers do not return any value, unlike other coroutine systems like in Kotlin for example.
+Fiber 总是使用 block 方式来调用, 在 block 中的代码，在当前 Fiber 运行时中被执行，并且不会返回任何值 (这点不同于 Kotlin).
+纤程中如果有操作导致 block，当前纤程被 blocked 并挂起（suspended)，在稍后 blocked 操作恢复后，纤程可以被恢复（resume).
 
-Whenever an operation would block, only the currently running Fiber will be blocked. It will be resumed later when the operation can execute without blocking (or result in an error). While a fiber is suspended, another fiber will be running. If no other fibers are running then the runtime waits for the event-loop to report that we can resume this or that fiber.
+这里需要理解的关键是，当一个纤程 A 挂起时，另一个纤程 B 会被自动运行，并在 B block 或执行完成之后，等待 event-loop 报告
+是继续执行下一个 Fiber C 还是，恢复前一个纤程或其他纤程的运行。
 
-For example IO operations, such as opening a file or reading from a socket, are really non-blocking as per the operating system and Crystal’s standard library, but for the developer it appears as blocking.
+在并发场景下，一个操作系统纤程，可以同时关联很多个纤程，这意味着，可能同一时间总有一个纤程在运行，这就是 concurrency.
 
-Fibers are cooperative and can’t be preempted from external means. That being said the thread itself running fibers may be preempted by the operating system, also blocking all pending fibers schedulers on that thread.
+例如，以常见的 IO 操作为例，假设我们从一个 socket 读取内容，高速的处理器需要等待慢速的 IO 返回数据，从开发者角度来看，
+这个操作是 block 的，此时 CPU 如果什么都不做等待 IO 完成，完全是 CPU 资源的浪费，在并发(concurrency)场景下，此时，
+访问 IO 操作的 Fiber 会立即挂起，释放操作系统线程资源去完成其他任务，等 IO 数据返回后，再立即切换回来继续执行。
 
-The fact that fibers can’t be preempted is a side effect, and not part of the concurrency model. A future evolution may actively preempt fibers that have been running for too long, or ask them to yield at preemptible points.
+纤程是 cooperative（协作式的），无法从程序外部中断或抢占，但是纤程所在的线程它自己有可能被操作系统中断或抢占，
+进而阻塞在该线程上运行的所有纤程。
 
-## Parallelism
+不过 “纤程无法被抢占” 并非并发模型的一部分。在未来的演化中，有可能实现，程序内部主动抢占运行时间过长的纤程，
+或者在可抢占的点上要求它们主动让出执行权。
 
-The current MT model can be summed up in one sentence:
+Fiber 的创建以及切换都是非常轻量的。
 
-> [!IMPORTANT]
-> A fiber will always be resumed by the same thread.
+## 并行（Parallelism）
 
-Spawning a fiber will send it to any running thread (in a round robin-ish way) to try and spread new fibers across different threads. A spawned fiber can optionally be associated to the same thread as the current fiber, hence grouping some fibers together, eventually forming a list of fibers that can run concurrently but will never run in parallel of each others.
+当前实现的多线程模式（MT model）可以总结为一句话：
+
+
+```
+一个纤程只能在之前挂起的线程上被恢复
+```
+
+新派生(spawning) 的 fiber 将使用简单的轮询(robin-ish) 方式，派发到一个正在运行的线程上。
+通过这种方式，将新派发的不同的 Fiber 分散到不同的线程上。
+
+我们也选择性的将新派发的纤程总在当前线程之上运行，来讲一些纤程分组在一起。
+分组在一起的纤程可以 concurrency 的运行，但是永远不会 in parallel。
 
 In technical details the current MT solution also means:
 

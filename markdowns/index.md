@@ -50,3 +50,57 @@
 ## 本站如何部署
 
 相比较使用 Ruby, 简直简单到爆！见项目 [README](https://github.com/crystal-china/website/blob/master/README.md) 以及有关 [交叉编译](https://crystal-china.org/docs/cross_compile) 的说明。
+
+整个部署过程是非常简单而且快速的。
+
+1. `shards run index` 创建所需的索引
+2. `yarn prod` 打包 assets 文件到 ./dist 文件夹。
+3. 交叉编译，生成一个静态的 binary (所有所需的 assets 文件也会被加入二进制文件)
+4. 和服务器上最后部署版本比较，并生成 binary patchfile.
+5. 复制 patchfile 到服务器，并应用。（相较于文件覆盖，服务器无需停止，既可以打 patch）
+6. 成功后，本地做一个刚刚部署版本的备份
+
+此网站编译后的 binary 大小大约 15M 左右（包含所有 assets 文件），修改不多的情况下，
+生成的 patch 文件大小在 500K 左右, 大部分部署时间花在了编译 release 版本的静态 binary。
+
+```bash
+sb_static --production --no-debug --link-flags="-s" --link-flags="-pie" --release crystal_china
+```
+
+如果还处在开发过程中，可以暂时移除 --release 参数，前者其实等价于： `-O3 --single-module`
+-O 用来指定为了生成 `最优代码` 的 `代码生成(codegen)` 工作量，默认不指定是 -O0 无优化，-O3 最高级别优化。
+较高的优化级别拥有更好的运行时(runtime)性能，但是需要花费更多的编译时间。
+
+这是一个权衡，事实上，在开发阶段，总是使用 -O1 是一个不错的主意，除非项目是简单的 
+hello world，否则默认不优化相较于 -O1 不会有明显的提升。
+
+下面是一个优化级别的比较：
+
+```bash
+default: initial compile: 7.4s, incremental compile(change 1 file): 5.3s, start time: 23.5s
+-O1: initial compile: 12s, incremental compile(change 1 file): 5.2s, start time: 7.5s
+-O2: initial compile: 12.6s, incremental compile(change 1 file): 5.3s, start time: 7s
+--release: initial compile: 61s, incremental compile(change 1 file): 61s, start time: 2s
+```
+
+可以看到，除了第一次编译时（我们只需要执行一次，对吧？）default 比 -O1 快不少 (7.4s -> 12s)，
+但增量编译甚至还比 default 快了一点点(5.3s -> 5.2s)。但是运行时性能，则有显著的提升。
+(23.5s -> 7.5s), 所以，对于 Web 开发这种 `非常频繁的增量编译` 的项目，使用 -O1 是一个
+不错的注意，不过 -O1 同时会输出较少的 backtrace, 但是带来大约 15% 的性能提升，
+你需要加 --debug 来输出和 default 同样的 backtrace, 所以，一切都是权衡。
+
+
+```bash
+ ╰──➤ $ binary_patch_crystal_china bin/crystal_china
+Calculating patch file ... Done.
+crystal_china.patchfile								100%  469KB 900.1KB/s   00:00
+Patching file ... Done
+deploy successful
+'bin/crystal_china' -> 'latest_released/bin/crystal_china'
+```
+
+
+最后一步，ssh 登录服务器，重启 web 服务，如有数据库表改动, 会在第一次启动时执行。 
+
+部署完成！
+
