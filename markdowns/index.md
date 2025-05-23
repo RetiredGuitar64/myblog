@@ -74,20 +74,21 @@ sb_static --production --no-debug --link-flags="-s" --link-flags="-pie" --releas
 这是一个权衡，事实上，在开发阶段，总是使用 -O1 是一个不错的主意，除非项目是简单的 
 hello world，否则默认不优化相较于 -O1 不会有明显的提升。
 
-下面是一个优化级别的比较：
+下面是来自 [PR 作者](https://github.com/crystal-lang/crystal/pull/13464#issue-1708224879) 不同优化级别的性能比较：
 
 ```bash
-default: initial compile: 7.4s, incremental compile(change 1 file): 5.3s, start time: 23.5s
--O1: initial compile: 12s, incremental compile(change 1 file): 5.2s, start time: 7.5s
--O2: initial compile: 12.6s, incremental compile(change 1 file): 5.3s, start time: 7s
---release: initial compile: 61s, incremental compile(change 1 file): 61s, start time: 2s
+default: 初次编译: 7.4s, 增量编译(修改一个文件): 5.3s, 启动时间: 23.5s
+-O1: 初次编译: 12s, 增量编译(修改一个文件): 5.2s, 启动时间: 7.5s
+-O2: 初次编译: 12.6s, 增量编译(修改一个文件): 5.3s, 启动时间: 7s
+--release: 初次编译: 61s, 增量编译(修改一个文件): 61s, 启动时间: 2s
 ```
 
-可以看到，除了第一次编译时（我们只需要执行一次，对吧？）default 比 -O1 快不少 (7.4s -> 12s)，
-但增量编译甚至还比 default 快了一点点(5.3s -> 5.2s)。但是运行时性能，则有显著的提升。
-(23.5s -> 7.5s), 所以，对于 Web 开发这种 `非常频繁的增量编译` 的项目，使用 -O1 是一个
-不错的注意，不过 -O1 同时会输出较少的 backtrace, 但是带来大约 15% 的性能提升，
-你需要加 --debug 来输出和 default 同样的 backtrace, 所以，一切都是权衡。
+可以看到，除了第一次编译时（只需要执行一次，对吧？）default 比 -O1 快不少 (7.4s -> 12s)，
+但增量编译阶段，-O1 甚至还比 default 快了一点点 (5.3s -> 5.2s)。但是运行时性能，
+则有显著的提升, (23.5s -> 7.5s), 足足快了三倍多，所以，对于 Web 开发这种 
+`非常频繁的增量编译` 的项目，或者 `需要反复运行 spec` 的情况，使用 -O1 是一个
+不错的注意，-O1 会输出较少的 backtrace, 但是带来大约 15% 的性能提升，需要加 `--debug` 
+参数来输出和 default 同样的 backtrace, 所以，一切都是权衡。
 
 
 ```bash
