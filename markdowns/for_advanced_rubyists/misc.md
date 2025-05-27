@@ -204,3 +204,40 @@ read_file 宏(macro) 来达到同样的目的
 # 这个 macro 相当于把文件 path.cr 里面的内容物理粘贴到宏调用位置
 {{ read_file("/some/alsolute/path.cr").id }} 
 ```
+
+## 整除
+
+Ruby中的除法运算符 `/` 当两边同为整数时进行 `floored division`，即：默认会向较小的数四舍五入。
+当调用 `#fdiv` 时，才会返回浮点数。
+
+```ruby
+ ╰──➤ $ pry
+[1] pry(main)> 9/5
+=> 1
+[2] pry(main)> 9/-5
+=> -2
+[3] pry(main)> 9.fdiv(5)
+=> 1.8
+[2] pry(main)> 9.fdiv(-5)
+=> -1.8
+```
+
+这是一个坑，因为似乎大部分其他语言 `/` 默认都不是这样，未来版本的 Ruby 也计划移除这个特性。
+
+相比较而言，Crystal 处理方式则比较大众化, `9/5` 和 `9.fdiv(5)` [完全是一样的](https://github.com/crystal-lang/crystal/blob/3f369d2c7/src/int.cr#L155)。
+`floored division` 则使用专门的 `//` 运算符。
+
+
+```ruby
+ ╰──➤ $ cr i
+ic(1.16.3):001> 9/5
+ => 1.8
+ic(1.16.3):002> 9/-5
+ => -1.8
+ic(1.16.3):003> 9.fdiv(5)
+ => 1.8
+ic(1.16.3):004> 9//5
+ => 1
+ic(1.16.3):005> 9//-5
+ => -2
+```
