@@ -17,7 +17,7 @@ for i in "${domain_names[@]}"; do
     args+=" -d $i"
 done
 
-$acme --issue --standalone $args
+$acme --issue --standalone --force $args
 
 mkdir -p /etc/ssl/$main_domain_name
 
