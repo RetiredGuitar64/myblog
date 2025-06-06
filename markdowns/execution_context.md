@@ -56,48 +56,26 @@ Fiber 的创建以及切换都是非常轻量的。
 
 ## 并行（Parallelism）
 
-当前实现的多线程模式（MT model）可以总结为一句话：
-
-
-```
-一个纤程只能在之前挂起的线程上被恢复
 ```
 
-新派生(spawning) 的 fiber 将使用简单的轮询(robin-ish) 方式，派发到一个正在运行的线程上。
-通过这种方式，将新派发的不同的 Fiber 分散到不同的线程上。
-
-我们也选择性的将新派发的纤程总在当前线程之上运行，来讲一些纤程分组在一起。
-分组在一起的纤程可以 concurrency 的运行，但是永远不会 in parallel。
-
-In technical details the current MT solution also means:
-
-1. Threads and schedulers are glued together. Each thread has a scheduler and a scheduler belongs to a dedicated thread. Fibers are tied to a thread (maybe they should be tied to a scheduler, fibers don’t care much about the thread, except for enqueuing).
-2. Each thread/scheduler has its own dedicated event loop to wait for events.
-3. A scheduler will handle its queue and immediately go to sleep whenever the queue is empty (waiting for events on the event loop).
-4. We can’t target a specific thread or scheduler when spawning a fiber: it’s either sent to a thread (including the current one) or to the current thread.
-
-Basically, the words scheduler and thread are almost interchangeable in the current MT model.
-
-```mermaid
-flowchart LR
-    spawn[spawn fiber]
-    spawn-->SA
-    spawn-->SB
-
-    subgraph TB[thread #2]
-        SB[scheduler]
-        SB-->SB
-        ELB[event loop]
-        ELB-->SB-->ELB
-    end
-
-    subgraph TA[thread #1]
-        SA[scheduler]
-        SA-->SA
-        ELA[event loop]
-        ELA-->SA-->ELA
-    end
 ```
+
+新派生(spawning) 的 fiber 可以可选的允许在当前线程上派发新的 Fiber，来将一些纤程分组在一起，
+或者使用简单的轮询(robin-ish) 方式（无法手动指定），派发到某个正在运行的随机线程上。
+
+当前实现，一个 Fiber 只能在之前挂起(suspend)的线程上被恢复(resume)，不可能恢复到另一个线程上。
+
+Thread <=> scheduler <=> event loop(queue)，当前实现它们之间都是 `唯一的一对一` 关系。
+
+从逻辑角度来说，Fiber 应该总是属于一个 scheduler，反倒不太关心具体在那个线程上运行。
+因为，也许将来某个实现，Thread 和 scheduler 之间，并非一一对应,一个 scheduler 可能
+在运行时可以选择最空闲的线程，这个线程和之前的线程可能是不同的线程。可以参见 [golang M:N scheduler](https://medium.com/@rezauditore/introducing-m-n-hybrid-threading-in-go-unveiling-the-power-of-goroutines-8f2bd31abc84)
+
+在不同线程之上运行的 Fibers 可以并行(in parallel) 运行, 但是同一个线程之上运行的
+一组纤程可以并发（concurrency）的方式运行，但是永远不会并行（in parallel）。
+
+scheduler 在线程中使用单独的纤程运行，它会等待处理 event loop(queue) 上的事件，
+当 queue 为空时，会进入睡眠状态。
 
 ## Pros
 
@@ -132,20 +110,6 @@ The worst case is stalling the whole application waiting for one fiber, as well 
 ### Example
 
 In the following graphic we can see that thread #1 is busy (running fiber 1, with fibers 2 and 3 being blocked), while thread #2 is sleeping.
-
-```mermaid
-flowchart TD
-    subgraph A[thread #2]
-        SA["scheduler (sleeping)"]
-    end
-    subgraph B[thread #1]
-        SB[scheduler]
-        F1[fiber #1]
-        F2[fiber #2]
-        F3[fiber #3]
-        SB-->F1-.->F2-.->F3-.->SB
-    end
-```
 
 ## Limitations
 

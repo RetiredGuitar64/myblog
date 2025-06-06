@@ -16,6 +16,7 @@ module PageHelpers
     "/docs/basic"                                    => {title: "基础知识", sub_title: "一些基础知识的简单总结", parent: "root"},
     "/docs/profile"                                  => {title: "查找性能瓶颈 (WIP)", sub_title: "", parent: "root"},
     "/docs/cross_compile"                            => {title: "交叉编译", sub_title: "", parent: "root"},
+    "/docs/execution_context"                        => {title: "execution context", sub_title: "", parent: "root"},
   }
   PAGINATION_URLS = PAGINATION_RELATION_MAPPING.keys
 
