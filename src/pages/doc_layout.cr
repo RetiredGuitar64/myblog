@@ -30,7 +30,10 @@ abstract class DocLayout
   end
 
   def print_votes
-    doc = DocQuery.new.path_index(current_path).first
+    doc = DocQuery.new.path_index(current_path).first?
+
+    return if doc.nil?
+
     me = current_user
 
     voted_types = if me.nil?
