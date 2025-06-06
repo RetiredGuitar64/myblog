@@ -16,7 +16,7 @@ module PageHelpers
     "/docs/basic"                                    => {title: "基础知识", sub_title: "一些基础知识的简单总结", parent: "root"},
     "/docs/profile"                                  => {title: "查找性能瓶颈 (WIP)", sub_title: "", parent: "root"},
     "/docs/cross_compile"                            => {title: "交叉编译", sub_title: "", parent: "root"},
-    "/docs/execution_context"                        => {title: "execution context", sub_title: "", parent: "root"},
+    "/docs/execution_context"                        => {title: "execution context", sub_title: "", parent: "root", hidden: "true"},
   }
   PAGINATION_URLS = PAGINATION_RELATION_MAPPING.keys
 
@@ -25,25 +25,26 @@ module PageHelpers
     name : String,
     path : String,
     parent : String = "root",
-    child = [] of PageMapping
+    child = [] of PageMapping,
   )
 
   SIDEBAR_LINKS = {} of String => PageMapping
 
   PAGINATION_RELATION_MAPPING.each do |k, v|
     parent = v[:parent]
+    hidden = v[:hidden]?
 
     if parent == "root"
       SIDEBAR_LINKS[k] = PageMapping.new(
         name: v[:title],
         path: k,
-      )
+      ) unless hidden == "true"
     else
       if SIDEBAR_LINKS.has_key?(parent)
         SIDEBAR_LINKS[parent].child << PageMapping.new(
           name: v[:title],
           path: k,
-        )
+        ) unless hidden == "true"
       end
     end
   end
