@@ -23,8 +23,6 @@ module PageHelpers
     PageMapping,
     name : String,
     path : String,
-    next_page : Array(String)?,
-    prev_page : Array(String)?,
     parent : String = "root",
     child = [] of PageMapping
   )
@@ -38,16 +36,12 @@ module PageHelpers
       SIDEBAR_LINKS[k] = PageMapping.new(
         name: v[:title],
         path: k,
-        next_page: v[:next_page]?,
-        prev_page: v[:prev_page]?
       )
     else
       if SIDEBAR_LINKS.has_key?(parent)
         SIDEBAR_LINKS[parent].child << PageMapping.new(
           name: v[:title],
           path: k,
-          next_page: v[:next_page]?,
-          prev_page: v[:prev_page]?
         )
       end
     end
