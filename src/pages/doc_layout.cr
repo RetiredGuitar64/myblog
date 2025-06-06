@@ -51,7 +51,7 @@ abstract class DocLayout
   end
 
   def print_edit_date
-    timestamp = "dist/docs/markdowns_timpstamps.yml"
+    timestamp = "dist/docs/markdowns_timestamps.yml"
 
     if File.exists?(timestamp)
       YAML.parse(File.read(timestamp))[markdown_path]?.try do |date|
