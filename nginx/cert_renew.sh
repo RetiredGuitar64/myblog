@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-set -uex
+# /root/.acme.sh/cert_renew.sh "crystal-china.org" "assets.crystal-china.org" "daka.crystal-china.org" "mail.crystal-china.org" "me.crystal-china.org"
+
+set -ue
 
 acme=~/.acme.sh/acme.sh
 
