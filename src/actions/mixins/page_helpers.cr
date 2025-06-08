@@ -1,4 +1,5 @@
 require "ecr"
+require "digest/md5"
 
 module PageHelpers
   PAGINATION_RELATION_MAPPING = {
@@ -69,5 +70,19 @@ module PageHelpers
 
   def asset_host
     Lucky::Server.settings.asset_host
+  end
+
+  def fingerprinted_filename(file_path : String)
+    return file_path unless LuckyEnv.production?
+
+    path = Path[file_path]
+    basename = path.stem
+    digest = Digest::MD5.hexdigest(File.read(path))[0..7]
+
+    if basename.ends_with? digest
+      file_path.to_s
+    else
+      (Path[path.dirname] / "#{basename}-#{digest}#{path.extension}").to_s
+    end
   end
 end
