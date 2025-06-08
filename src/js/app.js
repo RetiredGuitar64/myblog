@@ -23,11 +23,9 @@ function init() {
     copyCodeButton();
     const assetHost = IS_WATCH_MODE ? "" : "https://assets.crystal-china.org";
 
-    console.log(assetHost);
-
     // 确保下面的函数，只在 body 重新改变时才触发
     if (event.detail.elt.nodeName == "BODY") {
-        console.log(`${mixManifest["/docs/stork.wasm"] ?? "/docs/stork.wasm"}`);
+        console.log(mixManifest);
         stork.initialize(
             `${assetHost}${mixManifest["/docs/stork.wasm"] ?? "/docs/stork.wasm"}`,
         );
