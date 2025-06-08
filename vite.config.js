@@ -1,16 +1,16 @@
 // vite.config.js
-import { defineConfig } from 'vite';
-import { resolve } from 'path';
-import crypto from 'crypto';
-import path from 'path';
-import fs from 'fs';
-const zlib = require('zlib');
-import viteCompression from 'vite-plugin-compression';
-import inject from '@rollup/plugin-inject'
+import { defineConfig } from "vite";
+import { resolve } from "path";
+import crypto from "crypto";
+import path from "path";
+import fs from "fs";
+const zlib = require("zlib");
+import viteCompression from "vite-plugin-compression";
+import inject from "@rollup/plugin-inject";
 
 export default defineConfig(({ command, mode }) => {
-    const isWatch = mode === 'watch';
-    const outDir = 'dist';
+    const isWatch = mode === "watch";
+    const outDir = "dist";
 
     return {
         define: {
@@ -20,13 +20,15 @@ export default defineConfig(({ command, mode }) => {
             outDir: outDir, // 打包后的输出目录
             rollupOptions: {
                 input: {
-                    "js/app.js": resolve(__dirname, 'src/js/app.js'), // 指定入口文件
-                    "css/app.css": resolve(__dirname, 'src/css/app.scss'), // 指定 CSS 文件
+                    "js/app.js": resolve(__dirname, "src/js/app.js"), // 指定入口文件
+                    "css/app.css": resolve(__dirname, "src/css/app.scss"), // 指定 CSS 文件
                 },
                 output: {
-                    entryFileNames: isWatch ? 'js/app.js' : 'js/app-[hash].js',
-                    chunkFileNames: isWatch ? '[name].js' : '[name]-[hash].js', // 动态导入的 JS 文件名
-                    assetFileNames: isWatch ? '[name].[ext]' : '[name]-[hash].[ext]', // 静态资源（例如 CSS）命名规则，带 hash
+                    entryFileNames: isWatch ? "js/app.js" : "js/app-[hash].js",
+                    chunkFileNames: isWatch ? "[name].js" : "[name]-[hash].js", // 动态导入的 JS 文件名
+                    assetFileNames: isWatch
+                        ? "[name].[ext]"
+                        : "[name]-[hash].[ext]", // 静态资源（例如 CSS）命名规则，带 hash
                 },
             },
             manifest: true,
@@ -37,8 +39,10 @@ export default defineConfig(({ command, mode }) => {
         css: {
             postcss: {
                 plugins: [
-                    require('autoprefixer'), // 自动添加浏览器前缀
-                    ...(isWatch ? [] : [require('cssnano')({ preset: 'default' })])
+                    require("autoprefixer"), // 自动添加浏览器前缀
+                    ...(isWatch
+                        ? []
+                        : [require("cssnano")({ preset: "default" })]),
                 ],
             },
             preprocessorOptions: {
@@ -51,32 +55,42 @@ export default defineConfig(({ command, mode }) => {
             },
         },
         plugins: [
-            ...(mode !== 'watch' ? [
-                viteCompression({algorithm: 'gzip', ext: '.gz'}),
-                viteCompression({ algorithm: 'brotliCompress', ext: '.br',})
-            ] : []),
+            ...(mode !== "watch"
+                ? [
+                      viteCompression({ algorithm: "gzip", ext: ".gz" }),
+                      viteCompression({
+                          algorithm: "brotliCompress",
+                          ext: ".br",
+                      }),
+                  ]
+                : []),
             inject({
-                exclude: ['src/**/*.scss', 'src/**/*.css'],
-                htmx: 'htmx.org',
-                _hyperscript: 'hyperscript.org',
-                copyCodeButton: './copyCodeButton.js',
+                exclude: ["src/**/*.scss", "src/**/*.css"],
+                htmx: "htmx.org",
+                _hyperscript: "hyperscript.org",
+                copyCodeButton: "./copyCodeButton.js",
                 // 这里我修改了源码，在最后加了一行才 `export default stork;` 才 import 成功
-                stork: './stork.js',
-                mixManifest: 'virtual:mix-manifest'
+                stork: "./stork.js",
+                mixManifest: "virtual:mix-manifest",
             }),
             {
-                name: 'generate-mix-manifest',
-                enforce: 'post',
+                name: "generate-mix-manifest",
+                enforce: "post",
                 generateBundle(_, bundle) {
                     const mixManifest = {};
-                    const publicDir = path.resolve(__dirname, 'public');
+                    const publicDir = path.resolve(__dirname, "public");
                     const outputDir = path.resolve(__dirname, outDir);
-                    const compressibleFileTypes = /\.(svg|png|jpg|json|js|css|wasm|st|webp)/;
+                    const compressibleFileTypes =
+                        /\.(svg|png|jpg|json|js|css|wasm|st|webp)/;
 
                     // 遍历打包后的文件
                     for (const [fileName, fileInfo] of Object.entries(bundle)) {
-                        if (fileInfo.type === 'chunk' || fileInfo.type === 'asset') {
-                            const originalName = fileInfo.name || fileInfo.fileName;
+                        if (
+                            fileInfo.type === "chunk" ||
+                            fileInfo.type === "asset"
+                        ) {
+                            const originalName =
+                                fileInfo.name || fileInfo.fileName;
                             // Vite 构建后路径相对于构建目录，需要补充 `/`
                             mixManifest[`/${originalName}`] = `/${fileName}`;
                         }
@@ -87,56 +101,96 @@ export default defineConfig(({ command, mode }) => {
                         const fileContents = fs.readFileSync(filePath);
                         let compressedContent;
 
-                        if (algorithm === 'gzip') {
+                        if (algorithm === "gzip") {
                             compressedContent = zlib.gzipSync(fileContents);
-                        } else if (algorithm === 'brotli') {
-                            compressedContent = zlib.brotliCompressSync(fileContents);
+                        } else if (algorithm === "brotli") {
+                            compressedContent =
+                                zlib.brotliCompressSync(fileContents);
                         }
 
-                        fs.writeFileSync(`${filePath}.${extension}`, compressedContent);
+                        fs.writeFileSync(
+                            `${filePath}.${extension}`,
+                            compressedContent,
+                        );
                     };
 
                     const processPublicFiles = (dir) => {
                         const files = fs.readdirSync(dir);
                         files.forEach((file) => {
                             const absoluteFilePath = path.join(dir, file);
-                            const relativeFilePath = path.relative(publicDir, absoluteFilePath); // 获取相对 public 的路径
+                            const relativeFilePath = path.relative(
+                                publicDir,
+                                absoluteFilePath,
+                            ); // 获取相对 public 的路径
                             const stats = fs.statSync(absoluteFilePath);
-                            const needProcess = (!isWatch && stats.isFile() && compressibleFileTypes.test(file));
+                            const needProcess =
+                                !isWatch &&
+                                stats.isFile() &&
+                                compressibleFileTypes.test(file);
 
                             if (stats.isDirectory()) {
                                 processPublicFiles(absoluteFilePath); // 递归处理子目录
                             } else {
                                 // 生成文件内容的哈希值
-                                const fileContent = fs.readFileSync(absoluteFilePath);
-                                const hash = crypto.createHash('md5').update(fileContent).digest('hex').slice(0, 8);
+                                const fileContent =
+                                    fs.readFileSync(absoluteFilePath);
+                                const hash = crypto
+                                    .createHash("md5")
+                                    .update(fileContent)
+                                    .digest("hex")
+                                    .slice(0, 8);
 
                                 // 原始路径变成带哈希的路径
                                 const ext = path.extname(file);
                                 const baseName = path.basename(file, ext);
 
                                 let distPath = path.dirname(relativeFilePath);
-                                distPath = distPath === '.' ? '' : path.join(distPath, "/");
+                                distPath =
+                                    distPath === "."
+                                        ? ""
+                                        : path.join(distPath, "/");
 
                                 const outputPath = needProcess
                                     ? `${distPath}${baseName}-${hash}${ext}`
                                     : `${distPath}${baseName}${ext}`;
 
-                                const absoluteOutputPath = path.join(outputDir, outputPath);
+                                const absoluteOutputPath = path.join(
+                                    outputDir,
+                                    outputPath,
+                                );
 
                                 // 创建目标目录并复制文件
-                                fs.mkdirSync(path.dirname(absoluteOutputPath), { recursive: true });
-                                fs.copyFileSync(absoluteFilePath, absoluteOutputPath);
+                                fs.mkdirSync(path.dirname(absoluteOutputPath), {
+                                    recursive: true,
+                                });
+                                fs.copyFileSync(
+                                    absoluteFilePath,
+                                    absoluteOutputPath,
+                                );
 
                                 if (needProcess) {
-                                    fs.unlinkSync(path.join(outDir, relativeFilePath));
-                                    console.log(`Compressing: ${absoluteOutputPath}`);
-                                    compressFile(absoluteOutputPath, 'gzip', 'gz');
-                                    compressFile(absoluteOutputPath, 'brotli', 'br');
+                                    fs.unlinkSync(
+                                        path.join(outDir, relativeFilePath),
+                                    );
+                                    console.log(
+                                        `Compressing: ${absoluteOutputPath}`,
+                                    );
+                                    compressFile(
+                                        absoluteOutputPath,
+                                        "gzip",
+                                        "gz",
+                                    );
+                                    compressFile(
+                                        absoluteOutputPath,
+                                        "brotli",
+                                        "br",
+                                    );
                                 }
 
                                 // 更新 mixManifest (使用 `/` 作为路径分隔符以防止跨平台的问题)
-                                mixManifest[`/${relativeFilePath.replace(/\\/g, '/')}`] = `/${outputPath.replace(/\\/g, '/')}`;
+                                mixManifest[
+                                    `/${relativeFilePath.replace(/\\/g, "/")}`
+                                ] = `/${outputPath.replace(/\\/g, "/")}`;
                             }
                         });
                     };
@@ -144,30 +198,42 @@ export default defineConfig(({ command, mode }) => {
                     processPublicFiles(publicDir);
 
                     // 将 mixManifest 写入 mix-manifest.json
-                    const manifestPath = path.join(outputDir, 'mix-manifest.json');
-                    fs.writeFileSync(manifestPath, JSON.stringify(mixManifest, null, 2));
-                    console.log('mix-manifest.json generated:', mixManifest);
-                }
+                    const manifestPath = path.join(
+                        outputDir,
+                        "mix-manifest.json",
+                    );
+                    fs.writeFileSync(
+                        manifestPath,
+                        JSON.stringify(mixManifest, null, 2),
+                    );
+                    console.log("mix-manifest.json generated:", mixManifest);
+                },
             },
             {
-                name: 'virtual-mix-manifest',
-                enforce: 'post',
+                name: "virtual-mix-manifest",
+                enforce: "post",
                 // 定义一个虚拟模块内容，生产模式下，返回 mixManifest 的内容到 app.js
                 resolveId(id) {
-                    if (id === 'virtual:mix-manifest') return id; // 虚拟模块 ID
+                    if (id === "virtual:mix-manifest") return id; // 虚拟模块 ID
                 },
                 load(id) {
-                    if (id === 'virtual:mix-manifest') {
-                        const mixManifestPath = path.resolve(__dirname, 'dist/mix-manifest.json'); // 替换成你的 mix-manifest.json 路径
+                    if (id === "virtual:mix-manifest") {
+                        const mixManifestPath = path.resolve(
+                            __dirname,
+                            "dist/mix-manifest.json",
+                        ); // 替换成你的 mix-manifest.json 路径
 
                         if (fs.existsSync(mixManifestPath)) {
-                            const mixManifestContent = fs.readFileSync(mixManifestPath, 'utf-8');
+                            const mixManifestContent = fs.readFileSync(
+                                mixManifestPath,
+                                "utf-8",
+                            );
                             return `export default ${mixManifestContent};`;
                         } else {
                             return "export default {};";
                         }
                     }
-                }
+                },
             },
         ],
     };
