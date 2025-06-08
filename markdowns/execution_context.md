@@ -12,7 +12,7 @@ Issue: "https://github.com/crystal-lang/crystal/issues/15342"
 创建以及选择不同的 execution contexts 来运行 Fiber.
 
 ```
-注意: 这个特性灵感来自于: Golang 以及 Kotlin
+这个特性灵感来自于: Golang 和 Kotlin
 ```
 
 # 动机 (以及当前情况分析)
@@ -56,10 +56,6 @@ Fiber 的创建以及切换都是非常轻量的。
 
 ## 并行（Parallelism）
 
-```
-
-```
-
 新派生(spawning) 的 fiber 可以可选的允许在当前线程上派发新的 Fiber，来将一些纤程分组在一起，
 或者使用简单的轮询(robin-ish) 方式（无法手动指定），派发到某个正在运行的随机线程上。
 
@@ -68,69 +64,69 @@ Fiber 的创建以及切换都是非常轻量的。
 Thread <=> scheduler <=> event loop(queue)，当前实现它们之间都是 `唯一的一对一` 关系。
 
 从逻辑角度来说，Fiber 应该总是属于一个 scheduler，反倒不太关心具体在那个线程上运行。
-因为，也许将来某个实现，Thread 和 scheduler 之间，并非一一对应,一个 scheduler 可能
-在运行时可以选择最空闲的线程，这个线程和之前的线程可能是不同的线程。可以参见 [golang M:N scheduler](https://medium.com/@rezauditore/introducing-m-n-hybrid-threading-in-go-unveiling-the-power-of-goroutines-8f2bd31abc84)
+因为，也许将来某个实现，Thread 和 scheduler 之间，并非一一对应, 而是 [golang M:N scheduler](https://medium.com/@rezauditore/introducing-m-n-hybrid-threading-in-go-unveiling-the-power-of-goroutines-8f2bd31abc84) 的关系。 
+一个 Fiber 恢复时， scheduler 可能选择最空闲的线程，而这个线程和之前挂起时的线程可能是不同的线程。
 
 在不同线程之上运行的 Fibers 可以并行(in parallel) 运行, 但是同一个线程之上运行的
-一组纤程可以并发（concurrency）的方式运行，但是永远不会并行（in parallel）。
+一组纤程，可以并发（concurrency）的方式运行，但是永远不会并行（in parallel）。
 
-scheduler 在线程中使用单独的纤程运行，它会等待处理 event loop(queue) 上的事件，
-当 queue 为空时，会进入睡眠状态。
+同一个线程之上运行的一组纤程，如果操作同一数据，那么这些数据会在 CPU cache 中缓存以提高性能。
 
-## Pros
+如果线程数超过 CPU 可利用线程的数量，或者操作系统非常忙碌，带来大量线程切换，
+并不会提高性能，反而有害于性能。
 
-If all fibers on one thread operate on the same data, that data should already be available in the CPU caches.
+### Fiber 分组
 
-### Data locality
-
-With few fibers running, resuming may improve cache reuses, which can improve performance. With too many threads (than available CPUs) or a busy operating system with many apps, with lots of thread context switches, that may not hold true.
-
-### Group a set of fibers together
-
-Such a group of fibers will never run in parallel. This can vastly simplify the synchronization logic since you don’t have to deal with parallelism anymore, only concurrency, which is much easier & faster to deal with. For example no need for costly atomic operations, you can simply access a value directly. Parallelism issues and their impact on the application performance is limited to the global communication.
+在同一个 Thread 之上运行的一组 Fiber 无法并发(in parallel), 这极大的简化了逻辑，并且
+更加快速，因为你不需要担心同组 Fiber 之间的原子同步操作。
 
 ## Issues
 
-### The round robin dispatcher doesn’t consider busy threads.
+1. 新派生的 Fiber 使用简单的轮询方式来选择一个新的线程，这有一个问题，它不考虑忙碌的线程，
+   Fiber 可能被派发到一个繁忙的线程之上，而同时，另一个线程空闲。
 
-Crystal pushes new fibers to whatever thread, meaning that we may push fibers to busy threads with a large queue, while there may be available threads, or with smaller / faster queues.
+2. scheduler 会等待处理 event loop(queue) 上的事件，当 queue 为空时，这个饥饿的线程
+(starving thread) 会立即进入睡眠状态, 甚至其他线程非常忙碌的情况下，而新的 Fiber 
+可能继续不断的入队繁忙线程的队列。
 
-If you’re unlucky, the busy fibers can be scheduled on the same thread while another thread is sleeping, impacting the performance instead of improving it, as we don’t benefit from parallelism.
-
-### A starving thread will go to sleep
-
-A thread whose scheduler queue of runnable fibers runs empty will immediately put itself to sleep, regardless of how busy other threads may be. An application performance may be impacted as it can lose one or more CPUs that will only be resumed when new fibers are queued, while fibers will continue to be queued on the busy thread(s).
 
 ### CPU bound fiber blocks other fibers queued on the same thread/scheduler
 
-See issue [#12392](https://github.com/crystal-lang/crystal/issues/12392) for an example of this problem: a CPU bound fiber that never encounters a preemptible point will block all the fibers that are stuck on the thread, without any possibility for them to be moved to another thread.
+如果当前 Fiber 是一个 CPU 密集型（CPU bound) 任务, 执行过程中可能没有 `可抢占点`
+（preemptible point）来允许同一个分组的其他 Fibers 执行, 显然这些被 blocked 的 
+fibers 也没有机会在其他线程上被执行。
 
-The worst case is stalling the whole application waiting for one fiber, as well as having the busy fibers stuck on some threads, instead of being spread across all the threads, limiting or preventing parallelism.
+最坏的情况下，整个应用程序等待一个 CPU 密集型 fiber 执行完成，而其他有负载的 fibers 
+一直被阻塞，这限制了并行性。（理想情况下，负载 Fiber 应该尽可能分布在不同的线程之上）
 
-### Example
+## 限制
 
-In the following graphic we can see that thread #1 is busy (running fiber 1, with fibers 2 and 3 being blocked), while thread #2 is sleeping.
+### 无法在运行时控制 threads/scheduler 的数量
 
-## Limitations
+目前没有提供 API 来指定初始 threads/schedulers 的数量，也无法调整大小。
+变大其实不是一个问题，但是变小，不得不等待 queue 为空才能停止线程。
+如果一个 Fiber 执行的是长期 (long running) 操作, 例如：信号处理循环，或日志处理(logger),
+这个线程根本无法被停止掉。
 
-> [!IMPORTANT]
-> Some of these limitations may be fixable in the current model, with maybe a few limitations left.
+### 无法启动一个没有 scheduler/event-loop 的线程
 
-### Can’t control the number of threads/schedulers at runtime
+创建一个线程时（例如通过未公开的 Thread.new），也会自动创建对应的 scheduler/event-loop。
+这样做会引发许多复杂的潜在问题。
 
-There is no API to determine the initial number of threads/schedulers, or to resize the list.
+下面的话不好翻译，继续引用原内容
 
-> [!NOTE]
-> This could be fixed with the current model. Sizing up isn’t an issue, but sizing down can be: we can’t move fibers, so we must wait for the queue to run empty before the thread can stop. If long running fibers are sent to different threads (e.g. signal handler loop, loggers) we may not be able to resize down!
+```
+Technically we can (`Thread.new` is undisclosed API but can be called), 
+yet calling anything remotely related to fibers or the event-loop is dangerous as 
+it will immediately create a scheduler for the thread, and/or an event-loop for
+that thread, and possibly block the thread from doing any progress if the thread 
+puts itself to sleep waiting for an event, or other issues.
+```
 
-### Can’t start a thread without a scheduler & event-loop
+一个可能的解决方案是，允许创建 `bare` 线程，这样的线程无法 spawning fiber, 新派发
+的 Fiber 会被发送到其他线程或报错。
 
-Technically we can (`Thread.new` is undisclosed API but can be called), yet calling anything remotely related to fibers or the event-loop is dangerous as it will immediately create a scheduler for the thread, and/or an event-loop for that thread, and possibly block the thread from doing any progress if the thread puts itself to sleep waiting for an event, or other issues.
-
-> [!NOTE]
-> We can fix this in the current model. For example by supporting to create a “bare” thread. Spawning a fiber would always be sent to other schedulers (or raise). We can also probably figure something about the event-loop and timers (e.g. Thread.sleep).
-
-### Can’t isolate a fiber to a thread
+### Fiber 无法独立于 Thread 而存在。
 
 The fiber becomes the sole fiber executing on that thread, for a period of time or forever. No fiber shall be scheduled on that thread anymore. Here are some use cases:
 
