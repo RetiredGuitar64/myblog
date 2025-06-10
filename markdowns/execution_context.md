@@ -15,7 +15,7 @@ Issue: "https://github.com/crystal-lang/crystal/issues/15342"
 这个特性灵感来自于: Golang 和 Kotlin
 ```
 
-# 动机 (以及当前情况分析)
+# 动机 (以及引入这个 RFC 之前，当前工作方式的分析)
 
 ## 术语
 
@@ -110,8 +110,8 @@ fibers 也没有机会在其他线程上被执行。
 
 ### 无法启动一个没有 scheduler/event-loop 的线程
 
-创建一个线程时（例如通过未公开的 Thread.new），也会自动创建对应的 scheduler/event-loop。
-这样做会引发许多复杂的潜在问题。
+创建一个线程时（例如通过未公开的类似于 Ruby 用法的 Thread.new 方法），也会自动创建对应的
+scheduler/event-loop，这样做会引发许多复杂的潜在问题。
 
 下面的话不好翻译，继续引用原内容
 
@@ -123,81 +123,128 @@ that thread, and possibly block the thread from doing any progress if the thread
 puts itself to sleep waiting for an event, or other issues.
 ```
 
-一个可能的解决方案是，允许创建 `bare` 线程，这样的线程无法 spawning fiber, 新派发
-的 Fiber 会被发送到其他线程或报错。
+一个可能的解决方案是，允许创建 `bare` 线程，当在这样的线程之上 spawning a fiber, 
+新派发的 Fiber 会被发送到其他线程或直接抛异常。
 
-### Fiber 无法独立于 Thread 而存在。
+### Fiber 无法独占一个线程
 
-The fiber becomes the sole fiber executing on that thread, for a period of time or forever. No fiber shall be scheduled on that thread anymore. Here are some use cases:
+有时候，我们需要一个 fiber 在一个线程之上独占运行一段时间，或一直运行，在运行期间，
+不可以有新的 Fiber 被调度到这个线程，例如：
 
-- Run the Gtk or QT main loops, that must run in a dedicated thread, callbacks from the UI may run in that thread and communicate with the rest of the Crystal application, even if it only has one other thread for running all fibers, the communication must be thread safe.
-- Executing a slow, CPU-bound, operation can take a while (e.g. calculating a bcrypt password hash) and it will block all progress of other fibers that happen to run on the same thread.
-- Again, see issue [#12392](https://github.com/crystal-lang/crystal/issues/12392).
+1. GTK 或 QT 用来处理来自于 UI 组件的 callback 的主循环，需要和 Crystal 程序的其他部分通讯，
+   必须在一的单独的线程运行。
+2. 耗时的，CPU-bound 的任务（例如计算一个 BCrypt 密码哈希）会阻塞在同一个线程之上运行的其他纤程。
+Fiber 可以被设计为一个独立于线程的纤程，它可以在某个线程上运行一段时间，或一直运行。
 
-> [!NOTE]
-> We could workaround this in the current model. For example by supporting to create a thread without a scheduler and execute some action there. It would work nicely for very long operations (maybe not so with operations that may last for some hundred milliseconds).
->
-> That wouldn’t fix issue [#12392](https://github.com/crystal-lang/crystal/issues/12392) however: we can’t have the current thread continue running the current fiber, and actively move the scheduler to another thread to not block the other fibers, otherwise the fibers would run in parallel to the isolated fiber, breaking the contract!
+当前模式下，无法做到，当前线程被独占，运行专门的纤程，同时将 scheduler 以及其他纤程
+移动到新的线程，如果可以，那么专门的纤程和移动的其他纤程是并行，这破坏了纤程之间因该并发的约定。
 
-# Guide-level explanation (the proposal)
+# 当前提案 (指南级别的解释)
 
-In the light of the pros (locality) and cons (blocked fibers), I propose to break the "a fiber will always be resumed by the same thread" concept and instead have "a fiber may be resumed by any thread" to enable more scenarios, for example a MT environment with work stealing.
+综合考虑当前方案的优点（局部性）以及缺点（阻塞 fiber), 我提案打破 “一个 fiber 只能
+被同一个线程 resume” 的约定，代之，一个 fiber 可以在任意线程之上 resume 。
 
-These scenarios don't have to be a single MT environment with work stealing like Go proposes, but instead to have the ability, at runtime, to create environments to spawn specific fibers in.
+这使得更多的优化场景成为可能，例如：现代多线程模型的工作窃取(work stealing)，允许空闲的
+纤程窃取其他线程的任务队列中的任务，可以有效解决单个线程空闲、其他线程任务繁重的负载不均问题。
 
-## Execution contexts
+这个实现，不必是一个类似于 go 提案的，一个支持 work stealing 的单个 MT 环境，代之，
+在运行时，在运行时可以动态创建新的环境。
 
-An execution context creates and manages a dedicated pool of 1 or more threads where fibers can be executed into. Each context manages the rules to run, suspend and swap fibers internally.
+## 执行上下文(Execution contexts)
 
-Applications can create any number of execution contexts in parallel. These contexts are isolated but they shall still be capable to communicate together with the usual synchronization primitives (e.g. Channel, Mutex) that must be thread-safe.
+一个执行上下文，创建并管理一个专门的 pool （池中其中可以一个或多个线程）
+上下文主要负责管理如何运行，挂起，以及 fiber 在内部线程中的交换。
 
-Said differently: an execution context groups fibers together. Instead of associating a fiber to a specific thread, we'd now associate a fiber to an execution context, abstracting which thread(s) they actually run on.
+应用程序可以并行的创建任意多个执行上下文，它们彼此之间是隔离的，但是仍然可能通过
+常见的线程安全的同步原语(synchronization primitives**, 例如：Channel,Mutex 来通讯。
 
-When spawning a fiber, the fiber would by default be enqueued into the current execution context, the one running the current fiber. Child fibers will then execute in the same execution context as their parent (unless told otherwise).
+换个说法：一个执行上下文管理一组 fiber，是一个比线程更加高级的抽象，fiber 只是与 
+execution contexts 关联，而与具体运行时所属的线程解耦，当 spawn 一个新的 fiber, 
+fiber 默认会入队到当前运行 fiber 所在的execution context, 所有子纤程（Child fibers）
+	都会在父纤程所在的 execution context 之上运行。（除非明确指定其他 context）
 
-Once spawned a fiber shouldn’t _move_ to another execution context. For example on re-enqueue the fiber must be resumed into it’s execution context: a fiber running in context B enqueues a waiting sender from context A must enqueue it into context A. That being said, we could allow to _send_ a fiber to another context.
+我们可以 send 一个纤程到其他 execution context 去执行，但是一个已经派生的 fiber，
+resume 重新入队时，只能是原来的执行上下文。
 
-## Kinds of execution contexts
+## 执行上下文的分类
 
-The following are the potential contexts that Crystal could implement in stdlib.
+下面是标准库中实现的执行上下文:
 
-**Single Threaded Context**: fibers will never run in parallel, they can use simpler and faster synchronization primitives internally (no atomics, no thread safety) and still communicate with other contexts with the default thread-safe primitives; the drawback is that a blocking fiber will block the thread and all the other fibers.
+**单线程上下文**
 
-**Multi Threaded Context**: fibers will run in parallel and may be resumed by any thread, the number of schedulers and threads can grow or shrink, schedulers may move to another thread (M:N schedulers:threads) and steal fibers from each others; the advantage is that fibers that can run should be able to run, as long as a thread is available (i.e. no more starving threads) and we can be shrink the number of schedulers;
+所有的 Fiber 不会并行运行，而是使用我们已知的正常的 concurrency 并发原语。
+缺点：一个 blocking fiber 将会阻塞当前线程，其他 Fiber 无法继续执行。
 
-**Isolated Context**: only one fiber is allowed to run on a dedicated thread (e.g. `Gtk.main`, game loop, CPU heavy computation), thus disabling concurrency on that thread; the event-loop would work normally (blocking the current fiber, hence the thread), trying to spawn a fiber without an explicit context would spawn into another context specified when creating the isolated context that could default to `Fiber::ExecutionContext.default`.
+**多线程上下文**
 
-Precisions:
+Fiber 在多个线程上并行运行，并且挂起后可以被再恢复到任何一个线程上。
+scheduler 和 thread 可以动态增长、减少，并且 scheduler 可以转移到其他线程之上(M:N 模型)，
+并且线程之间可以 steal fibers。
 
-- The above list isn’t exclusive: there can be other contexts with different rules (for example MT without work stealing).
-- Each context isn’t exclusive: an application can start as many contexts in parallel as it needs.
-- An execution context should be wrappable. For example we could want to add nursery-like capabilities on top of an existing context, where the EC monitors all fibers and automatically shuts down when all said fibers have completed.
+这种方式的优点是：只要操作系统线程资源可用，可以运行的 Fiber 一定会在某个线程之上运行。
 
-## The default execution context
+**隔离上下文**
 
-Crystal starts a MT execution context with work-stealing where fibers are spawned by default. The goal of this context is to provide an environment that should fit most use cases to freely take advantage of multiple CPU cores, without developers having to think much about it, outside of protecting concurrent accesses to a resource or, preferably, using channels to communicate.
+这样的线程之上，只有一个 fiber 被允许运行，独占线程的全部资源，没有竟态条件，也无需
+concurrency, 例如：GUI主循环（Git.main）, 游戏循环(game loop) 以及 CPU 密集型计算
+（ CPU heavy computation），使用隔离上下文，可以避免这些任务被打扰。
 
-It might be configured to run on one thread, hence disabling the parallelism of the default context when needed. Yet, it might still run in parallel with other contexts!
+当创建一个隔离上下文时，可以指定一个 context 作为默认 Fiber 将要发送到的上下文。 
+默认是： `Fiber::ExecutionContext.default`
 
-**Note**: until Crystal 2.x the default execution context might be ST by default, to avoid breaking changes, and a compilation flag be required to choose MT by default (e.g. `-Dmt`).
+一些细节:
 
-## The additional execution contexts
+- 上面的列表不是互斥的，你可以创建一个不同于以上任意规则的上下文，例如：多线程，i
+  但是不开启 work stealing
 
-Applications can create other execution contexts in addition to the default one. These contexts can have different behaviors. For example a context may make sure some fibers will never run in parallel or will have dedicated resources to run in (never blocking certain fibers). Even allow to tweak the threads' priority and CPU affinity for better allocations on CPU cores.
+- 一个应用程序可以并行的启动任意多的 context
 
-Ideally, anybody could implement an execution context that suits their application, or wrap an existing execution context.
+- context 应该是可包装的（wrappable), 允许开发者在现有的 context 之上新增方便的功能，
+  例如：监控 Fiber, 并在 Fiber 执行完之后，自动关闭它。例如：允许额外添加 monitor 功能来自动关闭
 
-## Examples
+## 默认执行上下文
 
-1. We can have fully isolated single-threaded execution contexts, mimicking the current MT implementation.
+当 Fiber 被派生时，Crystal 默认会启动一个包含 work-stealing 能力的多线程（MT）context.
 
-2. We can create an execution context dedicated to handle the UI or game loop of an application, and keep the threads of the default context to handle calculations or requests, never impacting the responsiveness of the UI.
+这个默认上下文提供一个满足绝大多数用例的环境，除了针对 concurrency 访问外部资源
+需要特别注意之外，或者开发者只需要通过首选的 Channel 方式通讯，开发者就可以在无需
+过多考虑如何利用多核的情况下，就可以很好的使用多核。
 
-3. We can create an MT execution context for CPU heavy algorithms, that would block the current thread (e.g. hashing passwords using BCrypt with a high cost), and let the operating system preempt the threads, so the default context running a webapp backend won't be blocked when thousands of users try to login at the same time.
+执行上下文可以配置仅使用一个线程，因此关闭了默认 context 内部并行能力。然而，仍旧
+可以和其他 context 并行运行！
 
-4. The crystal compiler doesn’t need MT during the parsing and semantic phases (for now); we could configure the default execution context to 1 thread only, then start another execution context for codegen with as many threads as CPUs, and spawn that many fibers into this context.
+```
+直到 Crystal 2.0 之前，默认的 execution context 仍然是单线程（ST）模式。
+需要一个编译时选项，例如：-Dmt 来让默认 context 使用多线程模式。
+```
 
-5. Different contexts could have different priorities and affinities, to allow the operating system to allocate threads more efficiently in heterogenous computing architectures (e.g. ARM big.LITTLE).
+## 额外的执行上下文
+
+应用程序可以创建除了默认执行上下文之外其他执行上下文。
+
+这些执行上下文配置为不同的行为，例如，使用 ST 模式，或隔离上下文，甚至允许调整
+`线程优先级` 及 `CPU 相关性`, 以便于在 CPU 内核上更好的分配。
+
+理想情况下，开发者可以自己实现一个定制的上下文，或包装一个现有的上下文以增强它。
+
+## 可以实现的方案演示
+
+1. 我们可以创建完全隔离的单线程执行上下文，这和当前 MT 实现类似（当前 MT 就类似于
+   多个独立的单线程执行上下文）
+
+2 我们可以建立一个专门用来处理 UI 或 游戏循环的 execution context，然后使用默认的
+context来处理复杂的计算或处理 Web 请求，彼此不影响，UI 会会被卡住。
+
+3. 创建一个单独的 MT execution context 专门执行 CPU 密集算法（例如，BCrypt)，这将
+   阻塞当前线程，并且允许操作系统抢占线程，而默认的上下文（例如 Web 应用登录）就不会
+   在成千上万用户同时尝试登录时（需要使用 BCrypt 算法验证密码），被阻塞。
+
+4. Crystal 编译器在 parsing 以及 semantic 阶段不需要 MT, 因此我们可以配置这些阶段
+ 的 execution context 只使用一个独占的线程，当进入 codegen 阶段时，选择另一个支持
+ MT 的 context，当  spawn fiber 时使用尽可能多的 Thread 和 CPU。
+
+5. 不同的上下文可能具有不同的优先级和偏好，以便操作系统能够在异构计算架构
+   （例如 ARM big.LITTLE）中更高效地分配线程
 
 # Reference-level explanation
 

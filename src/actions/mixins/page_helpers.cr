@@ -15,9 +15,10 @@ module PageHelpers
     "/docs/for_advanced_rubyists/performance"        => {title: "性能因素", sub_title: "", parent: "/docs/for_advanced_rubyists"},
     "/docs/for_advanced_rubyists/migrate_to_crystal" => {title: "迁移 Ruby 代码到 Crystal", sub_title: "", parent: "/docs/for_advanced_rubyists"},
     "/docs/basic"                                    => {title: "基础知识", sub_title: "一些基础知识的简单总结", parent: "root"},
-    "/docs/profile"                                  => {title: "查找性能瓶颈 (WIP)", sub_title: "", parent: "root"},
+    "/docs/profile"                                  => {title: "查找性能瓶颈 (WIP)", sub_title: "", parent: "root", hidden: "true"},
     "/docs/cross_compile"                            => {title: "交叉编译", sub_title: "", parent: "root"},
-    "/docs/execution_context"                        => {title: "execution context", sub_title: "", parent: "root", hidden: "true"},
+    "/docs/concurrency"                              => {title: "并发原语", sub_title: "", parent: "root"},
+    "/docs/execution_context"                        => {title: "执行上下文(WIP)", sub_title: "", parent: "/docs/concurrency"},
   }
   PAGINATION_URLS = PAGINATION_RELATION_MAPPING.keys
 
