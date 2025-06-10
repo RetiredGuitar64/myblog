@@ -25,6 +25,7 @@ function init() {
 
     // 确保下面的函数，只在 body 重新改变时才触发
     if (event.detail.elt.nodeName == "BODY") {
+        console.log(mixManifest);
         stork.initialize(
             `${assetHost}${mixManifest["/docs/stork.wasm"] ?? "/docs/stork.wasm"}`,
         );
