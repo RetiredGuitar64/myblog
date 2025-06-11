@@ -54,7 +54,8 @@ abstract class DocLayout
   end
 
   def print_edit_date
-    timestamp = fingerprinted_filename("dist/docs/markdowns_timestamps.yml")
+    timestamp = JSON.parse(File.read("mix-manifest.json"))["/docs/markdowns_timestamps.yml"]
+    timestamp = "dist#{timestamp}"
 
     if File.exists?(timestamp)
       YAML.parse(File.read(timestamp))[markdown_path]?.try do |date|

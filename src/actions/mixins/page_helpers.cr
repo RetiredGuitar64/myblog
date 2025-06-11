@@ -82,7 +82,7 @@ module PageHelpers
     digest = Digest::MD5.hexdigest(File.read(path))[0..7]
 
     if basename.ends_with? digest
-      file_path.to_s
+      file_path
     else
       (Path[path.dirname] / "#{basename}-#{digest}#{path.extension}").to_s
     end
