@@ -1,5 +1,5 @@
 ```
-Crystal 针对 `并发原语` 的完整支持，可能是除了`编译语言性能`以及`类型安全`之外，最让人激动地地方。
+Crystal 原生支持 `并发原语`，这可能是除了`编译语言性能`以及`类型安全`之外，最让人激动地事情。
 ```
 自从 2024 年二月 25 日，[0002 有关执行上下文(execution context)草案](https://github.com/crystal-lang/rfcs/blob/rfc-0002-mt-execution-contexts/text/0002-execution-contexts.md) 被提交，
 并被批准实现，来自法国的大神 Julien Portalier (@ysbaddaden) 开始了相关的开发。
