@@ -40,6 +40,4 @@ Do not communicate by sharing memory. Instead, share memory by communicating.
 
 在之前的简介当中，有过关于 [CSP](http://127.0.0.1:3000/docs/introduction#anchor-%E5%9F%BA%E4%BA%8E%20) 的简单介绍，建议阅读相关 pdf 论文来试图了解它。
 
-下面是 golang 第一作者，来自 Google 的 Rob Pike 大神 2012 做的 slide 分享及对应视频版本。
-
-[Concurrency is not Parallelism](https://go.dev/talks/2012/waza.slide) 及 [油管视频(带字幕)](https://www.youtube.com/watch?v=oV9rvDllKEg)
+有一本书叫做 "concurrency in go"，也强烈推荐阅读。

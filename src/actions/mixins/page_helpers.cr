@@ -19,6 +19,7 @@ module PageHelpers
     "/docs/cross_compile"                            => {title: "交叉编译", sub_title: ""},
     "/docs/concurrency"                              => {title: "并发原语", sub_title: ""},
     "/docs/concurrency/execution_context"            => {title: "执行上下文(WIP)", sub_title: "", parent: "/docs/concurrency"},
+    "/docs/concurrency/concurrency_vs_parallelism"   => {title: "并发和并行（比较）", sub_title: "", parent: "/docs/concurrency"},
   }
   PAGINATION_URLS = PAGINATION_RELATION_MAPPING.keys
 
