@@ -18,7 +18,7 @@ module PageHelpers
     "/docs/profile"                                  => {title: "查找性能瓶颈 (WIP)", sub_title: "", parent: "root", hidden: "true"},
     "/docs/cross_compile"                            => {title: "交叉编译", sub_title: "", parent: "root"},
     "/docs/concurrency"                              => {title: "并发原语", sub_title: "", parent: "root"},
-    "/docs/execution_context"                        => {title: "执行上下文(WIP)", sub_title: "", parent: "/docs/concurrency"},
+    "/docs/concurrency/execution_context"            => {title: "执行上下文(WIP)", sub_title: "", parent: "/docs/concurrency"},
   }
   PAGINATION_URLS = PAGINATION_RELATION_MAPPING.keys
 
