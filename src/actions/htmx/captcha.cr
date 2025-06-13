@@ -18,7 +18,7 @@ hx-post="#{Htmx::Captcha.path}"
 hx-target="#signup_captcha"
 hx-swap="outerHTML"
 >
-#{captcha.img_tag(height: "50px", width: "150px")}
+#{captcha.img_tag(height: "35px")}
 </span>
 HEREDOC
   end
