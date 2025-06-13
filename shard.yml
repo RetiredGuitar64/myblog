@@ -46,6 +46,10 @@ dependencies:
     github: kostya/cron_scheduler
   time_in_words:
     github: crystal-china/time_in_words
+  captcha:
+    github: crystal-china/captcha
+  cache:
+    github: crystal-cache/cache
 development_dependencies:
   lucky_flow:
     github: luckyframework/lucky_flow

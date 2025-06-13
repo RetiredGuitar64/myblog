@@ -27,3 +27,5 @@
 Lucky::Redirectable.configure do |config|
   config.redirect_status = 303
 end
+
+CAPTCHA_CACHE = Cache::MemoryStore(String, String).new(expires_in: 2.minutes)

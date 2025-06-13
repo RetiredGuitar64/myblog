@@ -13,3 +13,6 @@ require "tartrazine" # optional dependency for markd to render markdown code blo
 require "markd"
 require "cron_scheduler"
 require "time_in_words"
+# require "lucky_cache"
+require "cache"
+require "captcha"
