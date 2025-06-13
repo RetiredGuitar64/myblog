@@ -1,0 +1,21 @@
+#!/bin/bash
+
+target=$1
+folder=/home/crystal_china/apps/website_production
+
+# scp bin/crystal_china $target:${folder}/
+
+function handle_deps () {
+    deps=$(ssh $target -t "cd $folder/; mkdir -p lib; LD_LIBRARY_PATH=lib ldd ./bin/crystal_china |grep 'not found' | awk '{print \$1}'")
+    deps=$(echo "$deps" | tr -d '\r')
+}
+
+while handle_deps; do
+    if [ -z "$deps" ]; then
+        break
+    fi
+
+    for i in $deps; do
+        scp /usr/lib/$i "$target:$folder/lib/"
+    done
+done
