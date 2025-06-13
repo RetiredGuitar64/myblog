@@ -20,7 +20,7 @@ Crystal 是一门受 Ruby 高度启发的计算机程序语言，并且最终编
 正如 Ruby 一样，在看似简单的外表下，Crystal 又绝非一门简单的语言，希望笔者根据自己的
 经验，能将这一门让人惊叹、并且唯一的的语言讲解清楚，对读者学习掌握 Crystal 带来帮助。
 
-如有错误，[欢迎提出勘误指正](https://github.com/crystal-china/website/issues).
+如有错误，[欢迎提出勘误指正](https://github.com/crystal-china/website/issues), 或在下面留言，我会及时更正，保证不对对读者产生误导。
 
 ## 本站技术栈
 
