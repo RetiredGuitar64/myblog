@@ -63,7 +63,13 @@ class Docs::Htmx::Vote < BrowserAction
 
     UpdateDocVotes.update(doc, votes: ::Doc::Votes.from_json(h.to_json)) do |op, updated_reply|
       if op.saved?
-        component Shared::VoteButton, votes: h, doc_id: doc_id, current_user: current_user, voted_types: voted_types
+        component(
+          Shared::VoteButton,
+          votes: h,
+          doc_id: doc_id,
+          current_user: current_user,
+          voted_types: voted_types
+        )
       else
         head 400
       end
