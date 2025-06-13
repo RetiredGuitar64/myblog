@@ -53,15 +53,19 @@ abstract class DocLayout
     end
   end
 
-  def print_edit_date
-    timestamp = JSON.parse(File.read("mix-manifest.json"))["/docs/markdowns_timestamps.yml"]
+  def print_doc_date
+    doc = DocQuery.new.path_index(current_path).first?
+
+    return "" if doc.nil?
+
+    timestamp = JSON.parse(File.read("dist/mix-manifest.json"))["/docs/markdowns_timestamps.yml"]
     timestamp = "dist#{timestamp}"
 
     if File.exists?(timestamp)
       YAML.parse(File.read(timestamp))[markdown_path]?.try do |date|
         return <<-HEREDOC
 <blockquote>
-最后编辑于: #{Time.unix(date.as_i64).to_local.to_s("%Y年%m月%d日")}
+创建于：#{doc.created_at.to_s("%Y年%m月%d日")}    最后编辑于: #{Time.unix(date.as_i64).to_local.to_s("%Y年%m月%d日")}
 </blockquote>
 HEREDOC
       end
@@ -100,7 +104,7 @@ HEREDOC
               end
 
               div class: "f-row justify-content:space-between" do
-                raw print_edit_date
+                raw print_doc_date
                 print_votes
               end
 
