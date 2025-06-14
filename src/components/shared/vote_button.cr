@@ -1,7 +1,7 @@
 class Shared::VoteButton < BaseComponent
-  needs votes : Hash(String, Int32)
   needs reply_id : Int64?
   needs doc_id : Int64?
+  needs votes : Hash(String, Int32)
   needs voted_types : Array(String)
 
   def render
