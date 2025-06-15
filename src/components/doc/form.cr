@@ -14,7 +14,7 @@ class Docs::Form < BaseComponent
         type: "radio",
         name: "tab",
         id: "tab2",
-        hx_put: "/docs/htmx/markdown_render",
+        hx_put: Docs::Htmx::MarkdownRender.path_without_query_params,
         hx_target: "#markdown-preview",
         hx_include: "[name='_csrf'],#text_area",
         hx_indicator: "next img.htmx-indicator",
