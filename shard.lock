@@ -155,7 +155,7 @@ shards:
 
   simple_captcha:
     git: https://github.com/crystal-china/simple_captcha.git
-    version: 0.1.0+git.commit.a8a1891f73794193590bd86fd320b5f2c0d2d866
+    version: 0.1.0+git.commit.81bc94c00f8e7e822fe94be94f2be857ec9e5de9
 
   sixteen:
     git: https://github.com/ralsina/sixteen.git
