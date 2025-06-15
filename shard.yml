@@ -46,8 +46,8 @@ dependencies:
     github: kostya/cron_scheduler
   time_in_words:
     github: crystal-china/time_in_words
-  captcha:
-    github: crystal-china/captcha
+  simple_captcha:
+    github: crystal-china/simple_captcha
   cache:
     github: crystal-cache/cache
 development_dependencies:

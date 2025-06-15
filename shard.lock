@@ -37,10 +37,6 @@ shards:
     git: https://github.com/cadmiumcr/transliterator.git
     version: 0.1.0+git.commit.46c4c14594057dbcfaf27e7e7c8c164d3f0ce3f1
 
-  captcha:
-    git: https://github.com/crystal-china/captcha.git
-    version: 0.1.0+git.commit.f8f1f7f87663f4c67a75644ffa34bd04930fcf6d
-
   carbon:
     git: https://github.com/luckyframework/carbon.git
     version: 0.6.0
@@ -157,6 +153,10 @@ shards:
     git: https://github.com/luckyframework/shell-table.cr.git
     version: 0.9.3
 
+  simple_captcha:
+    git: https://github.com/crystal-china/simple_captcha.git
+    version: 0.1.0+git.commit.a8a1891f73794193590bd86fd320b5f2c0d2d866
+
   sixteen:
     git: https://github.com/ralsina/sixteen.git
     version: 0.5.2
@@ -188,10 +188,6 @@ shards:
   timecop:
     git: https://github.com/crystal-community/timecop.cr.git
     version: 0.5.0
-
-  vips:
-    git: https://github.com/zw963/crystal-vips.git
-    version: 0.1.6+git.commit.fc1bb458a476fc28ddf288291347d78da697aaa4
 
   webdrivers:
     git: https://github.com/crystal-loot/webdrivers.cr.git
