@@ -6,17 +6,17 @@ class SignUps::Create < BrowserAction
 
     return sign_up(params, "验证码无效") if signup_captcha_id.nil?
 
-    signup_captcha_text = CAPTCHA_CACHE.fetch(signup_captcha_id)
+    signup_captcha_code = CAPTCHA_CACHE.fetch(signup_captcha_id)
 
-    return sign_up(params, "验证码无效") if signup_captcha_text.nil?
+    return sign_up(params, "验证码无效") if signup_captcha_code.nil?
 
     captcha_input = params.get?(:captcha)
 
     return sign_up(params, "验证码无效") if captcha_input.nil?
 
-    return sign_up(params, "验证码无效") if captcha_input.downcase != signup_captcha_text.downcase
+    return sign_up(params, "验证码无效") if captcha_input.downcase != signup_captcha_code.downcase
 
-    sign_up(params, "注册失败", signup_captcha_text)
+    sign_up(params, "注册失败", signup_captcha_code)
   end
 
   def sign_up(params, flash_msg, captcha : String = "")

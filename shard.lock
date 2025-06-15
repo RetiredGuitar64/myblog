@@ -39,7 +39,7 @@ shards:
 
   captcha:
     git: https://github.com/crystal-china/captcha.git
-    version: 0.1.0+git.commit.46d6932e2b5669f7e0c46f372e2635ac074cbbd7
+    version: 0.1.0+git.commit.f8f1f7f87663f4c67a75644ffa34bd04930fcf6d
 
   carbon:
     git: https://github.com/luckyframework/carbon.git
