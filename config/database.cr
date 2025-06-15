@@ -14,7 +14,7 @@ AppDatabase.configure do |settings|
       password: ENV["DB_PASSWORD"]? || "postgres"
     )
   end
-  p! settings.credentials.url
+  print settings.credentials.url
 end
 
 struct MyI18n < Avram::I18nBackend

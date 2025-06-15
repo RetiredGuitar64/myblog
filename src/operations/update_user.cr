@@ -38,13 +38,12 @@ class UpdateUser < User::SaveOperation
         exists_pending_record.update(sync_state: UserAudit::SyncStatus::Staled)
       end
 
-      SaveUserAudit.create(
+      SaveUserAudit.create!(
         user_id: saved_user.id,
         changed_column_name: column_name,
         from: attribute.original_value.to_s,
         to: attribute.value.to_s
-      ) do |op, record|
-      end
+      )
     end
   end
 end

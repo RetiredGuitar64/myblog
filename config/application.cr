@@ -28,4 +28,5 @@ Lucky::Redirectable.configure do |config|
   config.redirect_status = 303
 end
 
+# 默认是开启压缩的。
 CAPTCHA_CACHE = Cache::MemoryStore(String, String).new(expires_in: 1.minutes)

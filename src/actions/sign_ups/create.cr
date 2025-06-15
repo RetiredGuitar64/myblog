@@ -6,7 +6,7 @@ class SignUps::Create < BrowserAction
 
     return sign_up(params, "验证码无效") if signup_captcha_id.nil?
 
-    signup_captcha_text = CAPTCHA_CACHE.read(signup_captcha_id)
+    signup_captcha_text = CAPTCHA_CACHE.fetch(signup_captcha_id)
 
     return sign_up(params, "验证码无效") if signup_captcha_text.nil?
 

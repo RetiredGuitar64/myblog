@@ -33,7 +33,7 @@ class Docs::Htmx::Vote < BrowserAction
 
     voted_types = q.map &.vote_type
 
-    UpdateReplyVotes.update(reply, votes: ::Reply::Votes.from_json(h.to_json)) do |op, updated_reply|
+    UpdateReplyVotes.update(reply, votes: ::Reply::Votes.from_json(h.to_json)) do |op, _updated_reply|
       if op.saved?
         component Shared::VoteButton, votes: h, reply_id: reply.id, current_user: current_user, voted_types: voted_types
       else
@@ -61,7 +61,7 @@ class Docs::Htmx::Vote < BrowserAction
 
     voted_types = q.map &.vote_type
 
-    UpdateDocVotes.update(doc, votes: ::Doc::Votes.from_json(h.to_json)) do |op, updated_reply|
+    UpdateDocVotes.update(doc, votes: ::Doc::Votes.from_json(h.to_json)) do |op, _updated_reply|
       if op.saved?
         component(
           Shared::VoteButton,
