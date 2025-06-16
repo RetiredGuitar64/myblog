@@ -1,3 +1,5 @@
+# Concurrency vs. Parallelism
+
 一部分内容翻译自 https://crystal-lang.org/reference/latest/guides/concurrency.html
 有可能一部分信息已经过时了，会随时更正。
 
@@ -32,12 +34,56 @@ Fiber 的概念，类似于 Erlang/Elixir, go 中轻量级用户线程, 不同�
 
 - `用户线程`，是因为它被程序语言自己管理，而不是由操作系统管理它。
 
-- `协作式`，操作系统可以在任何时候中断一个线程并开始执行另一个线程, 而协作式，必须
-  明确的通知运行时调度器，其可以切换到其他纤程。例如，如果一个协程需要等待 I/O 操作完成，
-  它会告诉调度器：“你看，我必须等待这个 I/O 操作可用，你可以继续执行其他协程，
-  并在 I/O 准备好后回来唤醒我。”
+- `协作式`，操作系统线程是抢占式，可以在任何时候中断一个线程并开始执行另一个线程, 
+  而协作式，必须明确的通知运行时调度器，其可以切换到其他纤程。例如，如果一个协程需要
+  等待 I/O 操作完成， 它会告诉调度器：“你看，我必须等待这个 I/O 操作可用，你可以
+  继续执行其他协程，并在 I/O 准备好后回来唤醒我。”
+  协作式的好处是，大量（不必要的）线程间切换的开销都消失了
 
-Crystal 程序可以创建任意多的 Fiber, Crystal 来确保在合适的时候执行它。
+Crystal 程序可以创建任意多的 Fiber, 在一个 64 位机器上，允许创建数百万个 Fiber，
+而在 32 位机器上，只允许创建 512 个 Fiber。
+
+Crystal 来确保在合适的时候执行它。
+
+## Event loop 事件循环
+
+event loop 与 IO 操作相关，当事件循环等待慢速的操作（例如，等待数据通过 socket 传输) 时，
+程序可以执行其他的 fiber.
+
+当所有 Fiber 空闲时，事件循环会检测是否有异步操作（例如：文件操作）准备好，如果有，
+会执行等待这个操作的 fiber, 早期版本 event loop 使用 libevent（前者抽象了其他 event 
+机制， 例如：epool、kqueue)。
+
+但是，作为新的 Fiber 多线程支持的一部分，版本 1.15.0 开始，为 UNIX 兼容的系统
+引入了一个[新的 Event Loop 实现](https://crystal-lang.org/2024/11/05/lifetime-event-loop), 自从 [this](https://github.com/crystal-lang/crystal/pull/14996) PR 被合并之后，的实现直接集成了
+UNIX 的 systems selectors（Linux/Android 使用 epool，BSD/macOS 使用 kqueue）
+因此 libevent 不再作为外部依赖。
+
+## The Runtime Scheduler¶
+
+Scheduler 有一个队列，负责：
+
+1. 检查那些 fiber 需要被执行
+2. 
+
+1. Fibers ready to be executed: for example when you spawn a fiber, it's ready to be executed.
+
+## Channel
+
+Channel 这个概念来自 [CSP](http://www.usingcsp.com/cspbook.pdf) ，它们允许光纤之间传递数据，无需共享内存，并且无需担
+心锁（lock）、信号量（semaphores）或其他特殊结构。
+
+# 执行一个程序
+
+当程序启动时，首先会启动一个主Fiber（main fiber）来执行顶级(top-level)代码，
+然后，会派生很多其他的 fiber 来执行下面的功能，它们包括：
+
+1. 运行时调度器（Runtime Scheduler），负责所有的 fiber 在合适的时机执行。
+2. 事件循环(Event Loop), 负责处理异步任务、例如：文件(file)，套接字(sockets)，
+   管道(pipes)，信号(signals)以及定时器(timers, 例如：sleep)
+3. 通道(Channel), 用于在 Fiber 之间传递数据，Runtime Scheduler 将协调 Fibers 和 
+   Channels 以进行通讯。
+4. 垃圾收集器(Garbage Collector): 清理不再使用的内存。（这个应该在一个单独的线程中执行？）
 
 ---------
 

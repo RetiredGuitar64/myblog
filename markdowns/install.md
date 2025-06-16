@@ -37,11 +37,6 @@ sudo pacman -S crystal
 
 ### 安装编译及安装所需依赖
 
-作为新的 Fiber 多线程支持的一部分，版本 1.15.0 开始，为 UNIX 兼容的系统
-引入了一个[新的 Event Loop 实现](https://crystal-lang.org/2024/11/05/lifetime-event-loop),
-新的实现直接集成了 UNIX 的 systems selectors（Linux/Android 使用 epool，BSD/macOS 使用 kqueue）
-因此 libevent 不再作为外部依赖。
- 
 ```bash
 sudo pacman -S base-devel \
        automake \
