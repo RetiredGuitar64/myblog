@@ -32,38 +32,7 @@ foo 1, 2 # => Error: missing argument: y
 
 即使方法名相同的方法，可以通过 `参数名`不同、`参数个数`不同、`参数类型` 以及 `是否需要代码块 & ` 进行区分。
 
-
-参数名不同：(这里添加 *，强制要求必须使用关键字参数方式调用, 才能正确区分)
-
-```crystal
-def foo(*, a)
-  puts "foo(a)"
-end
-
-def foo(*, b)
-  puts "foo(b)"
-end
-
-foo(a: 100) # => foo(a)
-foo(b: 100) # => foo(b)
-```
-
-参数个数不同
-
-```crystal
-def foo(a，b)
-  puts "foo(a, b)"
-end
-
-def foo(a)
-  puts "foo(a)"
-end
-
-foo(100,200) # => foo(a, b)
-foo(100) # => foo(a)
-```
-
-参数类型不同
+### 参数类型不同
 
 ```crystal
 def foo(a : String)
@@ -78,7 +47,86 @@ foo(100) # => foo(a : Int32)
 foo("Hello") # => foo(a : String)
 ```
 
-是否包含代码块
+
+
+### 参数名不同
+
+```crystal
+def foo(*, a)
+  puts "foo(a)"
+end
+
+def foo(*, b)
+  puts "foo(b)"
+end
+
+foo(a: 100) # => foo(a)
+foo(b: 100) # => foo(b)
+```
+
+```
+参数名不同的情况下，必须添加 *，强制要求必须使用关键字参数方式调用, 才能正确区分。
+```
+
+例如：
+
+```crystal
+def foo(x)
+  puts "foo(x)"
+end
+
+# foo(y) 覆盖了 foo(x) 的定义。
+def foo(y)
+  puts "foo(y)"
+end
+
+foo(100) # => "foo(y)"，调用的是 foo(y)
+
+# foo(x: 100) # Error: missing argument: y，因为 foo(x) 被覆盖不存在了
+
+# 此时必须添加类型
+
+def baz(x : Int32)
+  puts "foo(x)"
+end
+
+def baz(y : String)
+  puts "foo(y)"
+end
+
+baz(100)   # foo(x)
+baz("100") # foo(y)
+
+# 或强制必须关键字参数
+
+def bar(*, x)
+  puts "foo(x)"
+end
+
+def bar(*, y)
+  puts "foo(y)"
+end
+
+bar(x: 100) # foo(x)
+bar(y: 100) # foo(y)
+```
+
+### 参数个数不同
+
+```crystal
+def foo(a，b)
+  puts "foo(a, b)"
+end
+
+def foo(a)
+  puts "foo(a)"
+end
+
+foo(100,200) # => foo(a, b)
+foo(100) # => foo(a)
+```
+
+### 是否包含代码块
 
 ```crystal
 def foo

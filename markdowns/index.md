@@ -26,7 +26,8 @@ Crystal 是一门受 Ruby 高度启发的计算机程序语言，并且最终编
 
 [本站](https://github.com/crystal-china/website) 自然使用 Crystal 编写，目前用到的库有：
 
-- [baked_file_system_mounter](https://github.com/crystal-china/baked_file_system_mounter), 用于将本站所需的 assets 文件（包含 js, css, 字体，markdown 等）打包进可执行文件，并在部署到新机器后自动 mount。
+- [baked_file_system_mounter](https://github.com/crystal-china/baked_file_system_mounter), 用于将本站所需的 assets 文件
+ （包含 js, css, 字体，markdown 等）打包进可执行文件，并在部署到新机器后自动 mount。
 - [lucky](https://github.com/luckyframework/lucky) 是一个全功能的 web 框架，用来搭建本站以及计划中的论坛。
 - [magic-haversack](https://github.com/crystal-china/magic-haversack) 使用 zig cc 来 build 一个 Crystal 静态 bianry（无需 docker）
 - [markd](https://github.com/icyleaf/markd) 用于转换 markdown 格式到网页。
@@ -36,7 +37,7 @@ Crystal 是一门受 Ruby 高度启发的计算机程序语言，并且最终编
 有希望拿本项目练手的前端小将，欢迎报名！
 
 下面笔者介绍的本站用到的前端项目，都是属于同一个 github 组织 **Big Sky Software** 下的项目。
-他们组织的介绍老有意思了：`我们会发现行业中的新兴热点趋势，然后创造出与之`**相反**`的东西`。
+他们组织的介绍老有意思了：`我们会发现行业中的***新兴热点**趋势，然后创造出与之`**相反**`的东西`。
 
 - [htmx](https://htmx.org/) 高效率的 HTML 工具(high power tools for HTML)，这个官方介绍很模糊，其实
   作者专门写了本书介绍 [hypermedia](https://hypermedia.systems/) 的概念，建议读一读，非常有意思，这绝对是像我
@@ -103,7 +104,12 @@ deploy successful
 ```
 
 
-最后一步，ssh 登录服务器，重启 web 服务，如有数据库表改动, 会在第一次启动时执行。 
+最后一步，ssh 登录服务器，重启 web 服务，例如，Crystal China 站点使用 systemd, 
 
-部署完成！
+```crystal
+ ╰──➤ $: systemctl restart crystal_china
+```
+
+如有数据库表改动, 会在第一次启动时执行，部署完成！
+
 
