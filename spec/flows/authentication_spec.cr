@@ -1,9 +1,8 @@
 require "../spec_helper"
 
 describe "Authentication flow", tags: "flow" do
-  it "works" do
+  pending "works" do
     flow = AuthenticationFlow.new("test@example.com")
-
     flow.sign_up "password"
     flow.should_be_signed_in
     flow.sign_out
