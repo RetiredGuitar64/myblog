@@ -106,7 +106,7 @@ deploy successful
 
 最后一步，ssh 登录服务器，重启 web 服务，例如，Crystal China 站点使用 systemd, 
 
-```crystal
+```bash
  ╰──➤ $: systemctl restart crystal_china
 ```
 
