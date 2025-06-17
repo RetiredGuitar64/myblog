@@ -54,8 +54,8 @@ module PageHelpers
 
   MARKDOWN_OPTIONS = Markd::Options.new(gfm: true, toc: true)
 
-  def markdown(text)
-    raw Markd.to_html(
+  def markdown(text) : String
+    Markd.to_html(
       text,
       formatter: formatter,
       options: MARKDOWN_OPTIONS

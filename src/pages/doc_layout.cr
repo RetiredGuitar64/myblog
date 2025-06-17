@@ -22,7 +22,9 @@ abstract class DocLayout
   end
 
   def content
-    markdown File.read(markdown_path)
+    MARKDOWN_CACHE.fetch(markdown_path) do
+      markdown File.read(markdown_path)
+    end
   end
 
   def page_title
@@ -108,7 +110,7 @@ HEREDOC
                 print_votes
               end
 
-              content
+              raw content
 
               mount Pager
 

@@ -11,7 +11,7 @@ class Docs::RepliesMore < BaseComponent
 
         hr style: "border: none; border-top: 1px solid darkgray;"
 
-        markdown reply.content
+        raw markdown(reply.content)
 
         render_emoji_buttons(reply)
       end

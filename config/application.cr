@@ -29,4 +29,5 @@ Lucky::Redirectable.configure do |config|
 end
 
 # 默认是开启压缩的。
-CAPTCHA_CACHE = Cache::MemoryStore(String, String).new(expires_in: 1.minutes)
+CAPTCHA_CACHE  = Cache::MemoryStore(String, String).new(expires_in: 1.minutes)
+MARKDOWN_CACHE = Cache::MemoryStore(String, String).new(expires_in: 5.minutes)
