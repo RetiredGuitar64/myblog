@@ -52,7 +52,10 @@ Crystal 是一门受 Ruby 高度启发的计算机程序语言，并且最终编
 
 ## 本站如何部署
 
-相比较使用 Ruby, 简直简单到爆！见项目 [README](https://github.com/crystal-china/website/blob/master/README.md) 以及有关 [交叉编译](https://crystal-china.org/docs/cross_compile) 的说明。
+本站部署机器是 azure HK v2ts（1c/2g）, 低负载情况下，内存占用在 35M 左右, 包含 
+(共享内存 11M + 独占物理内存 24M)，因为资源占用很低，同时部署了好几个站点。
+
+部署流程相较于 Ruby 也简单到爆！见项目 [README](https://github.com/crystal-china/website/blob/master/README.md) 以及有关 [交叉编译](https://crystal-china.org/docs/cross_compile) 的说明。
 
 整个部署过程是非常简单而且快速的。
 
