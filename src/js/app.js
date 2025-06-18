@@ -40,6 +40,11 @@ function init() {
     if (stork_container != null) {
         stork.attach("docs");
     }
+
+    let textarea = document.getElementById("text_area");
+    if (textarea != null) {
+        pasteImage(textarea);
+    }
 }
 
 htmx.onLoad(init);

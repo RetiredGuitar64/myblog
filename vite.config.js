@@ -68,6 +68,7 @@ export default defineConfig(({ command, mode }) => {
                 exclude: ["src/**/*.scss", "src/**/*.css"],
                 htmx: "htmx.org",
                 _hyperscript: "hyperscript.org",
+                pasteImage: "./pasteImage",
                 copyCodeButton: "./copyCodeButton.js",
                 // 这里我修改了源码，在最后加了一行才 `export default stork;` 才 import 成功
                 stork: "./stork.js",
