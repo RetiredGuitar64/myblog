@@ -155,7 +155,7 @@ shards:
 
   simple_captcha:
     git: https://github.com/crystal-china/simple_captcha.git
-    version: 0.1.0+git.commit.dba1c86ea41004eb1ae520c1044a6cb65c40bea3
+    version: 0.1.0+git.commit.b014357256e86e0b481659cc8431d6c216de2268
 
   sixteen:
     git: https://github.com/ralsina/sixteen.git
@@ -183,7 +183,7 @@ shards:
 
   time_in_words:
     git: https://github.com/crystal-china/time_in_words.git
-    version: 0.1.0+git.commit.d085780c26b4a2867016670299fa6c5cd00fbdb2
+    version: 0.1.0+git.commit.dfefe242bd2653744ab6c8a0205f94c89a67a9aa
 
   timecop:
     git: https://github.com/crystal-community/timecop.cr.git
