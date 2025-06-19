@@ -31,3 +31,6 @@ end
 # 默认是开启压缩的。
 CAPTCHA_CACHE  = Cache::MemoryStore(String, String).new(expires_in: 1.minutes)
 MARKDOWN_CACHE = Cache::MemoryStore(String, String).new(expires_in: 5.minutes)
+
+# upload image into freeimage.host API key.
+FREEIMAGE_HOST_API_KEY = ENV["FREEIMAGE_HOST_API_KEY"]? || "fake_key"

@@ -1,3 +1,5 @@
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
 function pasteImage(editorElement) {
     editorElement.addEventListener("paste", async (event) => {
         await handlePasteEvent(event, editorElement);
@@ -17,6 +19,14 @@ async function handlePasteEvent(event, textarea) {
             event.preventDefault(); // 阻止默认粘贴行为
 
             const file = item.getAsFile();
+
+            // 检查是否超出文件大小限制
+            if (file.size > MAX_FILE_SIZE) {
+                alert(
+                    `文件大小超过限制！最大支持上传 ${MAX_FILE_SIZE / (1024 * 1024)}MB 的图片。`,
+                );
+                return; // 阻止后续上传逻辑
+            }
 
             // 在光标位置插入上传占位符
             const placeholderId = insertUploadingPlaceholder(
@@ -117,16 +127,18 @@ function replacePlaceholderWithError(textarea, placeholderId, errorMessage) {
 
 async function uploadImage(file) {
     const formData = new FormData();
+    formData.append("key", "fake_key");
     formData.append("source", file);
 
-    const response = await fetch("https://freeimage.host/api/1/upload", {
+    const response = await fetch("/api/upload", {
         method: "POST",
         body: formData,
     });
 
     const data = await response.json();
+
     if (data.status === "success") {
-        return data.image.url; // 返回图片 URL
+        return data.image_url; // 返回图片 URL
     } else {
         throw new Error(data.message || "上传失败");
     }
