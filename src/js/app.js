@@ -34,16 +34,16 @@ function init() {
             "docs",
             `${assetHost}${mixManifest["/docs/index.st"] ?? "/docs/index.st"}`,
         );
+
+        let textarea = document.getElementById("text_area");
+        if (textarea != null) {
+            pasteImage(textarea);
+        }
     }
 
     let stork_container = document.querySelector("input[data-stork='docs']");
     if (stork_container != null) {
         stork.attach("docs");
-    }
-
-    let textarea = document.getElementById("text_area");
-    if (textarea != null) {
-        pasteImage(textarea);
     }
 }
 
