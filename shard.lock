@@ -183,7 +183,7 @@ shards:
 
   time_in_words:
     git: https://github.com/crystal-china/time_in_words.git
-    version: 0.1.0+git.commit.dfefe242bd2653744ab6c8a0205f94c89a67a9aa
+    version: 0.1.0+git.commit.5daa4ec3f1761e9a271b9fb671cd5edcc6e2104e
 
   timecop:
     git: https://github.com/crystal-community/timecop.cr.git
