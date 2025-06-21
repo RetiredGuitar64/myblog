@@ -27,71 +27,60 @@ function init() {
     }
 }
 
+// 备忘，为什么这里不直接使用 htmx.onLoad 呢？
+// https://github.com/bigskysoftware/htmx/discussions/3126#discussioncomment-11820869
+
+//  htmx will fire htmx:load on every top-level child of the swapped content.
+// When you use hx-boost, it's an equivalent to hx-target="body" hx-swap="innerHTML",
+// which will replace the content of the body, then fire htmx:load on its direct descendants,
+// so here the header, div and dialog from your screenshot indeed.
+
 htmx.onLoad(init);
 
 // Set up blocks on the initial page load
 document.addEventListener("DOMContentLoaded", function () {
-    let textareas = document.body.querySelectorAll("textarea");
-    textareas.forEach(pasteImage);
-
-    let blocks = document.body.querySelectorAll("pre.b");
-    blocks.forEach(copyCodeButton);
-
-    setupLogo();
+    eventElt = document;
 
     initStork();
-    setupStork();
+    setupLogo();
+    setupPasteImage(eventElt);
+    setupCopyCodeButton(eventElt);
+    setupStork(eventElt);
 });
 
 const assetHost = IS_WATCH_MODE ? "" : "https://assets.crystal-china.org";
 
 // Set up any newly added block (hx-boosted navigations or hx-get/hx-post/etc. swaps)
 document.body.addEventListener("htmx:afterSwap", function (event) {
-    let textareas = event.detail.elt.querySelectorAll("textarea");
-    textareas.forEach(pasteImage);
-
-    let blocks = event.detail.elt.querySelectorAll("pre.b");
-    blocks.forEach(copyCodeButton);
+    eventElt = event.detail.elt;
 
     setupLogo();
-
-    setupStork();
-
-    // If it's possible that a block is at the top level of the response, you'll want to check the root elt itself
-    if (event.detail.elt.matches("#textarea")) {
-        pasteImage(event.detail.elt);
-    }
+    setupPasteImage(eventElt);
+    setupCopyCodeButton(eventElt);
+    setupStork(eventElt);
 });
 
 function setupLogo() {
-    const startLogoAnimation = function () {
-        const canvas = document.getElementById("logo-canvas");
-        var model = new Viewer3D(canvas);
-        model.shader("flat", 255, 255, 255);
-        model.insertModel(
-            `${assetHost}${mixManifest["/assets/icosahedron.xml"] ?? "/assets/icosahedron.xml"}`,
-        );
-        model.contrast(0.9);
-    };
+    const canvas = document.getElementById("logo-canvas");
 
-    const setIPhoneDataAttribute = function () {
+    if (canvas != null) {
+        // setIPhoneDataAttribute
         let platform = navigator?.userAgent || navigator?.platform || "unknown";
 
         if (/iPhone/.test(platform)) {
             document.documentElement.dataset.uaIphone = true;
         }
-    };
 
-    let logoCanvas = document.getElementById("logo-canvas");
-
-    if (logoCanvas != null) {
-        setIPhoneDataAttribute();
-        startLogoAnimation();
+        // startLogoAnimation
+        var model = new Viewer3D(canvas);
+        model.shader("flat", 255, 255, 255);
+        model.insertModel("/assets/icosahedron.xml");
+        model.contrast(0.9);
     }
 }
 
-function setupStork() {
-    let storkContainer = document.querySelector("input[data-stork='docs']");
+function setupStork(eventElt) {
+    let storkContainer = eventElt.querySelector("input[data-stork='docs']");
     if (storkContainer != null) {
         stork.attach("docs");
     }
@@ -105,4 +94,26 @@ function initStork() {
         "docs",
         `${assetHost}${mixManifest["/docs/index.st"] ?? "/docs/index.st"}`,
     );
+}
+
+function setupCopyCodeButton(eventElt) {
+    eventElt.querySelectorAll("pre.b").forEach(copyCodeButton);
+
+    // If it's possible that a block is at the top level of the response,
+    // you'll want to check the root elt itself
+    if (eventElt instanceof Element) {
+        if (eventElt.matches("pre.b")) {
+            pasteImage(eventElt);
+        }
+    }
+}
+
+function setupPasteImage(eventElt) {
+    eventElt.querySelectorAll("textarea").forEach(pasteImage);
+
+    if (eventElt instanceof Element) {
+        if (eventElt.matches("textarea")) {
+            pasteImage(eventElt);
+        }
+    }
 }
