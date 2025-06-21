@@ -1,13 +1,7 @@
 class Home::IndexPage < MainLayout
   def content
     div class: "brand-logo f-col align-items:center justify-content:center" do
-      tag(
-        "canvas",
-        height: 500,
-        width: 500,
-        id: "logo-canvas",
-        style: "cursor:move",
-      )
+      h1 "The Crystal programming language 中文站"
 
       div class: "latest-release-info" do
         a href: "https://crystal-lang.org/2025/05/12/1.16.3-released/" do
@@ -15,6 +9,14 @@ class Home::IndexPage < MainLayout
           strong "1.16.3"
         end
       end
+
+      tag(
+        "canvas",
+        height: 450,
+        width: 450,
+        id: "logo-canvas",
+        style: "cursor:move",
+      )
     end
   end
 end
