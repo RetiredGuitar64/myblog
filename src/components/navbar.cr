@@ -3,11 +3,7 @@ class Navbar < BaseComponent
     header class: "navbar", style: "margin-bottom: 2px; margin-top: 0px;" do
       div do
         a href: "/", class: "f-row justify-content:end align-items:center" do
-          raw <<-'HEREDOC'
-<canvas height="30" id="logo-canvas" style="cursor:move" width="130"></canvas>
-HEREDOC
           img src: asset("svgs/crystal.svg"), alt: "crystal-china"
-
           span "China", class: "allcaps", style: "color: black;"
         end
       end
@@ -16,19 +12,27 @@ HEREDOC
       # end
 
       nav class: "contents" do
-        tag "search" do
-          strong do
-            button "搜索文档", onclick: "document.querySelectorAll('dialog')[0].showModal();"
-          end
-        end
-
         ul role: "list" do
-          li do
-            link "文档", to: Docs::Index
+          if current_path != Home::Index.path_without_query_params
+            li do
+              link "首页", to: Home::Index
+            end
           end
 
           li do
-            a "Github", href: "https://github.com/orgs/crystal-china/repositories"
+            if current_path == Docs::Index.path_without_query_params
+              tag "search" do
+                strong do
+                  button "搜索文档", onclick: "document.querySelectorAll('dialog')[0].showModal();"
+                end
+              end
+            else
+              link "学习资料", to: Docs::Index
+            end
+          end
+
+          li do
+            a "本站源码", href: "https://github.com/crystal-china/website"
           end
 
           me = current_user

@@ -44,4 +44,4 @@ function copyCodeButton () {
     }
 }
 
-export default copyCodeButton
+export default copyCodeButton;

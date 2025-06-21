@@ -28,7 +28,7 @@ abstract class DocLayout
   end
 
   def page_title
-    PAGINATION_RELATION_MAPPING.dig?(current_path, :title) || "首页"
+    PAGINATION_RELATION_MAPPING.dig?(current_path, :title) || "文档"
   end
 
   def print_votes
@@ -86,7 +86,7 @@ HEREDOC
     html lang: "en", class: "-no-dark-theme" do
       mount Shared::LayoutHead, page_title: page_title
 
-      body "hx-boost": true, style: "padding: 0px;" do
+      body hx_boost: true, style: "padding: 0px;" do
         mount Navbar, current_user: current_user
 
         div class: "sidebar-layout fullscreen" do
@@ -129,6 +129,7 @@ HEREDOC
               end
             end
           end
+
           mount Shared::Common
         end
       end

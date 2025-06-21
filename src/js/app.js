@@ -45,6 +45,27 @@ function init() {
     if (stork_container != null) {
         stork.attach("docs");
     }
+
+    const startLogoAnimation = function () {
+        const canvas = document.getElementById("logo-canvas");
+        var model = new Viewer3D(canvas);
+        model.shader("flat", 255, 255, 255);
+        model.insertModel(
+            `${assetHost}${mixManifest["/assets/icosahedron.xml"] ?? "/assets/icosahedron.xml"}`,
+        );
+        model.contrast(0.9);
+    };
+
+    const setIPhoneDataAttribute = function () {
+        let platform = navigator?.userAgent || navigator?.platform || "unknown";
+
+        if (/iPhone/.test(platform)) {
+            document.documentElement.dataset.uaIphone = true;
+        }
+    };
+
+    setIPhoneDataAttribute();
+    startLogoAnimation();
 }
 
 htmx.onLoad(init);
