@@ -1,15 +1,12 @@
 class Navbar < BaseComponent
   def render
-    header class: "navbar", style: "margin-bottom: 2px; margin-top: 0px;" do
+    header class: "navbar", style: "margin-bottom: 2px; margin-top: 0px; width: 100%;" do
       div do
-        a href: "/", class: "f-row justify-content:end align-items:center" do
-          img src: asset("svgs/crystal.svg"), alt: "crystal-china"
+        a href: "/", class: "f-row align-items:center" do
+          img src: asset("svgs/crystal.svg"), alt: "crystal-china", style: "width: 150px;"
           span "China", class: "allcaps", style: "color: black;"
         end
       end
-
-      # div class: "brand-logo" do
-      # end
 
       nav class: "contents" do
         ul role: "list" do
