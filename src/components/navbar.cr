@@ -13,21 +13,19 @@ class Navbar < BaseComponent
 
       nav class: "contents" do
         ul role: "list" do
-          if current_path != Home::Index.path_without_query_params
-            li do
-              link "首页", to: Home::Index
-            end
+          li do
+            link "首页", to: Home::Index
           end
 
           li do
-            if current_path == Docs::Index.path_without_query_params
+            if current_path.starts_with?("/docs")
               tag "search" do
                 strong do
                   button "搜索文档", onclick: "document.querySelectorAll('dialog')[0].showModal();"
                 end
               end
             else
-              link "学习资料", to: Docs::Index
+              link "学习文档", to: Docs::Index
             end
           end
 
