@@ -1,6 +1,4 @@
 class Api::Upload < ApiAction
-  include Api::Auth::SkipRequireAuthToken
-
   post "/api/upload" do
     source = params.from_multipart.last["source"]
 

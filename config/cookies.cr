@@ -10,7 +10,7 @@ Lucky::CookieJar.configure do |settings|
     cookie.secure(Lucky::ForceSSLHandler.settings.enabled)
 
     # By default, don't allow reading cookies with JavaScript
-    cookie.http_only(true)
+    cookie.http_only(false)
 
     # Restrict cookies to a first-party or same-site context
     cookie.samesite(:lax)
