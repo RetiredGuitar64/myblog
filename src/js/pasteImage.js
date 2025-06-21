@@ -1,8 +1,8 @@
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
-function pasteImage(editorElement) {
-    editorElement.addEventListener("paste", async (event) => {
-        await handlePasteEvent(event, editorElement);
+function pasteImage(textarea) {
+    textarea.addEventListener("paste", async (event) => {
+        await handlePasteEvent(event, textarea);
     });
 }
 

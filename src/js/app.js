@@ -20,32 +20,50 @@ function init() {
     // 取消注释来允许它正常发送请求。
     // htmx.config.selfRequestsOnly = false;
 
-    copyCodeButton();
-    const assetHost = IS_WATCH_MODE ? "" : "https://assets.crystal-china.org";
-
     // 确保下面的函数，只在 body 重新改变时才触发
     if (event.detail.elt.nodeName == "BODY") {
         // 薛定谔的猫？我只要这里日志查看它，它就有数据，否则，它经常是空的？
         console.log(mixManifest);
-        stork.initialize(
-            `${assetHost}${mixManifest["/docs/stork.wasm"] ?? "/docs/stork.wasm"}`,
-        );
-        stork.downloadIndex(
-            "docs",
-            `${assetHost}${mixManifest["/docs/index.st"] ?? "/docs/index.st"}`,
-        );
-
-        let textarea = document.getElementById("text_area");
-        if (textarea != null) {
-            pasteImage(textarea);
-        }
     }
+}
 
-    let stork_container = document.querySelector("input[data-stork='docs']");
-    if (stork_container != null) {
-        stork.attach("docs");
+htmx.onLoad(init);
+
+// Set up blocks on the initial page load
+document.addEventListener("DOMContentLoaded", function () {
+    let textareas = document.body.querySelectorAll("textarea");
+    textareas.forEach(pasteImage);
+
+    let blocks = document.body.querySelectorAll("pre.b");
+    blocks.forEach(copyCodeButton);
+
+    setupLogo();
+
+    initStork();
+    setupStork();
+});
+
+const assetHost = IS_WATCH_MODE ? "" : "https://assets.crystal-china.org";
+
+// Set up any newly added block (hx-boosted navigations or hx-get/hx-post/etc. swaps)
+document.body.addEventListener("htmx:afterSwap", function (event) {
+    let textareas = event.detail.elt.querySelectorAll("textarea");
+    textareas.forEach(pasteImage);
+
+    let blocks = event.detail.elt.querySelectorAll("pre.b");
+    blocks.forEach(copyCodeButton);
+
+    setupLogo();
+
+    setupStork();
+
+    // If it's possible that a block is at the top level of the response, you'll want to check the root elt itself
+    if (event.detail.elt.matches("#textarea")) {
+        pasteImage(event.detail.elt);
     }
+});
 
+function setupLogo() {
     const startLogoAnimation = function () {
         const canvas = document.getElementById("logo-canvas");
         var model = new Viewer3D(canvas);
@@ -64,8 +82,27 @@ function init() {
         }
     };
 
-    setIPhoneDataAttribute();
-    startLogoAnimation();
+    let logoCanvas = document.getElementById("logo-canvas");
+
+    if (logoCanvas != null) {
+        setIPhoneDataAttribute();
+        startLogoAnimation();
+    }
 }
 
-htmx.onLoad(init);
+function setupStork() {
+    let storkContainer = document.querySelector("input[data-stork='docs']");
+    if (storkContainer != null) {
+        stork.attach("docs");
+    }
+}
+
+function initStork() {
+    stork.initialize(
+        `${assetHost}${mixManifest["/docs/stork.wasm"] ?? "/docs/stork.wasm"}`,
+    );
+    stork.downloadIndex(
+        "docs",
+        `${assetHost}${mixManifest["/docs/index.st"] ?? "/docs/index.st"}`,
+    );
+}
