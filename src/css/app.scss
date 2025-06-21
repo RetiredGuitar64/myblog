@@ -95,13 +95,14 @@ label {
   --line-length: 50rem;
 }
 
-dfn > code {
-  font-style: normal;
-  text-decoration: 1px dashed var(--muted-fg) underline;
-}
-code a {
-  font-family: inherit;
-}
+// 不知道这是干啥的，先关闭
+/* dfn > code { */
+/*   font-style: normal; */
+/*   text-decoration: 1px dashed var(--muted-fg) underline; */
+/* } */
+/* code a { */
+/*   font-family: inherit; */
+/* } */
 
 button.copyBtn {
   float: right;
@@ -114,26 +115,26 @@ table {
   border-radius: 10px; /* 添加圆角 */
   border-collapse: collapse; /* 合并边框 */
   box-shadow: 2px 2px 5px gray; /* 添加阴影 */
+
+  th {
+    background-color: #ffffff; /* 表头背景颜色，类似于 GitHub 的浅灰色 #f6f8fa */
+    font-weight: bold;
+  }
+
+  th,
+  td {
+    border: 1px solid #d1d9e0; /* 单元格边框 */
+    padding: 10px;
+    text-align: left;
+  }
+
+  /* 偶数行背景色（交替颜色） */
+  tr:nth-child(even) {
+    background-color: #ffffff; /* 浅灰色 */
+  }
 }
 
-th,
-td {
-  border: 1px solid #d1d9e0; /* 单元格边框 */
-  padding: 10px;
-  text-align: left;
-}
-
-th {
-  background-color: #ffffff; /* 表头背景颜色，类似于 GitHub 的浅灰色 #f6f8fa */
-  font-weight: bold;
-}
-
-/* 偶数行背景色（交替颜色） */
-tr:nth-child(even) {
-  background-color: #ffffff; /* 浅灰色 */
-}
-
-// ---------------- 文档评论表单和预览的 tab 样式 ---------------- 
+// ---------------- 文档评论表单和预览的 tab 样式 ----------------
 
 div.tab-frame {
   input {
