@@ -24,7 +24,7 @@ Crystal 是一门受 Ruby 高度启发的计算机程序语言，并且最终编
 
 ## 本站技术栈
 
-[本站](https://github.com/crystal-china/website) 自然使用 Crystal 编写，目前用到的库有：
+[本站](https://github.com/crystal-china/website) 自然使用 Crystal 编写，目前用到的库（shard）有：
 
 - [baked_file_system_mounter](https://github.com/crystal-china/baked_file_system_mounter), 用于将本站所需的 assets 文件
  （包含 js, css, 字体，markdown 等）打包进可执行文件，并在部署到新机器后自动 mount。
@@ -32,6 +32,8 @@ Crystal 是一门受 Ruby 高度启发的计算机程序语言，并且最终编
 - [magic-haversack](https://github.com/crystal-china/magic-haversack) 使用 zig cc 来 build 一个 Crystal 静态 bianry（无需 docker）
 - [markd](https://github.com/icyleaf/markd) 用于转换 markdown 格式到网页。
 - [tartrazine](https://github.com/ralsina/tartrazine), 用于高亮 markdown 中的代码块。
+
+更多的 shard，查看 [shard.yml](https://github.com/crystal-china/website/blob/master/shard.yml)。
 
 前端部分，基于本人的喜好，本站**最大限度避免编写Javascript**, 并且本人也基本不会写 CSS，
 有希望拿本项目练手的前端小将，欢迎报名！
@@ -48,7 +50,7 @@ Crystal 是一门受 Ruby 高度启发的计算机程序语言，并且最终编
 - [stork](https://github.com/jameslittle230/stork) 很好用的本地全文搜索库，会编译为 wasm 因此性能很好，缺点是中文支持差一点，
   另外，作者不维护了，有点可惜，目前够用吧。
 
-用到的更多库，请分别查看 [shard.yml](https://github.com/crystal-china/website/blob/master/shard.yml)  以及 [pacakge.json](https://github.com/crystal-china/website/blob/master/package.json)。
+更多用到的前端库，查看 [pacakge.json](https://github.com/crystal-china/website/blob/master/package.json)。
 
 ## 本站如何部署
 

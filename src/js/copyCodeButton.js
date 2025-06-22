@@ -13,12 +13,13 @@ function copyCodeButton(blockElt) {
                 "background: #24273a; color: white; border: none;",
             );
             button.innerText = copyButtonLabel;
-            button.addEventListener("click", async () => {
-                await copyCode(blockElt, button);
-            });
-
-            blockElt.prepend(button);
         }
+
+        button.addEventListener("click", async () => {
+            await copyCode(blockElt, button);
+        });
+
+        blockElt.prepend(button);
     }
 }
 

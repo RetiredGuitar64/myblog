@@ -24,7 +24,16 @@ function init() {
     if (event.detail.elt.nodeName == "BODY") {
         // 薛定谔的猫？我只要这里日志查看它，它就有数据，否则，它经常是空的？
         console.log(mixManifest);
+        initStork();
     }
+
+    eventElt = event.detail.elt;
+    console.log(eventElt.nodeName);
+
+    setupLogo();
+    setupPasteImage(eventElt);
+    setupCopyCodeButton(eventElt);
+    setupStork(eventElt);
 }
 
 // 备忘，为什么这里不直接使用 htmx.onLoad 呢？
@@ -35,30 +44,11 @@ function init() {
 // which will replace the content of the body, then fire htmx:load on its direct descendants,
 // so here the header, div and dialog from your screenshot indeed.
 
+// 然后，为什么现在又用回了 onLoad, 因为现在经过重构，body 下面只有一个顶级的 div,
+// 之前事件绑定重复激发的情况不存在了，而且，onLoad 可以很好的处理 history 相关的问题。
+// 不必再单独为 htmx:historyRestore" 事件绑定一遍了。
+
 htmx.onLoad(init);
-
-// Set up blocks on the initial page load
-document.addEventListener("DOMContentLoaded", function () {
-    eventElt = document;
-
-    initStork();
-    setupLogo();
-    setupPasteImage(eventElt);
-    setupCopyCodeButton(eventElt);
-    setupStork(eventElt);
-});
-
-const assetHost = IS_WATCH_MODE ? "" : "https://assets.crystal-china.org";
-
-// Set up any newly added block (hx-boosted navigations or hx-get/hx-post/etc. swaps)
-document.body.addEventListener("htmx:afterSwap", function (event) {
-    eventElt = event.detail.elt;
-
-    setupLogo();
-    setupPasteImage(eventElt);
-    setupCopyCodeButton(eventElt);
-    setupStork(eventElt);
-});
 
 function setupLogo() {
     const canvas = document.getElementById("logo-canvas");
@@ -87,6 +77,8 @@ function setupStork(eventElt) {
 }
 
 function initStork() {
+    const assetHost = IS_WATCH_MODE ? "" : "https://assets.crystal-china.org";
+
     stork.initialize(
         `${assetHost}${mixManifest["/docs/stork.wasm"] ?? "/docs/stork.wasm"}`,
     );
