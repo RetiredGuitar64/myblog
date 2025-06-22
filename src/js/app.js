@@ -28,7 +28,7 @@ function init() {
     }
 
     eventElt = event.detail.elt;
-    console.log(eventElt.nodeName);
+    // console.log(eventElt.nodeName);
 
     setupLogo();
     setupPasteImage(eventElt);

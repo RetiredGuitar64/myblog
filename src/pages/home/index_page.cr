@@ -67,10 +67,10 @@ class Home::IndexPage < MainLayout
             github_icon_link("https://github.com/veelenga/awesome-crystal", "Awesome Crystal")
           end
           li do
-            github_icon_link("https://github.com/crystal-china", "Crystal China")
+            github_icon_link("https://github.com/crystal-ameba", "Crystal ameba")
           end
           li do
-            github_icon_link("https://github.com/crystal-ameba", "Crystal ameba")
+            github_icon_link("https://github.com/crystal-china", "Crystal China")
           end
           li do
             github_icon_link("https://github.com/crystal-community", "Crystal community")
