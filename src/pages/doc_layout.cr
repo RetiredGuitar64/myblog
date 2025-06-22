@@ -85,54 +85,56 @@ HEREDOC
       mount Shared::LayoutHead, page_title: page_title
 
       body hx_boost: true, style: "padding: 0px;" do
-        mount Navbar, current_user: current_user
+        div do
+          mount Navbar, current_user: current_user
 
-        div class: "sidebar-layout fullscreen" do
-          header id: "sidebar" do
-            mount Sidebar, current_user: current_user
-          end
+          div class: "sidebar-layout fullscreen" do
+            header id: "sidebar" do
+              mount Sidebar, current_user: current_user
+            end
 
-          div do
-            main style: "--density: 0.6" do
-              h1 do
-                text page_title
-                if (msg = sub_title)
-                  tag "sub-title" do
-                    text msg
+            div do
+              main style: "--density: 0.6" do
+                h1 do
+                  text page_title
+                  if (msg = sub_title)
+                    tag "sub-title" do
+                      text msg
+                    end
                   end
                 end
-              end
 
-              div class: "f-row justify-content:space-between" do
-                raw print_doc_date
-                print_votes
-              end
+                div class: "f-row justify-content:space-between" do
+                  raw print_doc_date
+                  print_votes
+                end
 
-              content
+                content
 
-              mount Pager
+                mount Pager
 
-              div class: "<h5> f-row justify-content:center", style: "color: #BEBEBE" do
-                text "欢迎在评论区留下你的见解、问题或建议"
-              end
+                div class: "<h5> f-row justify-content:center", style: "color: #BEBEBE" do
+                  text "欢迎在评论区留下你的见解、问题或建议"
+                end
 
-              div id: "form_with_replies" do
-                mount Docs::Form, current_user: current_user
+                div id: "form_with_replies" do
+                  mount Docs::Form, current_user: current_user
 
-                show_replies_when_revealed
-              end
+                  show_replies_when_revealed
+                end
 
-              footer class: "f-row flex-wrap:wrap justify-content:center" do
-                mount Footer
+                footer class: "f-row flex-wrap:wrap justify-content:center" do
+                  mount Footer
+                end
               end
             end
+
+            mount Shared::Common
           end
 
-          mount Shared::Common
+          doc_search_dialog
         end
       end
-
-      doc_search_dialog
     end
   end
 

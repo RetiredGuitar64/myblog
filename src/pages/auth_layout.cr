@@ -21,16 +21,18 @@ abstract class AuthLayout
       mount Shared::LayoutHead, page_title: page_title
 
       body do
-        mount Navbar, current_user: current_user
+        div do
+          mount Navbar, current_user: current_user
 
-        main do
-          content
-        end
+          main do
+            content
+          end
 
-        footer class: "f-row flex-wrap:wrap justify-content:center" do
-          mount Footer
+          footer class: "f-row flex-wrap:wrap justify-content:center" do
+            mount Footer
+          end
+          mount Shared::Common
         end
-        mount Shared::Common
       end
     end
   end

@@ -17,16 +17,18 @@ abstract class MainLayout
       mount Shared::LayoutHead, page_title: page_title
 
       body hx_boost: true do
-        mount Navbar, current_user: current_user
+        div do
+          mount Navbar, current_user: current_user
 
-        main do
-          content
+          main do
+            content
 
-          footer class: "f-row flex-wrap:wrap justify-content:center" do
-            mount Footer
+            footer class: "f-row flex-wrap:wrap justify-content:center" do
+              mount Footer
+            end
           end
+          mount Shared::Common
         end
-        mount Shared::Common
       end
     end
   end
