@@ -1,8 +1,7 @@
 class Footer < BaseComponent
   def render
-    text "Crystal China"
-    br
-    section class: "tool-bar margin-block" do
+    section class: "tool-bar margin-block", style: "margin-top: 10px;" do
+      text "Crystal China"
       a "admin@crystal-china.org", href: "mailto:admin@crystal-china.org"
       hr "aria-orientation": "vertical"
       a href: "https://github.com/crystal-china", target: "_blank", rel: "nofollow", title: "本站在 GitHub 上面的开源内容" do
