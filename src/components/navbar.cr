@@ -11,10 +11,6 @@ class Navbar < BaseComponent
       nav class: "contents" do
         ul role: "list" do
           li do
-            link "首页", to: Home::Index
-          end
-
-          li do
             if current_path.starts_with?("/docs")
               tag "search" do
                 strong do
@@ -34,7 +30,7 @@ class Navbar < BaseComponent
           if me
             li do
               link(
-                "退出",
+                "登出",
                 to: SignIns::Delete,
                 flow_id: "sign-out-button",
                 hx_target: "body",
