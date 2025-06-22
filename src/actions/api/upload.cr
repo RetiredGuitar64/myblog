@@ -1,19 +1,20 @@
 class Api::Upload < ApiAction
   post "/api/upload" do
     source = params.from_multipart.last["source"]
-
     io = IO::Memory.new
+    headers = HTTP::Headers.new
 
-    file = File.open(source.path)
-    form_data = HTTP::FormData::Builder.new(io)
-    form_data.field("key", FREEIMAGE_HOST_API_KEY)
-    form_data.file("source", file, HTTP::FormData::FileMetadata.new(filename: source.filename))
-    form_data.finish
-    file.close
+    file = File.open(source.path) do |file|
+      HTTP::FormData.build io do |form_data|
+        form_data.field("key", FREEIMAGE_HOST_API_KEY)
+        form_data.file("source", file, HTTP::FormData::FileMetadata.new(filename: source.filename))
+        headers["Content-Type"] = form_data.content_type
+      end
+    end
 
     response = HTTP::Client.post(
       url: "https://freeimage.host/api/1/upload",
-      headers: HTTP::Headers{"content-type" => form_data.content_type},
+      headers: headers,
       body: io.rewind
     )
 
