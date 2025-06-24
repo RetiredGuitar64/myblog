@@ -3,11 +3,13 @@ class Home::IndexPage < MainLayout
     div class: "brand-logo f-col align-items:center justify-content:center" do
       h1 "The Crystal programming language 中文站"
 
-      div class: "latest-release-info" do
-        a href: "https://crystal-lang.org/2025/05/12/1.16.3-released/" do
-          text "Latest release: "
-          strong "1.16.3"
-        end
+      div(
+        class: "latest-release-info",
+        hx_trigger: "load",
+        hx_get: Home::Htmx::CrystalLatestRelease.path_without_query_params,
+        hx_swap: "outerHTML",
+      ) do
+        mount Shared::Spinner, text: "获取最新版本..."
       end
 
       tag(
