@@ -9,7 +9,12 @@ class Home::IndexPage < MainLayout
         hx_get: Home::Htmx::CrystalLatestRelease.path_without_query_params,
         hx_swap: "outerHTML",
       ) do
-        mount Shared::Spinner, text: "获取最新版本..."
+        a href: "" do
+          span class: "f-row align-items:center" do
+            text "Latest release:"
+            mount Shared::Spinner, text: "获取最新版本...", width: "10px"
+          end
+        end
       end
 
       tag(
