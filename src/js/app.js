@@ -31,7 +31,7 @@ function init(eventElt) {
     // 确保激活的这个 div 不包含 htmx-settling
     // 目前猜测所有使用 htmx-trigger="load" 激活的 swap，js callback 也会被执行。
     // 此时重复执行 js 的 callback 会引起问题，例如，render Logo 动画两次。
-    // 为了避免重复执行，做一个判断。（这个还不知道是不是总是有效）
+    // 为了避免重复执行，做一个判断。（不确定是不是总是有效）
     if (!eventElt.className.includes("htmx-settling")) {
         setupLogo(eventElt);
         setupPasteImage(eventElt);
@@ -54,10 +54,19 @@ function init(eventElt) {
 
 htmx.onLoad(init);
 
+// https://htmx.org/docs/#undoing-dom-mutations-by-3rd-party-libraries
+// 当全局开启 hx-boost 之后，有义务在 htmx:beforeHistorySave 的 callback 中，
+// 将一些 js 库的针对 DOM 的修改回滚到初始状态，以使得 htmx history 在载入时，
+// 运行 js 来重新初始化。
+// 因为上面有 htmx-settling 的判断，这个其实不是必须的，但这是 htmx 推荐的方式。
+document.body.addEventListener("htmx:beforeHistorySave", function (event) {
+    document.getElementById("logo-canvas")?.setAttribute("running", "false");
+});
+
 function setupLogo(eventElt) {
     const canvas = document.getElementById("logo-canvas");
 
-    if (canvas != null) {
+    if (canvas != null && canvas.getAttribute("running") === "false") {
         // setIPhoneDataAttribute
         let platform = navigator?.userAgent || navigator?.platform || "unknown";
 
@@ -70,6 +79,7 @@ function setupLogo(eventElt) {
         model.shader("flat", 255, 255, 255);
         model.insertModel("/assets/icosahedron.xml");
         model.contrast(0.9);
+        canvas.setAttribute("running", "true");
     }
 }
 

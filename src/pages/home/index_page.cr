@@ -23,6 +23,7 @@ class Home::IndexPage < MainLayout
         width: 300,
         id: "logo-canvas",
         style: "cursor:move",
+        running: "false"
       )
     end
 
