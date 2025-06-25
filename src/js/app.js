@@ -5,7 +5,7 @@ _hyperscript.browserInit();
 // import * as AsciinemaPlayer from 'asciinema-player';
 // AsciinemaPlayer.create('/demo.cast', document.getElementById('demo'));
 
-function init() {
+function init(eventElt) {
     // htmx.logger = function (elt, event, data) {
     //     if (console) {
     //         console.log(event, elt, data);
@@ -21,19 +21,23 @@ function init() {
     // htmx.config.selfRequestsOnly = false;
 
     // 确保下面的函数，只在 body 重新改变时才触发
-    if (event.detail.elt.nodeName == "BODY") {
+    if (eventElt.nodeName == "BODY") {
         // 薛定谔的猫？我只要这里日志查看它，它就有数据，否则，它经常是空的？
         console.log(mixManifest);
         initStork();
     }
 
-    eventElt = event.detail.elt;
-    // console.log(eventElt.nodeName);
-
-    setupLogo();
-    setupPasteImage(eventElt);
-    setupCopyCodeButton(eventElt);
-    setupStork(eventElt);
+    // console.log(eventElt.getAttribute("class"));
+    // 确保激活的这个 div 不包含 htmx-settling
+    // 目前猜测所有使用 htmx-trigger="load" 激活的 swap，js callback 也会被执行。
+    // 此时重复执行 js 的 callback 会引起问题，例如，render Logo 动画两次。
+    // 为了避免重复执行，做一个判断。（这个还不知道是不是总是有效）
+    if (!eventElt.className.includes("htmx-settling")) {
+        setupLogo(eventElt);
+        setupPasteImage(eventElt);
+        setupCopyCodeButton(eventElt);
+        setupStork(eventElt);
+    }
 }
 
 // 备忘，为什么这里不直接使用 htmx.onLoad 呢？
@@ -50,7 +54,7 @@ function init() {
 
 htmx.onLoad(init);
 
-function setupLogo() {
+function setupLogo(eventElt) {
     const canvas = document.getElementById("logo-canvas");
 
     if (canvas != null) {
