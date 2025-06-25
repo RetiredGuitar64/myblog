@@ -14,8 +14,6 @@ class Shared::Spinner < BaseComponent
         opts = opts.merge(style: "width: #{width};")
       end
 
-      p! opts
-
       img(opts)
     end
   end
