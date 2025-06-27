@@ -59,7 +59,7 @@ HEREDOC
         a(
           "删除",
           class: "chip",
-          hx_delete: Docs::Htmx::Reply::Delete.with(user_id: me.id, reply_id: reply.id).path,
+          hx_delete: Docs::Htmx::Reply::Delete.with(id: reply.id, user_id: me.id).path,
           hx_target: "closest div.box",
           hx_swap: "outerHTML",
           hx_include: "[name='_csrf']",

@@ -1,4 +1,6 @@
 class Docs::Form < BaseComponent
+  needs content : String = ""
+
   def render
     div style: "border:0.5px solid gray; padding: 5px;" do
       render_tabs
@@ -16,18 +18,18 @@ class Docs::Form < BaseComponent
         id: "tab2",
         hx_put: Docs::Htmx::MarkdownRender.path_without_query_params,
         hx_target: "#markdown-preview",
-        hx_include: "[name='_csrf'],#text_area",
+        hx_include: "[name='_csrf'],next textarea",
         hx_indicator: "next img.htmx-indicator",
       )
       label(
         "预览",
         for: "tab2",
-        script: "on mouseover set x to (<#text_area/>).value
-        then if x[0] == ''
-           add @disabled to <#tab2/>
+        script: "on mouseover set x to the value of the next <textarea/>
+        then if x == ''
+           add @disabled to the previous <input/>
            then set the style of me to 'cursor: not-allowed;'
         else
-          remove @disabled from <#tab2/>
+          remove @disabled from the previous <input/>
           then remove @style from me
         end
         "
@@ -64,7 +66,9 @@ class Docs::Form < BaseComponent
         para do
           label legend_text, for: "text_area", style: "margin-bottom: 8px;"
 
-          textarea textarea_opt
+          textarea textarea_opt do
+            text content
+          end
         end
       end
     end
