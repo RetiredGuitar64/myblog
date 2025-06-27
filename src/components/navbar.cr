@@ -14,11 +14,11 @@ class Navbar < BaseComponent
             if current_path.starts_with?("/docs")
               tag "search" do
                 strong do
-                  button "搜索文档", onclick: "document.querySelectorAll('dialog')[0].showModal();"
+                  button "搜索博客", onclick: "document.querySelectorAll('dialog')[0].showModal();"
                 end
               end
             else
-              link "学习文档", to: Docs::Index
+              link "打开博客", to: Docs::Index
             end
           end
 

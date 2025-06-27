@@ -9,5 +9,5 @@
 /tmp
 /.tool-versions
 /dist
-/public/docs/index.st
 /*.custom.gz
+/new_page.sh
