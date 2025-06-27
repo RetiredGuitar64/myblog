@@ -118,7 +118,7 @@ HEREDOC
                 end
 
                 div id: "form_with_replies" do
-                  mount Docs::Form, current_user: current_user
+                  mount Docs::Form, current_user: current_user, doc_path: current_path
 
                   show_replies_when_revealed
                 end

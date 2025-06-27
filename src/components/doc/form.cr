@@ -1,14 +1,15 @@
 class Docs::Form < BaseComponent
   needs content : String = ""
+  needs doc_path : String
 
   def render
-    div style: "border:0.5px solid gray; padding: 5px;" do
+    div style: "border:0.5px solid gray; padding: 5px;", id: "form" do
       render_tabs
     end
   end
 
   private def render_tabs
-    div class: "tab-frame" do
+    div class: "tab-frame", style: "margin-top: 5px;" do
       input type: "radio", checked: "", name: "tab", id: "tab1"
       label "输入", for: "tab1"
 
@@ -34,6 +35,8 @@ class Docs::Form < BaseComponent
         end
         "
       )
+
+      render_submit_button
 
       div class: "tab" do
         render_form
@@ -77,5 +80,30 @@ class Docs::Form < BaseComponent
   private def render_preview
     para id: "markdown-preview"
     mount Shared::Spinner, text: "正在预览..."
+  end
+
+  private def render_submit_button
+    me = current_user
+
+    opts = {
+      value: "评论",
+      style: "margin-right: 25px; float: right;",
+    }
+
+    if me.nil?
+      opts = opts.merge(disabled: "")
+    else
+      doc = DocQuery.new.path_index(doc_path).first
+      opts = opts.merge(
+        hx_post: Docs::Htmx::Reply::Create.path_without_query_params,
+        hx_target: "#form_with_replies",
+        hx_include: "[name='_csrf'],next textarea",
+        hx_vals: %({"user_id": #{me.id}, "doc_id": #{doc.id}, "doc_path": "#{doc_path}"})
+      )
+    end
+
+    strong do
+      button("评论", opts)
+    end
   end
 end
