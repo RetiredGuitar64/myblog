@@ -13,7 +13,7 @@ class Docs::RepliesMore < BaseComponent
 
         raw markdown(reply.content)
 
-        render_emoji_buttons(reply)
+        render_emoji_buttons_and_delete_button(reply)
       end
     end
 
@@ -36,7 +36,7 @@ HEREDOC
     end
   end
 
-  private def render_emoji_buttons(reply : Reply)
+  private def render_emoji_buttons_and_delete_button(reply : Reply)
     me = current_user
     voted_types = if me.nil?
                     [] of String
@@ -44,14 +44,28 @@ HEREDOC
                     VoteQuery.new.user_id(me.id).reply_id(reply.id).map &.vote_type
                   end
 
-    div class: "f-row", style: "margin-bottom: 0px;" do
-      mount(
-        Shared::VoteButton,
-        votes: Hash(String, Int32).from_json(reply.votes.to_json),
-        reply_id: reply.id,
-        current_user: me,
-        voted_types: voted_types
-      )
+    div class: "f-row justify-content:space-between", style: "margin-bottom: 0px;" do
+      div do
+        mount(
+          Shared::VoteButton,
+          votes: Hash(String, Int32).from_json(reply.votes.to_json),
+          reply_id: reply.id,
+          current_user: me,
+          voted_types: voted_types
+        )
+      end
+
+      if !(me = current_user).nil?
+        a(
+          "删除",
+          class: "chip",
+          hx_delete: Docs::Htmx::ReplyDelete.with(user_id: me.id, reply_id: reply.id).path,
+          hx_target: "closest div.box",
+          hx_swap: "outerHTML",
+          hx_include: "[name='_csrf']",
+          hx_confirm: "删除这条回复？"
+        )
+      end
     end
   end
 
