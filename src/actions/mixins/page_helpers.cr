@@ -70,21 +70,21 @@ module PageHelpers
     current_path.sub("/docs", "/docs/htmx/replies")
   end
 
-  def asset_host
-    Lucky::Server.settings.asset_host
-  end
+  # def asset_host
+  #   Lucky::Server.settings.asset_host
+  # end
 
-  def fingerprinted_filename(file_path : String)
-    return file_path unless LuckyEnv.production?
+  # def fingerprinted_filename(file_path : String)
+  #   return file_path unless LuckyEnv.production?
 
-    path = Path[file_path]
-    basename = path.stem
-    digest = Digest::MD5.hexdigest(File.read(path))[0..7]
+  #   path = Path[file_path]
+  #   basename = path.stem
+  #   digest = Digest::MD5.hexdigest(File.read(path))[0..7]
 
-    if basename.ends_with? digest
-      file_path
-    else
-      (Path[path.dirname] / "#{basename}-#{digest}#{path.extension}").to_s
-    end
-  end
+  #   if basename.ends_with? digest
+  #     file_path
+  #   else
+  #     (Path[path.dirname] / "#{basename}-#{digest}#{path.extension}").to_s
+  #   end
+  # end
 end
