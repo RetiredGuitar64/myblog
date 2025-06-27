@@ -1,6 +1,7 @@
 class Docs::Form < BaseComponent
   needs content : String = ""
-  needs doc_path : String
+  needs doc_path : String?
+  needs reply_id : Int64?
 
   def render
     div style: "border:0.5px solid gray; padding: 5px;", id: "form" do
@@ -84,26 +85,33 @@ class Docs::Form < BaseComponent
 
   private def render_submit_button
     me = current_user
-
+    text = "新增"
     opts = {
-      value: "评论",
-      style: "margin-right: 25px; float: right;",
+      style:      "margin-right: 25px; float: right;",
+      hx_target:  "#form_with_replies",
+      hx_include: "[name='_csrf'],next textarea",
     }
 
     if me.nil?
       opts = opts.merge(disabled: "")
     else
-      doc = DocQuery.new.path_index(doc_path).first
-      opts = opts.merge(
-        hx_post: Docs::Htmx::Reply::Create.path_without_query_params,
-        hx_target: "#form_with_replies",
-        hx_include: "[name='_csrf'],next textarea",
-        hx_vals: %({"user_id": #{me.id}, "doc_id": #{doc.id}, "doc_path": "#{doc_path}"})
-      )
+      if reply_id.nil?
+        doc = DocQuery.new.path_index(doc_path.not_nil!).first
+        opts = opts.merge(
+          hx_post: Docs::Htmx::Reply::Create.path_without_query_params,
+          hx_vals: %({"user_id": #{me.id}, "doc_id": #{doc.id}, "doc_path": "#{doc_path}"})
+        )
+      else
+        text = "修改"
+        opts = opts.merge(
+          hx_patch: Docs::Htmx::Reply::Update.path_without_query_params(id: reply_id.not_nil!),
+          hx_vals: %({"user_id": #{me.id}})
+        )
+      end
     end
 
     strong do
-      button("评论", opts)
+      button(text, opts)
     end
   end
 end

@@ -56,15 +56,32 @@ HEREDOC
       end
 
       if !(me = current_user).nil?
-        a(
-          "删除",
-          class: "chip",
-          hx_delete: Docs::Htmx::Reply::Delete.with(id: reply.id, user_id: me.id).path,
-          hx_target: "closest div.box",
-          hx_swap: "outerHTML",
-          hx_include: "[name='_csrf']",
-          hx_confirm: "删除这条回复？"
-        )
+        div do
+          a(
+            "编辑",
+            class: "chip",
+            style: "margin-right: 10px;",
+            hx_get: Docs::Htmx::Reply::Edit.with(id: reply.id, user_id: me.id).path,
+            hx_target: "div#form",
+            hx_swap: "outerHTML",
+            hx_include: "[name='_csrf']",
+            script: "on click js
+event.preventDefault(); // 防止默认行为（避免页面跳转）
+    const formElement = document.getElementById('form');
+formElement.scrollIntoView();
+end"
+          )
+
+          a(
+            "删除",
+            class: "chip",
+            hx_delete: Docs::Htmx::Reply::Delete.with(id: reply.id, user_id: me.id).path,
+            hx_target: "closest div.box",
+            hx_swap: "outerHTML",
+            hx_include: "[name='_csrf']",
+            hx_confirm: "删除这条回复？"
+          )
+        end
       end
     end
   end
