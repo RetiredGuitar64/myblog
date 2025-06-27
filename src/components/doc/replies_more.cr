@@ -66,9 +66,9 @@ HEREDOC
             hx_swap: "outerHTML",
             hx_include: "[name='_csrf']",
             script: "on click js
-event.preventDefault(); // 防止默认行为（避免页面跳转）
-    const formElement = document.getElementById('form');
-formElement.scrollIntoView();
+            event.preventDefault();
+            const formElement = document.getElementById('form');
+            formElement.scrollIntoView();
 end"
           )
 

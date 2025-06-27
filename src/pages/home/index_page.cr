@@ -93,7 +93,7 @@ class Home::IndexPage < MainLayout
         h2 "Chat"
         ul class: "align-items:stretch" do
           li do
-            a "Discord", href: "https://discord.gg/YS7YvQy"
+            a "Discord", href: "https://discord.gg/YS7YvQy", target: "_blank"
           end
           li do
             a "Reddit", href: "https://www.reddit.com/r/crystal_programming/"
