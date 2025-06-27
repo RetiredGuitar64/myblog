@@ -43,7 +43,7 @@ class Docs::Replies < BaseComponent
     else
       doc = DocQuery.new.path_index(doc_path).first
       input_opt = input_opt.merge(
-        hx_post: Docs::Htmx::Reply.path_without_query_params,
+        hx_post: Docs::Htmx::Reply::Create.path_without_query_params,
         hx_target: "#form_with_replies",
         hx_include: "[name='_csrf'],#text_area",
         hx_vals: %({"user_id": #{me.id}, "doc_id": #{doc.id}, "doc_path": "#{doc_path}"})
