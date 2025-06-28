@@ -19,7 +19,8 @@ class Docs::Htmx::Reply::Update < DocAction
       pagination: replies_pagination(doc_path: doc_path),
       current_user: me,
       doc_path: doc_path,
-      order_by: "desc"
+      order_by: "desc",
+      msg: "修改成功"
     )
   end
 end

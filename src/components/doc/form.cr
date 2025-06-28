@@ -2,6 +2,7 @@ class Docs::Form < BaseComponent
   needs content : String = ""
   needs doc_path : String
   needs reply_id : Int64?
+  needs msg : String?
 
   def render
     div style: "border:0.5px solid gray; padding: 5px;", id: "form" do
@@ -10,7 +11,7 @@ class Docs::Form < BaseComponent
   end
 
   private def render_tabs
-    div class: "tab-frame", style: "margin-top: 5px;" do
+    div class: "tab-frame", style: "margin-top: 5px;text-align: center;" do
       input type: "radio", checked: "", name: "tab", id: "tab1"
       label "输入", for: "tab1"
 
@@ -36,6 +37,14 @@ class Docs::Form < BaseComponent
         end
         "
       )
+
+      if msg
+        output script: <<-'HEREDOC', style: "display: inline-block; color: green;" do
+init transition my opacity to 0% over 3 seconds
+HEREDOC
+          text msg.to_s
+        end
+      end
 
       render_submit_button
 

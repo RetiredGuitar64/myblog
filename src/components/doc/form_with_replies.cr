@@ -3,9 +3,10 @@ class Docs::FormWithReplies < BaseComponent
   needs pagination : {count: Int32 | Int64, replies: ReplyQuery, page: Lucky::Paginator?}
   needs doc_path : String
   needs order_by : String
+  needs msg : String?
 
   def render
-    mount Docs::Form, current_user: current_user, doc_path: doc_path
+    mount Docs::Form, current_user: current_user, doc_path: doc_path, msg: msg
 
     div id: "replies" do
       mount(
