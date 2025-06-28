@@ -1,6 +1,6 @@
 class Docs::Form < BaseComponent
   needs content : String = ""
-  needs doc_path : String?
+  needs doc_path : String
   needs reply_id : Int64?
 
   def render
@@ -85,9 +85,10 @@ class Docs::Form < BaseComponent
 
   private def render_submit_button
     me = current_user
-    text = "新增"
+    text = "回复"
+
     opts = {
-      style:      "margin-right: 25px; float: right;",
+      style:      "margin-right: 25px; margin-left: 10px;",
       hx_target:  "#form_with_replies",
       hx_include: "[name='_csrf'],next textarea",
     }
@@ -95,23 +96,33 @@ class Docs::Form < BaseComponent
     if me.nil?
       opts = opts.merge(disabled: "")
     else
-      if reply_id.nil?
-        doc = DocQuery.new.path_index(doc_path.not_nil!).first
-        opts = opts.merge(
-          hx_post: Docs::Htmx::Reply::Create.path_without_query_params,
-          hx_vals: %({"user_id": #{me.id}, "doc_id": #{doc.id}, "doc_path": "#{doc_path}"})
-        )
-      else
-        text = "修改"
+      if !reply_id.nil?
+        text = "提交"
         opts = opts.merge(
           hx_patch: Docs::Htmx::Reply::Update.path_without_query_params(id: reply_id.not_nil!),
           hx_vals: %({"user_id": #{me.id}})
         )
+      else
+        doc = DocQuery.new.path_index(doc_path).first
+        opts = opts.merge(
+          hx_post: Docs::Htmx::Reply::Create.path_without_query_params,
+          hx_vals: %({"user_id": #{me.id}, "doc_id": #{doc.id}, "doc_path": "#{doc_path}"})
+        )
       end
     end
 
-    strong do
-      button(text, opts)
+    span style: "float:right;" do
+      if !reply_id.nil? && !me.nil?
+        button(
+          "取消",
+          hx_get: Docs::Htmx::Reply::New.with(doc_path: doc_path, user_id: me.id).path,
+          hx_swap: "outerHTML",
+          hx_target: "#form"
+        )
+      end
+      strong do
+        button(text, opts)
+      end
     end
   end
 end
