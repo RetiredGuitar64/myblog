@@ -65,11 +65,14 @@ HEREDOC
             hx_target: "div#form",
             hx_swap: "outerHTML",
             hx_include: "[name='_csrf']",
-            script: "on click js
-            event.preventDefault();
-            const formElement = document.getElementById('form');
-            formElement.scrollIntoView();
-end"
+            script: "on click go to the top of the <#form/>"
+            #             script: <<-'HEREDOC'
+            # on click js
+            #             event.preventDefault();
+            #             const formElement = document.getElementById('form');
+            #             formElement.scrollIntoView();
+            # end
+            # HEREDOC
           )
 
           a(
