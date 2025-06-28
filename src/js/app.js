@@ -12,6 +12,10 @@ function init(eventElt) {
     //     }
     // };
 
+    const firebaseConfig = __FIREBASE_CONFIG__;
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+
     // Delete 请求仍旧使用 form-encoded body 来传递参数。
     // htmx 2.0, 对于 DELETE 请求，将使用 params （根据 spec 规定）
     // 这里设定，仅仅 get 请求使用 params

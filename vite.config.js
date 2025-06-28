@@ -1,5 +1,5 @@
 // vite.config.js
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import { resolve } from "path";
 import crypto from "crypto";
 import path from "path";
@@ -12,9 +12,20 @@ export default defineConfig(({ command, mode }) => {
     const isWatch = mode === "watch";
     const outDir = "dist";
 
+    const env = loadEnv(mode, process.cwd(), "");
+
     return {
         define: {
             IS_WATCH_MODE: JSON.stringify(isWatch), // 传递为全局常量
+            __FIREBASE_CONFIG__: JSON.stringify({
+                apiKey: env.VITE_FIREBASE_API_KEY,
+                authDomain: env.VITE_FIREBASE_AUTH_DOMAIN,
+                projectId: env.VITE_FIREBASE_PROJECT_ID,
+                storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET,
+                messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+                appId: env.VITE_FIREBASE_APP_ID,
+                measurementId: env.VITE_FIREBASE_MEASUREMENT_ID,
+            }),
         },
         build: {
             outDir: outDir, // 打包后的输出目录
@@ -70,6 +81,8 @@ export default defineConfig(({ command, mode }) => {
                 _hyperscript: "hyperscript.org",
                 pasteImage: "./pasteImage",
                 copyCodeButton: "./copyCodeButton.js",
+                initializeApp: ["firebase/app", "initializeApp"],
+                getAnalytics: ["firebase/analytics", "getAnalytics"],
                 Viewer3D: "./viewer3d.js",
                 // 这里我修改了源码，在最后加了一行才 `export default stork;` 才 import 成功
                 stork: "./stork.js",
