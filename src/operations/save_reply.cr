@@ -14,11 +14,16 @@ class SaveReply < Reply::SaveOperation
         user_avatar.value = avatar
       end
     else
-      old_size = ReplyQuery.new.doc_id(doc.id).size
+      if (last_reply = ReplyQuery.new.doc_id(doc.id).last?)
+        floor = last_reply.preferences.floor + 1
+      else
+        floor = 1
+      end
+
       preferences.value = Reply::Preferences.from_json(
         {
           path_for_doc: doc.path_index,
-          floor:        old_size + 1,
+          floor:        floor,
         }.to_json
       )
 

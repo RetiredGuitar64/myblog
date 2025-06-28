@@ -55,6 +55,8 @@ HEREDOC
         )
       end
 
+      # wait 1s then put it into the next <output/>
+
       if !(me = current_user).nil?
         div do
           a(
