@@ -83,6 +83,7 @@ export default defineConfig(({ command, mode }) => {
                 copyCodeButton: "./copyCodeButton.js",
                 initializeApp: ["firebase/app", "initializeApp"],
                 getAnalytics: ["firebase/analytics", "getAnalytics"],
+                logEvent: ["firebase/analytics", "logEvent"],
                 Viewer3D: "./viewer3d.js",
                 // 这里我修改了源码，在最后加了一行才 `export default stork;` 才 import 成功
                 stork: "./stork.js",

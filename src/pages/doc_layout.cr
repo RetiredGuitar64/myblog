@@ -129,7 +129,7 @@ HEREDOC
               end
             end
 
-            mount Shared::Common
+            mount Shared::Common, page_title: page_title
           end
 
           doc_search_dialog

@@ -27,7 +27,7 @@ abstract class MainLayout
               mount Footer
             end
           end
-          mount Shared::Common
+          mount Shared::Common, page_title: page_title
         end
       end
     end

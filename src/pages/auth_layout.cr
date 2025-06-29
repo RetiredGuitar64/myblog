@@ -31,7 +31,7 @@ abstract class AuthLayout
           footer class: "f-row flex-wrap:wrap justify-content:center" do
             mount Footer
           end
-          mount Shared::Common
+          mount Shared::Common, page_title: page_title
         end
       end
     end
