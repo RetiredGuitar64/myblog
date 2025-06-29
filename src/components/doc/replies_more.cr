@@ -82,7 +82,7 @@ HEREDOC
             class: "chip",
             hx_delete: Docs::Htmx::Reply::Delete.with(id: reply.id, user_id: me.id).path,
             hx_target: "closest div.box",
-            hx_swap: "outerHTML",
+            hx_swap: "outerHTML swap:1s",
             hx_include: "[name='_csrf']",
             hx_confirm: "删除这条回复？"
           )

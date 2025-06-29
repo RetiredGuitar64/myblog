@@ -206,3 +206,10 @@ nav a:focus {
   cursor: pointer; /* 鼠标悬停时设置为手型 */
   /* background-color: #e0e0e0; /\* 可选效果：改变背景色 *\/ */
 }
+
+//
+
+div.box.htmx-swapping {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
