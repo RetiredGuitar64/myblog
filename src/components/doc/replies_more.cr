@@ -6,7 +6,7 @@ class Docs::RepliesMore < BaseComponent
 
   def render
     pagination[:replies].each do |reply|
-      div class: "box f-col" do
+      div class: "box f-col", id: fragment_id(reply) do
         render_avatar_name_and_time(reply)
 
         hr style: "border: none; border-top: 1px solid darkgray;"
@@ -28,7 +28,9 @@ class Docs::RepliesMore < BaseComponent
       end
 
       div do
-        span TimeInWords::Helpers(TimeInWords::I18n::ZH_CN).from(past_time: reply.created_at)
+        a href: "##{fragment_id(reply)}" do
+          span TimeInWords::Helpers(TimeInWords::I18n::ZH_CN).from(past_time: reply.created_at)
+        end
         raw <<-HEREDOC
 <chip style="margin-left: 10px; border-color: #ccc;">#{reply.preferences.floor} 楼</chip>
 HEREDOC
@@ -107,5 +109,9 @@ HEREDOC
         text "没有更多评论了"
       end
     end
+  end
+
+  private def fragment_id(reply)
+    "doc_reply-#{reply.id}"
   end
 end
