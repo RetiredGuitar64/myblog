@@ -2,7 +2,7 @@ class SignUps::Oauth::Callback < BrowserAction
   include Auth::RedirectSignedInUsers
 
   get "/multi_auth/:provider/callback" do
-    redirect_uri = "https://crystal-china.org/multi_auth/#{provider}/callback"
+    redirect_uri = "#{Lucky::RouteHelper.settings.base_uri}/multi_auth/#{provider}/callback"
     auth_user = MultiAuth.make(provider, redirect_uri).user(request.query_params)
 
     # 似乎 Github 和 Google 以下字段都不为空。

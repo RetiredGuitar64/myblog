@@ -2,7 +2,7 @@ class SignUps::Oauth::New < BrowserAction
   include Auth::RedirectSignedInUsers
 
   get "/multi_auth/:provider" do
-    redirect_uri = "https://crystal-china.org/multi_auth/#{provider}/callback"
+    redirect_uri = "#{Lucky::RouteHelper.settings.base_uri}/multi_auth/#{provider}/callback"
 
     case provider
     when "google"
