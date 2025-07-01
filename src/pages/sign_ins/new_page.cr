@@ -5,8 +5,6 @@ class SignIns::NewPage < AuthLayout
     op = operation
     div style: "height: 100vh;", class: "f-row justify-content:center align-items:center" do
       figure do
-        #   figcaption "登录"
-
         form_for SignIns::Create, class: "table rows" do
           para do
             mount Shared::Field, attribute: op.email, label_text: "电子邮件", &.email_input(autofocus: "true")
@@ -27,6 +25,8 @@ class SignIns::NewPage < AuthLayout
           end
         end
       end
+
+      mount Component::OAuth
     end
   end
 end

@@ -6,8 +6,6 @@ class SignUps::NewPage < AuthLayout
 
     div style: "height: 100vh;", class: "f-row justify-content:center align-items:center" do
       figure do
-        # figcaption "注册新用户"
-
         form_for SignUps::Create, class: "table rows" do
           para do
             mount Shared::Field, attribute: op.email, label_text: "电子邮件", &.email_input(autofocus: "true", required: "")
@@ -41,6 +39,7 @@ class SignUps::NewPage < AuthLayout
           end
         end
       end
+      mount Component::OAuth
     end
   end
 end
