@@ -19,6 +19,16 @@ abstract class BrowserAction < Lucky::Action
   # This module provides current_user, sign_in, and sign_out methods
   include Authentic::ActionHelpers(User)
 
+  def sign_in(authenticatable : User) : Nil
+    super(authenticatable)
+    cookies.set_raw("user_token", UserToken.generate(authenticatable))
+  end
+
+  def sign_out : Nil
+    cookies.delete("user_token")
+    super
+  end
+
   # When testing you can skip normal sign in by using `visit` with the `as` param
   #
   # flow.visit Me::Show, as: UserFactory.create
