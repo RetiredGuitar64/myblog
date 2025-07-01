@@ -4,17 +4,19 @@ class SignUps::Oauth::Callback < BrowserAction
   get "/multi_auth/:provider/callback" do
     redirect_uri = "https://crystal-china.org/multi_auth/#{provider}/callback"
     auth_user = MultiAuth.make(provider, redirect_uri).user(request.query_params)
+
+    # 似乎 Github 和 Google 以下字段都不为空。
+    name = auth_user.name.not_nil!
+    avatar = auth_user.image.not_nil!
     email = auth_user.email.not_nil!
 
     if (user = UserQuery.new.email(email).first?).nil?
       pwd = Random.base58(10)
 
-      # 这里需要一个随便的 captcha 来通过验证
-      user = SignUpUser.create!(
+      user = OAuthUser.create!(
         email: email,
-        password: pwd,
-        password_confirmation: pwd,
-        captcha: "foo"
+        name: name,
+        avatar: avatar,
       )
     end
 
