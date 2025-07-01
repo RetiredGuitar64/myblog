@@ -111,7 +111,7 @@ shards:
 
   lucky_flow:
     git: https://github.com/luckyframework/lucky_flow.git
-    version: 0.10.0
+    version: 0.10.1
 
   lucky_router:
     git: https://github.com/luckyframework/lucky_router.git
@@ -131,7 +131,7 @@ shards:
 
   multi_auth:
     git: https://github.com/msa7/multi_auth.git
-    version: 1.1.1
+    version: 1.1.1+git.commit.e82f7b30838fcb5bc2a858bbc5c95008bec29ffe
 
   openssl_ext:
     git: https://github.com/spider-gazelle/openssl_ext.git
@@ -199,7 +199,7 @@ shards:
 
   webless:
     git: https://github.com/crystal-loot/webless.git
-    version: 0.1.0
+    version: 0.2.0
 
   wordsmith:
     git: https://github.com/luckyframework/wordsmith.git
