@@ -129,6 +129,10 @@ shards:
     git: https://github.com/zw963/markd.git
     version: 0.5.0+git.commit.1373b05e7aace9cc0b1a2e58f9a516e2c533d751
 
+  multi_auth:
+    git: https://github.com/msa7/multi_auth.git
+    version: 1.1.1
+
   openssl_ext:
     git: https://github.com/spider-gazelle/openssl_ext.git
     version: 2.4.4
