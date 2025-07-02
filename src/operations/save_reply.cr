@@ -9,11 +9,11 @@ class SaveReply < Reply::SaveOperation
 
     user_name.value = user.name
 
-    if id.value
-      user.avatar.try do |avatar|
-        user_avatar.value = avatar
-      end
-    else
+    user.avatar.try do |avatar|
+      user_avatar.value = avatar
+    end
+
+    if !id.value
       if (last_reply = ReplyQuery.new.doc_id(doc.id).last?)
         floor = last_reply.preferences.floor + 1
       else
