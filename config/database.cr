@@ -1,4 +1,4 @@
-database_name = "crystal_china_#{LuckyEnv.environment}"
+database_name = "myblog_#{LuckyEnv.environment}"
 
 AppDatabase.configure do |settings|
   if LuckyEnv.production?

@@ -27,7 +27,7 @@ Lucky::Server.configure do |settings|
   #
   Lucky::Server.configure do |settings|
     if LuckyEnv.production?
-      settings.asset_host = "https://assets.crystal-china.org"
+      settings.asset_host = "https://assets.myblog.crystal-china.org"
     else
       settings.asset_host = ""
     end
