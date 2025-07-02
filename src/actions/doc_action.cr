@@ -11,7 +11,8 @@ abstract class DocAction < BrowserAction
     current_doc = DocQuery.new.path_index(doc_path).preload_replies.first?
 
     if current_doc.nil?
-      SaveDoc.create!(path_index: doc_path)
+      votes = {"👍" => 0, "👎" => 0, "❤️" => 0}
+      SaveDoc.create!(path_index: doc_path, votes: ::Doc::Votes.from_json(votes.to_json))
 
       return {count: 0, replies: ReplyQuery.new.none, page: nil}
     end
