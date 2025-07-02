@@ -23,7 +23,7 @@ class Navbar < BaseComponent
           end
 
           li do
-            a "本站源码", href: "https://github.com/crystal-china/website"
+            a "本站源码", href: "https://github.com/RetiredGuitar64/myblog"
           end
 
           me = current_user
