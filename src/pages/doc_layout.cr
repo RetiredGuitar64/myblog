@@ -1,3 +1,5 @@
+require "../../tasks/db/seed/hourly_availability"
+
 abstract class DocLayout
   include Lucky::HTMLPage
   include PageHelpers
@@ -22,7 +24,24 @@ abstract class DocLayout
   end
 
   def content
-    raw(MARKDOWN_CACHE.fetch(markdown_path) { markdown File.read(markdown_path) })
+    content = File.read(markdown_path)
+
+    regex = /TableScheduler20250703 year: (\d+), month: (\d+)/
+
+    if content.match(regex)
+      year = $1.to_i
+      month = $2.to_i
+      content = content.sub(regex, "")
+    end
+
+    raw(MARKDOWN_CACHE.fetch(markdown_path) { markdown content })
+
+    if year && month
+      Db::Seed::HourlyAvailability.new.call
+      div class: "table-container" do
+        mount TableScheduler, year: year, month: month, current_user: current_user
+      end
+    end
   end
 
   def page_title
@@ -108,10 +127,6 @@ HEREDOC
                   raw print_doc_date
                   print_votes
                 end
-
-                # div class: "table-container" do
-                #   mount TableScheduler, year: 2025, month: 7, current_user: current_user
-                # end
 
                 content
 

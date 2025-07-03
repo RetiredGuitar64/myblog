@@ -6,6 +6,10 @@ class TableScheduler < BaseComponent
     today = Time.local.day
 
     table do
+      caption do
+        h3 "Hourly Availability table (#{year}/#{month})"
+      end
+
       thead do
         tr do
           th "#"
