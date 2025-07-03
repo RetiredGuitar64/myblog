@@ -109,6 +109,10 @@ HEREDOC
                   print_votes
                 end
 
+                # div class: "table-container" do
+                #   mount TableScheduler, year: 2025, month: 7, current_user: current_user
+                # end
+
                 content
 
                 mount Pager

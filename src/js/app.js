@@ -33,6 +33,17 @@ function init(eventElt) {
         initStork();
     }
 
+    // 让 data-tooltip 属性可以显示中文
+    document.querySelectorAll("[data-tooltip]").forEach((el) => {
+        // 解码 data-tooltip 的值
+        const decodedTooltip = decodeURIComponent(
+            el.getAttribute("data-tooltip"),
+        );
+
+        // 设置一个新的属性 data-tooltip-decoded，用于存储解码后的值
+        el.setAttribute("data-tooltip-decoded", decodedTooltip);
+    });
+
     // console.log(eventElt.getAttribute("class"));
     // 确保激活的这个 div 不包含 htmx-settling
     // 目前猜测所有使用 htmx-trigger="load" 激活的 swap，js callback 也会被执行。
