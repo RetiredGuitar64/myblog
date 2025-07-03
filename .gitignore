@@ -10,3 +10,4 @@
 /.tool-versions
 /dist
 /public/docs/index.st
+/*.custom.gz

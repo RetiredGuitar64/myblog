@@ -34,7 +34,7 @@ abstract class DocLayout
       content = content.sub(regex, "")
     end
 
-    raw(MARKDOWN_CACHE.fetch(markdown_path) { markdown content })
+    raw(MARKDOWN_CACHE.fetch(markdown_path, expires_in: 1.day) { markdown content })
 
     if year && month
       Db::Seed::HourlyAvailability.new.call
