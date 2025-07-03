@@ -27,7 +27,7 @@ class TableScheduler < BaseComponent
 
       tbody do
         (1..31).each do |date_number|
-          date = Time.local(year, month, date_number).to_s("%Y-%m-%d")
+          date = Time.local(year, month, date_number).in(Time::Location.load("Asia/Shanghai")).to_s("%Y-%m-%d")
 
           tr class: today > date_number ? "disabled" : "" do
             td date_number
