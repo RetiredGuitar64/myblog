@@ -12,7 +12,7 @@ class TableScheduler < BaseComponent
 
       thead do
         tr do
-          th "#"
+          th "date\\hour", style: "font-size:10px;"
           th "09:00"
           th "10:00"
           th "11:00"

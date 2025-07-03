@@ -238,8 +238,10 @@ div.table-container {
     td {
       border: 1px solid #ccc;
       padding: 8px;
-      text-align: left;
+      text-align: center;
+      vertical-align: middle; /* 垂直居中 */
       position: relative;
+      /* padding: 5px; /\* 单元格内边距（控制视觉效果） *\/ */
     }
 
     /* 提示框的基本样式 */
