@@ -7,7 +7,7 @@ class TableSchedulerCell < BaseComponent
   def render
     me = current_user
 
-    cell_hour_time = Time.parse_local("#{date} #{hour}:59", "%Y-%m-%d %H:%M").in(Time::Location.load("Asia/Shanghai"))
+    cell_hour_time = Time.parse("#{date} #{hour}:59", "%Y-%m-%d %H:%M", Time::Location.load("Asia/Shanghai"))
     opts = {
       class: cell_hour_time > Time.local ? "" : "disabled",
     }
