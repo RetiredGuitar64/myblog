@@ -40,7 +40,7 @@ abstract class DocLayout
       )
     end
 
-    raw(MARKDOWN_CACHE.fetch(markdown_path, expires_in: 1.day) { markdown content })
+    raw(MARKDOWN_CACHE.fetch(markdown_path) { markdown content })
   end
 
   def page_title
