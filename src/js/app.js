@@ -108,7 +108,9 @@ function setupStork(eventElt) {
 }
 
 function initStork() {
-    const assetHost = IS_WATCH_MODE ? "" : "https://assets.crystal-china.org";
+    const assetHost = IS_WATCH_MODE
+        ? ""
+        : "https://assets.myblog.crystal-china.org";
 
     stork.initialize(
         `${assetHost}${mixManifest["/docs/stork.wasm"] ?? "/docs/stork.wasm"}`,
