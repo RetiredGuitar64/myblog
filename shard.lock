@@ -31,7 +31,7 @@ shards:
 
   cache:
     git: https://github.com/crystal-cache/cache.git
-    version: 0.14.0
+    version: 0.15.0+git.commit.10d4a3b7c08b89aa1ee26ba5a1f48bd82f6bf6f6
 
   cadmium_transliterator:
     git: https://github.com/cadmiumcr/transliterator.git

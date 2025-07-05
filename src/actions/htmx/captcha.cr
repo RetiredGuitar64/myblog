@@ -9,7 +9,7 @@ class Htmx::Captcha < BrowserAction
     cookies.set("signup_captcha_id", signup_captcha_id)
     captcha = CaptchaGenerator.new
 
-    CAPTCHA_CACHE.write(signup_captcha_id, captcha.code, expires_in: 1.minutes)
+    CAPTCHA_CACHE.write(signup_captcha_id, captcha.code)
 
     plain_text <<-HEREDOC
 <span

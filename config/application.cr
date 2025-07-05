@@ -35,8 +35,8 @@ CACHE_STORE = if LuckyEnv.production?
                 Cache::NullStore(String, String)
               end
 
-CAPTCHA_CACHE  = CACHE_STORE.new(expires_in: 1.day)
-MARKDOWN_CACHE = CACHE_STORE.new(expires_in: 1.minutes)
+CAPTCHA_CACHE  = Cache::MemoryStore(String, String).new(expires_in: 1.minute)
+MARKDOWN_CACHE = CACHE_STORE.new(expires_in: 1.days)
 
 # upload image into freeimage.host API key.
 FREEIMAGE_HOST_API_KEY = ENV["FREEIMAGE_HOST_API_KEY"]? || "fake_key"
