@@ -3,7 +3,7 @@ require "digest/md5"
 
 module PageHelpers
   PAGINATION_RELATION_MAPPING = {
-    "/docs/index"                                    => {title: "个人博客简介", sub_title: ""},
+    "/docs/index"                                    => {title: "Self Introduction", sub_title: ""},
     "/docs/first_blog"                               => {title: "First Blog", sub_title: ""},
     # "/docs/introduction"                             => {title: "简介", sub_title: ""},
     # "/docs/install"                                  => {title: "安装", sub_title: ""},

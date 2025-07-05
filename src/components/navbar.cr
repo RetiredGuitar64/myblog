@@ -18,7 +18,7 @@ class Navbar < BaseComponent
                 end
               end
             else
-              link "打开博客", to: Docs::Index
+              link "打开博客(Open Blog)", to: Docs::Index
             end
           end
 
