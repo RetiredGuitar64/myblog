@@ -75,7 +75,7 @@ abstract class DocLayout
 
     if File.exists?(timestamp)
       YAML.parse(File.read(timestamp))[markdown_path]?.try do |date|
-        date_info = "#{date_info}	最后编辑于: #{Time.unix(date.as_i64).to_local.to_s("%Y年%m月%d日")}"
+        date_info = "#{date_info}       最后编辑于: #{Time.unix(date.as_i64).to_local.to_s("%Y年%m月%d日")}"
       end
     end
 
@@ -120,7 +120,9 @@ abstract class DocLayout
 
                 content
 
-                mount Pager
+                footer do
+                  mount Pager
+                end
 
                 div class: "<h5> f-row justify-content:center", style: "color: #BEBEBE" do
                   text "欢迎在评论区留下你的见解、问题或建议"
