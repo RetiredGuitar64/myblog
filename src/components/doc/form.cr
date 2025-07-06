@@ -112,10 +112,9 @@ HEREDOC
           hx_vals: %({"user_id": #{me.id}})
         )
       else
-        doc = DocQuery.new.path_index(doc_path).first
         opts = opts.merge(
           hx_post: Docs::Htmx::Reply::Create.path_without_query_params,
-          hx_vals: %({"user_id": #{me.id}, "doc_id": #{doc.id}, "doc_path": "#{doc_path}"})
+          hx_vals: %({"user_id": #{me.id}, doc_path": "#{doc_path}"})
         )
       end
     end

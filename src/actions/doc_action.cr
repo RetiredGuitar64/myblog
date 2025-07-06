@@ -8,13 +8,7 @@ abstract class DocAction < BrowserAction
   def replies_pagination(doc_path, order_by = "desc")
     return {count: 0, replies: ReplyQuery.new.none, page: nil} unless order_by.in?("desc", "asc")
 
-    current_doc = DocQuery.new.path_index(doc_path).preload_replies.first?
-
-    if current_doc.nil?
-      SaveDoc.create!(path_index: doc_path)
-
-      return {count: 0, replies: ReplyQuery.new.none, page: nil}
-    end
+    current_doc = DocQuery.new.path_index(doc_path).first
 
     q = ReplyQuery.new.doc_id(current_doc.id)
     q = q.id.desc_order if order_by == "desc"

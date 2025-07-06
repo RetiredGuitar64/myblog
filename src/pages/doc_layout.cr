@@ -47,11 +47,7 @@ abstract class DocLayout
     PAGINATION_RELATION_MAPPING.dig?(current_path, :title) || "文档"
   end
 
-  def print_votes
-    doc = DocQuery.new.path_index(current_path).first?
-
-    return if doc.nil?
-
+  def print_votes(doc)
     me = current_user
 
     voted_types = if me.nil?
@@ -71,25 +67,19 @@ abstract class DocLayout
     end
   end
 
-  def print_doc_date
-    doc = DocQuery.new.path_index(current_path).first?
-
-    return "" if doc.nil?
+  def print_doc_date(doc)
+    date_info = "创建于：#{doc.created_at.to_s("%Y年%m月%d日")}"
 
     timestamp = JSON.parse(File.read("dist/mix-manifest.json"))["/docs/markdowns_timestamps.yml"]
     timestamp = "dist#{timestamp}"
 
     if File.exists?(timestamp)
       YAML.parse(File.read(timestamp))[markdown_path]?.try do |date|
-        return <<-HEREDOC
-<blockquote>
-创建于：#{doc.created_at.to_s("%Y年%m月%d日")}    最后编辑于: #{Time.unix(date.as_i64).to_local.to_s("%Y年%m月%d日")}
-</blockquote>
-HEREDOC
+        date_info = "#{date_info}	最后编辑于: #{Time.unix(date.as_i64).to_local.to_s("%Y年%m月%d日")}"
       end
     end
 
-    ""
+    "<blockquote>#{date_info}</blockquote>"
   end
 
   def sub_title
@@ -123,8 +113,9 @@ HEREDOC
                 end
 
                 div class: "f-row justify-content:space-between" do
-                  raw print_doc_date
-                  print_votes
+                  doc = find_or_create_doc
+                  raw print_doc_date(doc)
+                  print_votes(doc)
                 end
 
                 content
@@ -175,5 +166,16 @@ padding-bottom: 0;") do
         div data_stork: "docs-output", class: "stork-output"
       end
     end
+  end
+
+  private def find_or_create_doc
+    doc = DocQuery.new.path_index(current_path).first?
+
+    if doc.nil?
+      votes = {"👍" => 0, "👎" => 0, "❤️" => 0}
+      doc = SaveDoc.create!(path_index: current_path, votes: ::Doc::Votes.from_json(votes.to_json))
+    end
+
+    doc
   end
 end
