@@ -9,7 +9,7 @@ class TableSchedulerCell < BaseComponent
 
     cell_hour_time = Time.parse("#{date} #{hour}:59", "%Y-%m-%d %H:%M", Time::Location.load("Asia/Shanghai"))
     opts = {
-      class: cell_hour_time > Time.local ? "" : "disabled",
+      class: Time.local > cell_hour_time ? "disabled" : "",
     }
 
     if me && me.email == ENV["ADMIN_EMAIL"]?

@@ -27,6 +27,8 @@ class Htmx::HourlySchedule < BrowserAction
 
     record = record.reload
 
+    MARKDOWN_CACHE.clear
+
     component(
       TableSchedulerCell,
       date: record.date,
