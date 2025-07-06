@@ -25,7 +25,7 @@ class TableSchedulerCell < BaseComponent
         {
           hx_include: "[name='_csrf']",
           hx_swap:    "outerHTML",
-          hx_vals:    "{\"date\": \"#{date}\", \"hour\": \"#{hour}\"}",
+          hx_vals:    %({"date": "#{date}", "hour": "#{hour}"}),
         })
 
       opts = opts.merge(hx_prompt: hx_prompt) if hx_prompt
