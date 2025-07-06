@@ -1,6 +1,5 @@
 class Docs::Htmx::Reply::Create < DocAction
   param user_id : Int64
-  param doc_id : Int64
   param content : String
   param doc_path : String
 
@@ -11,11 +10,9 @@ class Docs::Htmx::Reply::Create < DocAction
     return head 401 if user_id != me.id
     return head 400 if content.blank?
 
-    SaveReply.create(
-      user_id: user_id,
-      doc_id: doc_id,
-      content: content,
-    ) do |op, _saved_reply|
+    doc = DocQuery.new.path_index(doc_path).first
+
+    SaveReply.create(user_id: user_id, doc_id: doc.id, content: content) do |op, _saved_reply|
       if op.saved?
         component(
           Docs::FormWithReplies,
