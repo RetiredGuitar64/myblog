@@ -114,7 +114,7 @@ HEREDOC
       else
         opts = opts.merge(
           hx_post: Docs::Htmx::Reply::Create.path_without_query_params,
-          hx_vals: %({"user_id": #{me.id}, doc_path": "#{doc_path}"})
+          hx_vals: %({"user_id": #{me.id}, "doc_path": "#{doc_path}"})
         )
       end
     end
