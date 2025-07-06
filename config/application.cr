@@ -35,8 +35,9 @@ CACHE_STORE = if LuckyEnv.production?
                 Cache::NullStore(String, String)
               end
 
-CAPTCHA_CACHE  = Cache::MemoryStore(String, String).new(expires_in: 1.minute)
-MARKDOWN_CACHE = CACHE_STORE.new(expires_in: 1.days)
+CAPTCHA_CACHE = Cache::MemoryStore(String, String).new(expires_in: 1.minute)
+# 因为包含表格，cache 过期时间设定太长，会造成表格不更新，因此改为 1 分钟
+MARKDOWN_CACHE = CACHE_STORE.new(expires_in: 1.minute)
 
 # upload image into freeimage.host API key.
 FREEIMAGE_HOST_API_KEY = ENV["FREEIMAGE_HOST_API_KEY"]? || "fake_key"
