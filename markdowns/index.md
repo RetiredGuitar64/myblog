@@ -22,10 +22,6 @@ Crystal 是一门受 Ruby 高度启发的计算机程序语言，并且最终编
 
 如有错误，[欢迎提出勘误指正](https://github.com/crystal-china/website/issues), 或在下面留言，我会及时更正，保证不对对读者产生误导。
 
-## 测试 Table Scheduler：
-
-TableScheduler20250703 year: 2025, month: 7
-
 ## 本站技术栈
 
 [本站](https://github.com/crystal-china/website) 自然使用 Crystal 编写，目前用到的库（shard）有：

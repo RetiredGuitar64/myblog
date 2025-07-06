@@ -6,6 +6,12 @@ class Htmx::HourlySchedule < BrowserAction
     return head 401 if current_user.nil?
     me = current_user
 
+    return head 401 if me.email != ENV["ADMIN_EMAIL"]?
+
+    cell_hour_time = Time.parse("#{date} #{hour}:59", "%Y-%m-%d %H:%M", Time::Location.load("Asia/Shanghai"))
+
+    return head 401 if Time.local > cell_hour_time
+
     record = HourlyAvailabilityQuery.new.date(date).hour(hour).first?
     comment = request.headers["HX-Prompt"]?
 
