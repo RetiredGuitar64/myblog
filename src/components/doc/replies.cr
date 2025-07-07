@@ -5,10 +5,10 @@ class Docs::Replies < BaseComponent
   needs order_by : String
 
   def render
-    reply_path = doc_path.sub("/docs", "/docs/htmx/replies")
+    reply_path = doc_path.sub("/docs", "/htmx/docs/replies")
 
     mount(
-      Docs::FormButtons,
+      ::Docs::FormButtons,
       page_count: pagination[:count],
       doc_path: doc_path,
       order_by: order_by
@@ -16,7 +16,7 @@ class Docs::Replies < BaseComponent
 
     div id: "replies" do
       mount(
-        Docs::RepliesMore,
+        ::Docs::RepliesMore,
         formatter: formatter,
         pagination: pagination,
         page_number: 1,

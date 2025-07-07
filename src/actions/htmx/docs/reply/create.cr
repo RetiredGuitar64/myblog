@@ -1,10 +1,10 @@
-class Docs::Htmx::Reply::Create < DocAction
+class Htmx::Docs::Reply::Create < DocAction
   param user_id : Int64
   param content : String
   param doc_path : String
 
   # 回复评论按钮
-  post "/docs/htmx/reply" do
+  post "/htmx/docs/reply" do
     me = current_user
     return head 401 if me.nil?
     return head 401 if user_id != me.id
@@ -15,7 +15,7 @@ class Docs::Htmx::Reply::Create < DocAction
     SaveReply.create(user_id: user_id, doc_id: doc.id, content: content) do |op, _saved_reply|
       if op.saved?
         component(
-          Docs::FormWithReplies,
+          ::Docs::FormWithReplies,
           formatter: formatter,
           pagination: replies_pagination(doc_path: doc_path),
           current_user: me,

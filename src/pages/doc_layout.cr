@@ -9,18 +9,10 @@ abstract class DocLayout
   needs current_user : User?
   needs formatter : Tartrazine::Formatter
 
-  macro markdown_path
-    {%
-      class_name = @type
-        .name
-        .stringify
-        .underscore
-        .gsub(/_page$/, "")
-        .gsub(/docs::/, "markdowns/")
-        .gsub(/::/, "/")
-    %}
+  def markdown_path
+    name = current_path.gsub(%r{/docs/}, "markdowns/")
 
-    "{{class_name.id}}.md"
+    "#{name}.md"
   end
 
   def content
@@ -70,7 +62,7 @@ abstract class DocLayout
   def print_doc_date(doc)
     date_info = "创建于：#{doc.created_at.to_s("%Y年%m月%d日")}"
 
-    timestamp = JSON.parse(File.read("dist/mix-manifest.json"))["/docs/markdowns_timestamps.yml"]
+    timestamp = JSON.parse(File.read("dist/mix-manifest.json"))["/assets/docs/markdowns_timestamps.yml"]
     timestamp = "dist#{timestamp}"
 
     if File.exists?(timestamp)
@@ -129,7 +121,7 @@ abstract class DocLayout
                 end
 
                 div id: "form_with_replies" do
-                  mount Docs::Form, current_user: current_user, doc_path: current_path
+                  mount ::Docs::Form, current_user: current_user, doc_path: current_path
 
                   show_replies_when_revealed
                 end

@@ -1,10 +1,10 @@
-class Htmx::Captcha < BrowserAction
+class Htmx::SignUps::Captcha < BrowserAction
   include Auth::AllowGuests
 
   param width : String?
   param height : String?
 
-  post "/signups/htmx/captcha" do
+  post "/htmx/signups/captcha" do
     signup_captcha_id = Random.base58(10)
     cookies.set("signup_captcha_id", signup_captcha_id)
     captcha = CaptchaGenerator.new
@@ -14,7 +14,7 @@ class Htmx::Captcha < BrowserAction
     plain_text <<-HEREDOC
 <span
 id="signup_captcha"
-hx-post="#{Htmx::Captcha.path}"
+hx-post="#{Htmx::SignUps::Captcha.path}"
 hx-target="#signup_captcha"
 hx-swap="outerHTML"
 >

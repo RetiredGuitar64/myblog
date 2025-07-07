@@ -22,7 +22,7 @@ class SignUps::NewPage < AuthLayout
           para do
             span(
               id: "signup_captcha",
-              hx_post: Htmx::Captcha.path_without_query_params,
+              hx_post: Htmx::SignUps::Captcha.path_without_query_params,
               hx_target: "#signup_captcha",
               hx_swap: "outerHTML"
             ) do

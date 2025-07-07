@@ -1,8 +1,8 @@
-class Docs::Htmx::Reply::Update < DocAction
+class Htmx::Docs::Reply::Update < DocAction
   param user_id : Int64
   param content : String
 
-  patch "/docs/htmx/reply/:id" do
+  patch "/htmx/docs/reply/:id" do
     me = current_user
     return head 401 if me.nil?
     return head 401 if user_id != me.id
@@ -14,7 +14,7 @@ class Docs::Htmx::Reply::Update < DocAction
     doc_path = reply.preferences.path_for_doc?.not_nil!
 
     component(
-      Docs::FormWithReplies,
+      ::Docs::FormWithReplies,
       formatter: formatter,
       pagination: replies_pagination(doc_path: doc_path),
       current_user: me,

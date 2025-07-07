@@ -113,11 +113,11 @@ function initStork() {
         : "https://assets.myblog.crystal-china.org";
 
     stork.initialize(
-        `${assetHost}${mixManifest["/docs/stork.wasm"] ?? "/docs/stork.wasm"}`,
+        `${assetHost}${mixManifest["/assets/docs/stork.wasm"] ?? "/assets/docs/stork.wasm"}`,
     );
     stork.downloadIndex(
         "docs",
-        `${assetHost}${mixManifest["/docs/index.st"] ?? "/docs/index.st"}`,
+        `${assetHost}${mixManifest["/assets/docs/index.st"] ?? "/assets/docs/index.st"}`,
     );
 }
 
