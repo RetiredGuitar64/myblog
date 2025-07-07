@@ -24,7 +24,7 @@ class Shared::VoteButton < BaseComponent
 
         config = config.merge(
           {
-            hx_patch:   Docs::Htmx::Vote.path_without_query_params,
+            hx_patch:   Htmx::Docs::Vote.path_without_query_params,
             hx_include: "[name='_csrf']",
             hx_vals:    hx_values,
             hx_target:  "closest div",

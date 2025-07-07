@@ -19,7 +19,7 @@ class Docs::Form < BaseComponent
         type: "radio",
         name: "tab",
         id: "tab2",
-        hx_put: Docs::Htmx::MarkdownRender.path_without_query_params,
+        hx_put: Htmx::Docs::MarkdownRender.path_without_query_params,
         hx_target: "#markdown-preview",
         hx_include: "[name='_csrf'],next textarea",
         hx_indicator: "next img.htmx-indicator",
@@ -108,12 +108,12 @@ HEREDOC
       if !reply_id.nil?
         text = "提交"
         opts = opts.merge(
-          hx_patch: Docs::Htmx::Reply::Update.path_without_query_params(id: reply_id.not_nil!),
+          hx_patch: Htmx::Docs::Reply::Update.path_without_query_params(id: reply_id.not_nil!),
           hx_vals: %({"user_id": #{me.id}})
         )
       else
         opts = opts.merge(
-          hx_post: Docs::Htmx::Reply::Create.path_without_query_params,
+          hx_post: Htmx::Docs::Reply::Create.path_without_query_params,
           hx_vals: %({"user_id": #{me.id}, "doc_path": "#{doc_path}"})
         )
       end
@@ -123,7 +123,7 @@ HEREDOC
       if !reply_id.nil? && !me.nil?
         button(
           "取消",
-          hx_get: Docs::Htmx::Reply::New.with(doc_path: doc_path, user_id: me.id).path,
+          hx_get: Htmx::Docs::Reply::New.with(doc_path: doc_path, user_id: me.id).path,
           hx_swap: "outerHTML",
           hx_target: "#form"
         )

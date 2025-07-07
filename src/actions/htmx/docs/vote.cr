@@ -1,9 +1,9 @@
-class Docs::Htmx::Vote < BrowserAction
+class Htmx::Docs::Vote < BrowserAction
   param reply_id : Int64?
   param doc_id : Int64?
   param vote_type : String
 
-  patch "/docs/htmx/vote" do
+  patch "/htmx/docs/vote" do
     return head 401 if current_user.nil?
     return head 401 if reply_id.nil? && doc_id.nil?
 

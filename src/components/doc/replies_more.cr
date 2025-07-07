@@ -65,7 +65,7 @@ HEREDOC
             "编辑",
             class: "chip",
             style: "margin-right: 10px;",
-            hx_get: Docs::Htmx::Reply::Edit.with(id: reply.id, user_id: me.id).path,
+            hx_get: Htmx::Docs::Reply::Edit.with(id: reply.id, user_id: me.id).path,
             hx_target: "div#form",
             hx_swap: "outerHTML",
             hx_include: "[name='_csrf']",
@@ -82,7 +82,7 @@ HEREDOC
           a(
             "删除",
             class: "chip",
-            hx_delete: Docs::Htmx::Reply::Delete.with(id: reply.id, user_id: me.id).path,
+            hx_delete: Htmx::Docs::Reply::Delete.with(id: reply.id, user_id: me.id).path,
             hx_target: "closest div.box",
             hx_swap: "outerHTML swap:1s",
             hx_include: "[name='_csrf']",

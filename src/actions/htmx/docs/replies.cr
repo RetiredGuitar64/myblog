@@ -1,13 +1,13 @@
-class Docs::Htmx::Replies < DocAction
+class Htmx::Docs::Replies < DocAction
   param order_by : String = "desc"
 
-  get "/docs/htmx/replies/*:doc_file_name" do
+  get "/htmx/docs/replies/*:doc_file_name" do
     page_number = params.get?(:page).try &.to_i
     pagination = replies_pagination(doc_path: "/docs/#{doc_file_name}", order_by: order_by)
 
     if page_number && page_number > 1
       component(
-        Docs::RepliesMore,
+        ::Docs::RepliesMore,
         formatter: formatter,
         pagination: pagination,
         page_number: page_number,
@@ -16,7 +16,7 @@ class Docs::Htmx::Replies < DocAction
       )
     else
       component(
-        Docs::Replies,
+        ::Docs::Replies,
         formatter: formatter,
         pagination: pagination,
         current_user: current_user,

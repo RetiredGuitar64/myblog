@@ -8,7 +8,7 @@ class Docs::Replies < BaseComponent
     reply_path = doc_path.sub("/docs", "/docs/htmx/replies")
 
     mount(
-      Docs::FormButtons,
+      ::Docs::FormButtons,
       page_count: pagination[:count],
       doc_path: doc_path,
       order_by: order_by
@@ -16,7 +16,7 @@ class Docs::Replies < BaseComponent
 
     div id: "replies" do
       mount(
-        Docs::RepliesMore,
+        ::Docs::RepliesMore,
         formatter: formatter,
         pagination: pagination,
         page_number: 1,
