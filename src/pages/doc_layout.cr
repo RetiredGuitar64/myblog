@@ -9,18 +9,10 @@ abstract class DocLayout
   needs current_user : User?
   needs formatter : Tartrazine::Formatter
 
-  macro markdown_path
-    {%
-      class_name = @type
-        .name
-        .stringify
-        .underscore
-        .gsub(/_page$/, "")
-        .gsub(/docs::/, "markdowns/")
-        .gsub(/::/, "/")
-    %}
+  def markdown_path
+    name = current_path.gsub(%r{/docs/}, "markdowns/")
 
-    "{{class_name.id}}.md"
+    "#{name}.md"
   end
 
   def content
