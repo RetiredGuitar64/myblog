@@ -36,4 +36,4 @@ Dir["markdowns/**/*.md"].each do |file|
   map[file] = date.to_i64
 end
 
-File.write("public/docs/markdowns_timestamps.yml", map.to_yaml)
+File.write("public/assets/docs/markdowns_timestamps.yml", map.to_yaml)

@@ -70,7 +70,7 @@ abstract class DocLayout
   def print_doc_date(doc)
     date_info = "创建于：#{doc.created_at.to_s("%Y年%m月%d日")}"
 
-    timestamp = JSON.parse(File.read("dist/mix-manifest.json"))["/docs/markdowns_timestamps.yml"]
+    timestamp = JSON.parse(File.read("dist/mix-manifest.json"))["/assets/docs/markdowns_timestamps.yml"]
     timestamp = "dist#{timestamp}"
 
     if File.exists?(timestamp)
