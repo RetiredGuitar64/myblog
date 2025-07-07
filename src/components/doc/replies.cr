@@ -5,7 +5,7 @@ class Docs::Replies < BaseComponent
   needs order_by : String
 
   def render
-    reply_path = doc_path.sub("/docs", "/docs/htmx/replies")
+    reply_path = doc_path.sub("/docs", "/htmx/docs/replies")
 
     mount(
       ::Docs::FormButtons,

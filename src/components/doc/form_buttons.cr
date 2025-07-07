@@ -4,7 +4,7 @@ class Docs::FormButtons < BaseComponent
   needs order_by : String
 
   def render
-    reply_path = doc_path.sub("/docs", "/docs/htmx/replies")
+    reply_path = doc_path.sub("/docs", "/htmx/docs/replies")
 
     div class: "f-row align-items:center justify-content:space-between", style: "margin-top: 5px;" do
       span "共 #{page_count} 条回复"

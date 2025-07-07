@@ -1,5 +1,5 @@
 class Docs::Markdowns < DocAction
-  get "/docs/*:doc_name" do
+  get "/docs/*:markdown_path" do
     if PageHelpers::PAGINATION_RELATION_MAPPING[current_path]?
       html Docs::MarkdownsPage
     else
