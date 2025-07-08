@@ -127,7 +127,7 @@ abstract class DocLayout
                 end
 
                 footer class: "f-row flex-wrap:wrap justify-content:center" do
-                  mount Footer
+                  mount Footer, current_user: current_user
                 end
               end
             end

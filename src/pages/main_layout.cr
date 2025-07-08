@@ -24,7 +24,7 @@ abstract class MainLayout
             content
 
             footer class: "f-row flex-wrap:wrap justify-content:center" do
-              mount Footer
+              mount Footer, current_user: current_user
             end
           end
           mount Shared::Common, page_title: page_title
