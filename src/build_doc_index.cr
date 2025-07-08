@@ -22,7 +22,7 @@ end
 
 File.write("tmp/index.toml", str)
 
-system("bin/stork build --input tmp/index.toml --output public/docs/index.st")
+system("bin/stork build --input tmp/index.toml --output public/assets/docs/index.st")
 
 # 创建一个 yaml 文件, 包含文章的修改日期.
 
