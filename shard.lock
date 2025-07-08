@@ -31,7 +31,7 @@ shards:
 
   cache:
     git: https://github.com/crystal-cache/cache.git
-    version: 0.15.0+git.commit.10d4a3b7c08b89aa1ee26ba5a1f48bd82f6bf6f6
+    version: 0.15.1
 
   cadmium_transliterator:
     git: https://github.com/cadmiumcr/transliterator.git
@@ -131,7 +131,7 @@ shards:
 
   multi_auth:
     git: https://github.com/msa7/multi_auth.git
-    version: 1.1.1+git.commit.e82f7b30838fcb5bc2a858bbc5c95008bec29ffe
+    version: 1.1.1
 
   openssl_ext:
     git: https://github.com/spider-gazelle/openssl_ext.git

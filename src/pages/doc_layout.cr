@@ -127,7 +127,7 @@ abstract class DocLayout
                 end
 
                 footer class: "f-row flex-wrap:wrap justify-content:center" do
-                  mount Footer
+                  mount Footer, current_user: current_user
                 end
               end
             end
@@ -164,11 +164,7 @@ padding-bottom: 0;") do
 
   private def find_or_create_doc
     doc = DocQuery.new.path_index(current_path).first?
-
-    if doc.nil?
-      votes = {"👍" => 0, "👎" => 0, "❤️" => 0}
-      doc = SaveDoc.create!(path_index: current_path, votes: ::Doc::Votes.from_json(votes.to_json))
-    end
+    doc = SaveDoc.create!(path_index: current_path) if doc.nil?
 
     doc
   end
