@@ -10,7 +10,7 @@ abstract class DocLayout
   needs formatter : Tartrazine::Formatter
 
   def markdown_path
-    name = current_path.gsub(%r{/docs/}, "markdowns/")
+    name = current_path.sub(%r{/docs/}, "markdowns/")
 
     "#{name}.md"
   end
