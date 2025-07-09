@@ -8,7 +8,7 @@ class UserAudit < BaseModel
   table do
     column user_id : Int64
     column changed_column_name : String
-    column from : String
+    column from : String, allow_blank: true
     column to : String
     column sync_state : UserAudit::SyncStatus = 1
   end
