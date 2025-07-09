@@ -5,6 +5,7 @@ module PageHelpers
   PAGINATION_RELATION_MAPPING = {
     "/docs/index"                                    => {title: "Self Introduction", sub_title: ""},
     "/docs/first_blog"                               => {title: "First Blog", sub_title: ""},
+    "/docs/friends_in_Germen"                        => {title: "德国的朋友", sub_title: "是一对人很好的夫妻"}
     # "/docs/introduction"                             => {title: "简介", sub_title: ""},
     # "/docs/install"                                  => {title: "安装", sub_title: ""},
     # "/docs/package_manager"                          => {title: "包管理", sub_title: "shards 命令", parent: "/docs/install"},
