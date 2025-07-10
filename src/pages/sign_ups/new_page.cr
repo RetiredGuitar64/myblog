@@ -16,7 +16,7 @@ class SignUps::NewPage < AuthLayout
           end
 
           para do
-            mount Shared::Field, attribute: op.password_confirmation, label_text: "确认密码", &.password_input(requried: "")
+            mount Shared::Field, attribute: op.password_confirmation, label_text: "确认密码", &.password_input(required: "")
           end
 
           para do

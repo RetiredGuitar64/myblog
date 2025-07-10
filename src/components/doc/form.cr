@@ -51,7 +51,7 @@ HEREDOC
       div class: "tab" do
         render_form
       end
-      div class: "tab" do
+      div class: "tab", style: "text-align: initial;" do
         render_preview
       end
     end
