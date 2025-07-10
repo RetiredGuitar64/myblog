@@ -11,8 +11,6 @@ class SignUps::Oauth::Callback < BrowserAction
     email = auth_user.email.not_nil!
 
     if (user = UserQuery.new.email(email).first?).nil?
-      pwd = Random.base58(10)
-
       user = OAuthUser.create!(
         email: email,
         name: name,
