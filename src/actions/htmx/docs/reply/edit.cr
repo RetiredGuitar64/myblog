@@ -8,6 +8,8 @@ class Htmx::Docs::Reply::Edit < DocAction
 
     reply = ReplyQuery.find(id)
 
+    return head 401 if user_id != reply.user_id
+
     component(
       ::Docs::Form,
       current_user: current_user,

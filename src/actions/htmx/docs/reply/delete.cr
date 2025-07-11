@@ -8,7 +8,9 @@ class Htmx::Docs::Reply::Delete < DocAction
 
     reply = ReplyQuery.find(id)
 
-    ::DeleteReply.delete!(reply)
+    return head 401 if user_id != reply.user_id
+
+    DeleteReply.delete!(reply)
 
     head 200
   end
