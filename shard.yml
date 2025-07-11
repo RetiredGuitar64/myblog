@@ -1,12 +1,12 @@
 ---
-name: crystal_china
+name: myblog
 version: 0.1.0
 
 authors:
   - Billy.Zheng <vil963@gmail.com>
 
 targets:
-  crystal_china:
+  myblog:
     main: src/crystal_china.cr
   index:
     main: src/build_doc_index.cr
