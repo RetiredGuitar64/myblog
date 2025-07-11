@@ -59,7 +59,9 @@ HEREDOC
 
       # wait 1s then put it into the next <output/>
 
-      if !(me = current_user).nil?
+      me = current_user
+
+      if !me.nil? && me.id == reply.user_id
         div do
           a(
             "编辑",
