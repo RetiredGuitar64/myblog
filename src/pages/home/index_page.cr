@@ -86,6 +86,9 @@ class Home::IndexPage < MainLayout
           li do
             github_icon_link("https://github.com/crystal-lang-tools", "Crystal lang tools")
           end
+          li do
+            github_icon_link("https://github.com/luckyframework", "Lucky web framework")
+          end
         end
       end
 
