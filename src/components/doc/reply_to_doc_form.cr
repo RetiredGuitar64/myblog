@@ -2,11 +2,10 @@ class Docs::ReplyToDocForm < BaseComponent
   needs content : String = ""
   needs doc_path : String
   needs reply_id : Int64?
-  needs msg : String?
   needs html_id : String = "tab"
 
   def render
-    mount(Docs::Form, content: content, doc_path: doc_path, reply_id: reply_id, msg: msg, current_user: current_user, html_id: html_id) do
+    mount(Docs::Form, content: content, doc_path: doc_path, reply_id: reply_id, current_user: current_user, html_id: html_id) do
       me = current_user
       text = "回复"
 
@@ -19,7 +18,7 @@ class Docs::ReplyToDocForm < BaseComponent
       if me.nil?
         opts = opts.merge(disabled: "")
       else
-        if !reply_id.nil? && !me.nil?
+        if !reply_id.nil?
           text = "提交"
           opts = opts.merge(
             hx_patch: Htmx::Docs::Reply::Update.path_without_query_params(id: reply_id.not_nil!),

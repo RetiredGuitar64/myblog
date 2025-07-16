@@ -20,7 +20,7 @@ class Htmx::Docs::Reply::Update < DocAction
       current_user: me,
       doc_path: doc_path,
       order_by: "desc",
-      msg: "修改成功"
+      reply_id: id.to_i64
     )
   end
 end

@@ -20,8 +20,7 @@ class Htmx::Docs::Reply::Create < DocAction
           pagination: replies_pagination(doc_path: doc_path),
           current_user: me,
           doc_path: doc_path,
-          order_by: "desc",
-          msg: "创建成功"
+          order_by: "desc"
         )
       else
         head 400

@@ -3,10 +3,11 @@ class Docs::RepliesMore < BaseComponent
   needs pagination : {count: Int32 | Int64, replies: ReplyQuery, page: Lucky::Paginator?}
   needs page_number : Int32
   needs reply_path : String
+  needs reply_id : Int64?
 
   def render
     pagination[:replies].each do |reply|
-      div class: "box f-col", id: fragment_id(reply) do
+      div class: "box f-col", id: fragment_id(reply.id) do
         render_avatar_name_and_time(reply)
 
         hr style: "border: none; border-top: 1px solid darkgray;"
@@ -29,8 +30,17 @@ class Docs::RepliesMore < BaseComponent
         span reply.user_name
       end
 
+      if reply_id == reply.id
+        output(
+          style: "display: inline-block; color: green;",
+          script: "init transition my opacity to 0% over 3 seconds"
+        ) do
+          text "更新成功"
+        end
+      end
+
       div do
-        a href: "##{fragment_id(reply)}" do
+        a href: "##{fragment_id(reply.id)}" do
           span TimeInWords::Helpers(TimeInWords::I18n::ZH_CN).from(past_time: reply.created_at)
         end
         raw <<-HEREDOC
@@ -120,8 +130,8 @@ HEREDOC
     end
   end
 
-  private def fragment_id(reply)
-    "doc_reply-#{reply.id}"
+  private def fragment_id(reply_id)
+    "doc_reply-#{reply_id}"
   end
 
   private def reply_dialog

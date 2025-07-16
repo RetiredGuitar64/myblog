@@ -3,6 +3,7 @@ class Docs::Replies < BaseComponent
   needs pagination : {count: Int32 | Int64, replies: ReplyQuery, page: Lucky::Paginator?}
   needs doc_path : String
   needs order_by : String
+  needs reply_id : Int64?
 
   def render
     reply_path = doc_path.sub("/docs", "/htmx/docs/replies")
@@ -21,7 +22,8 @@ class Docs::Replies < BaseComponent
         pagination: pagination,
         page_number: 1,
         current_user: current_user,
-        reply_path: reply_path
+        reply_path: reply_path,
+        reply_id: reply_id
       )
     end
   end

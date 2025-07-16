@@ -2,14 +2,14 @@ class Docs::Form < BaseComponent
   needs content : String = ""
   needs doc_path : String
   needs reply_id : Int64?
-  needs msg : String?
   needs html_id : String = "tab"
 
   def render(&)
+    me = current_user
     div style: "border:0.5px solid gray; padding: 5px;", id: "#{html_id}-form" do
       div class: "tab-frame", style: "margin-top: 5px;text-align: center; min-height: 350px;" do
         input type: "radio", checked: "", name: "#{html_id}", id: "#{html_id}1"
-        label "输入", for: "#{html_id}1"
+        label "输入", for: "#{html_id}1", style: "margin-right: 5px;"
 
         input(
           type: "radio",
@@ -34,12 +34,8 @@ class Docs::Form < BaseComponent
         "
         )
 
-        if msg
-          output script: <<-'HEREDOC', style: "display: inline-block; color: green;" do
-init transition my opacity to 0% over 3 seconds
-HEREDOC
-            text msg.to_s
-          end
+        output style: "display: inline-block;" do
+          text me.nil? ? "登录后添加评论" : "支持 markdown 格式"
         end
 
         yield
@@ -59,26 +55,17 @@ HEREDOC
 
     textarea_opt = {
       id:   "#{html_id}_text_area",
-      rows: 8,
+      rows: 16,
       cols: 70,
       name: "content",
     }
 
-    if me.nil?
-      legend_text = "登录后添加评论"
-      textarea_opt = textarea_opt.merge(disabled: "")
-    else
-      legend_text = "支持 markdown 格式"
-    end
+    textarea_opt = textarea_opt.merge(disabled: "") if me.nil?
 
     form do
-      fieldset do
-        para do
-          label legend_text, for: "#{html_id}_text_area", style: "margin-bottom: 8px;"
-
-          textarea textarea_opt do
-            text content
-          end
+      para do
+        textarea textarea_opt do
+          text content
         end
       end
     end
