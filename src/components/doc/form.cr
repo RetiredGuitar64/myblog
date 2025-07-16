@@ -3,17 +3,18 @@ class Docs::Form < BaseComponent
   needs doc_path : String
   needs reply_id : Int64?
   needs msg : String?
+  needs html_id : String = "tab"
 
   def render(&)
-    div style: "border:0.5px solid gray; padding: 5px;", id: "form" do
+    div style: "border:0.5px solid gray; padding: 5px;", id: "#{html_id}-form" do
       div class: "tab-frame", style: "margin-top: 5px;text-align: center; min-height: 350px;" do
-        input type: "radio", checked: "", name: "tab", id: "tab1"
-        label "输入", for: "tab1"
+        input type: "radio", checked: "", name: "#{html_id}", id: "#{html_id}1"
+        label "输入", for: "#{html_id}1"
 
         input(
           type: "radio",
-          name: "tab",
-          id: "tab2",
+          name: "#{html_id}",
+          id: "#{html_id}2",
           hx_put: Htmx::Docs::MarkdownRender.path_without_query_params,
           hx_target: "next p.markdown-preview",
           hx_include: "[name='_csrf'],next textarea",
@@ -21,7 +22,7 @@ class Docs::Form < BaseComponent
         )
         label(
           "预览",
-          for: "tab2",
+          for: "#{html_id}2",
           script: "on mouseover set x to the value of the next <textarea/>
         then if x == ''
            add @disabled to the previous <input/>
@@ -57,7 +58,7 @@ HEREDOC
     me = current_user
 
     textarea_opt = {
-      id:   "text_area",
+      id:   "#{html_id}_text_area",
       rows: 8,
       cols: 70,
       name: "content",
@@ -73,7 +74,7 @@ HEREDOC
     form do
       fieldset do
         para do
-          label legend_text, for: "text_area", style: "margin-bottom: 8px;"
+          label legend_text, for: "#{html_id}_text_area", style: "margin-bottom: 8px;"
 
           textarea textarea_opt do
             text content
