@@ -20,6 +20,7 @@ class Reply < BaseModel
 
   table do
     belongs_to doc : Doc?
+    belongs_to reply : Reply?
     belongs_to user : User
 
     column content : String
