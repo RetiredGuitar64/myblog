@@ -18,6 +18,8 @@ class Docs::RepliesMore < BaseComponent
     end
 
     render_more_link
+
+    reply_dialog
   end
 
   private def render_avatar_name_and_time(reply)
@@ -62,15 +64,15 @@ HEREDOC
       me = current_user
 
       if !me.nil?
-        button(
-          "查看回复",
-          onclick: "document.getElementById('reply_dialog').showModal();",
-          script: <<-'HEREDOC'
-on click put '修改 #{user.email} 的密码' into the <#modal1 h5/>
-then set @hx-put of <#modal1 a[hx-put]/> to '#{User::Htmx::Password.with(user_id).path}'
-then js htmx.process(document.body) end
-HEREDOC
-        )
+        # button(
+        #   "查看回复",
+        #   onclick: "document.getElementById('reply_dialog').showModal();",
+        #   #           script: <<-'HEREDOC'
+        #   # on click put '修改 #{user.email} 的密码' into the <#modal1 h5/>
+        #   # then set @hx-put of <#modal1 a[hx-put]/> to '#{User::Htmx::Password.with(user_id).path}'
+        #   # then js htmx.process(document.body) end
+        #   # HEREDOC
+        # )
 
         if me.id == reply.user_id
           div do
@@ -79,17 +81,10 @@ HEREDOC
               class: "chip",
               style: "margin-right: 10px;",
               hx_get: Htmx::Docs::Reply::Edit.with(id: reply.id, user_id: me.id).path,
-              hx_target: "div#form",
+              hx_target: "div#reply_to_reply-form",
               hx_swap: "outerHTML",
               hx_include: "[name='_csrf']",
-              script: "on click go to the top of the <#form/>"
-              #             script: <<-'HEREDOC'
-              # on click js
-              #             event.preventDefault();
-              #             const formElement = document.getElementById('form');
-              #             formElement.scrollIntoView();
-              # end
-              # HEREDOC
+              onclick: "document.getElementById('reply_dialog').showModal();"
             )
 
             a(
@@ -127,5 +122,16 @@ HEREDOC
 
   private def fragment_id(reply)
     "doc_reply-#{reply.id}"
+  end
+
+  private def reply_dialog
+    dialog(
+      id: "reply_dialog",
+      style: "max-width: 100%; width: 50em;
+max-height: 100%; height: 40em;
+padding-bottom: 0;"
+    ) do
+      mount Docs::ReplyToDocForm, current_user: current_user, doc_path: reply_path, html_id: "reply_to_reply"
+    end
   end
 end

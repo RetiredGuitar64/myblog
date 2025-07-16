@@ -3,9 +3,10 @@ class Docs::ReplyToDocForm < BaseComponent
   needs doc_path : String
   needs reply_id : Int64?
   needs msg : String?
+  needs html_id : String = "tab"
 
   def render
-    mount(Docs::Form, content: content, doc_path: doc_path, reply_id: reply_id, msg: msg, current_user: current_user) do
+    mount(Docs::Form, content: content, doc_path: doc_path, reply_id: reply_id, msg: msg, current_user: current_user, html_id: html_id) do
       me = current_user
       text = "回复"
 
@@ -36,9 +37,7 @@ class Docs::ReplyToDocForm < BaseComponent
         if !reply_id.nil? && !me.nil?
           button(
             "取消",
-            hx_get: Htmx::Docs::Reply::New.with(doc_path: doc_path, user_id: me.id).path,
-            hx_swap: "outerHTML",
-            hx_target: "#form"
+            onclick: "document.getElementById('reply_dialog').close();"
           )
         end
         strong do
