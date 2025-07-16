@@ -6,7 +6,7 @@ class Docs::Form < BaseComponent
 
   def render(&)
     div style: "border:0.5px solid gray; padding: 5px;", id: "form" do
-      div class: "tab-frame", style: "margin-top: 5px;text-align: center;" do
+      div class: "tab-frame", style: "margin-top: 5px;text-align: center; min-height: 350px;" do
         input type: "radio", checked: "", name: "tab", id: "tab1"
         label "输入", for: "tab1"
 
@@ -15,7 +15,7 @@ class Docs::Form < BaseComponent
           name: "tab",
           id: "tab2",
           hx_put: Htmx::Docs::MarkdownRender.path_without_query_params,
-          hx_target: "#markdown-preview",
+          hx_target: "next p.markdown-preview",
           hx_include: "[name='_csrf'],next textarea",
           hx_indicator: "next img.htmx-indicator",
         )
@@ -84,7 +84,7 @@ HEREDOC
   end
 
   private def render_preview
-    para id: "markdown-preview"
+    para class: "markdown-preview"
     mount Shared::Spinner, text: "正在预览..."
   end
 end
