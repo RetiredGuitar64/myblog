@@ -11,11 +11,11 @@ class Docs::Replies < BaseComponent
     mount(
       ::Docs::FormButtons,
       page_count: pagination[:count],
-      doc_path: doc_path,
+      reply_path: reply_path,
       order_by: order_by
     )
 
-    div id: "replies" do
+    div role: "feed", class: "replies" do
       mount(
         ::Docs::RepliesMore,
         formatter: formatter,

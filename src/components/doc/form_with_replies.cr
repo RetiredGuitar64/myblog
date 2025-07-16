@@ -8,7 +8,7 @@ class Docs::FormWithReplies < BaseComponent
   def render
     mount Docs::ReplyToDocForm, current_user: current_user, doc_path: doc_path
 
-    div id: "replies" do
+    div role: "feed", class: "replies" do
       mount(
         Docs::Replies,
         formatter: formatter,

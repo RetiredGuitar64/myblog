@@ -142,7 +142,7 @@ abstract class DocLayout
   end
 
   private def show_replies_when_revealed
-    div id: "replies", hx_get: current_reply_path, hx_trigger: "revealed" do
+    div role: "feed", class: "replies", hx_get: current_reply_path, hx_trigger: "revealed" do
       mount Shared::Spinner, text: "正在读取评论..."
     end
   end

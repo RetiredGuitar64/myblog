@@ -26,8 +26,9 @@ class Reply < BaseModel
     column content : String
     column user_name : String
     column user_avatar : String?
+    column belongs_to_counter : Int32 = 0
 
-    polymorphic target, associations: [:doc]
+    polymorphic target, associations: [:doc, :reply]
     column preferences : Reply::Preferences, serialize: true
     column votes : Reply::Votes, serialize: true
   end

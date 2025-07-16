@@ -7,7 +7,9 @@ class Docs::RepliesMore < BaseComponent
 
   def render
     pagination[:replies].each do |reply|
-      div class: "box f-col", id: fragment_id(reply.id) do
+      id = reply.id
+
+      article class: "box f-col #{reply.reply_id ? "ok" : ""}", id: fragment_id(id) do
         render_avatar_name_and_time(reply)
 
         hr style: "border: none; border-top: 1px solid darkgray;"
@@ -15,10 +17,31 @@ class Docs::RepliesMore < BaseComponent
         raw markdown(reply.content)
 
         render_emoji_buttons_and_delete_button(reply)
+
+        if reply.belongs_to_counter > 0
+          div role: "feed", class: "replies" do
+            div class: "f-row justify-content:center" do
+              a(
+                hx_get: "/htmx/docs/replies/#{id}?page=1",
+                hx_target: "closest div",
+                hx_swap: "outerHTML",
+                hx_include: "#order_by",
+              ) do
+                text "加载更多评论"
+                mount Shared::Spinner, text: "正在读取评论..."
+              end
+            end
+          end
+        end
       end
     end
 
-    render_more_link
+    mount(
+      Docs::RepliesMoreLink,
+      pagination: pagination,
+      page_number: page_number,
+      reply_path: reply_path,
+    )
 
     reply_dialog
   end
@@ -69,20 +92,21 @@ HEREDOC
         )
       end
 
-      # wait 1s then put it into the next <output/>
-
       me = current_user
 
       if !me.nil?
-        # button(
-        #   "查看回复",
-        #   onclick: "document.getElementById('reply_dialog').showModal();",
-        #   #           script: <<-'HEREDOC'
-        #   # on click put '修改 #{user.email} 的密码' into the <#modal1 h5/>
-        #   # then set @hx-put of <#modal1 a[hx-put]/> to '#{User::Htmx::Password.with(user_id).path}'
-        #   # then js htmx.process(document.body) end
-        #   # HEREDOC
-        # )
+        if reply.reply_id.nil?
+          a(
+            "回复",
+            class: "chip",
+            style: "margin-right: 10px;",
+            hx_get: Htmx::Docs::Reply::Edit.with(id: reply.id, user_id: me.id).path,
+            hx_target: "div#reply_to_reply-form",
+            hx_swap: "outerHTML",
+            hx_include: "[name='_csrf']",
+            onclick: "document.getElementById('reply_dialog').showModal();"
+          )
+        end
 
         if me.id == reply.user_id
           div do
@@ -108,24 +132,6 @@ HEREDOC
             )
           end
         end
-      end
-    end
-  end
-
-  private def render_more_link
-    div class: "f-row justify-content:center" do
-      if pagination[:page].try &.next_page
-        a(
-          hx_get: "#{reply_path}?page=#{page_number + 1}",
-          hx_target: "closest div",
-          hx_swap: "outerHTML",
-          hx_include: "#order_by"
-        ) do
-          text "加载更多评论"
-          mount Shared::Spinner, text: "正在读取评论..."
-        end
-      else
-        text "没有更多评论了"
       end
     end
   end
