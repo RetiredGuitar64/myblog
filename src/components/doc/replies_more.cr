@@ -61,35 +61,47 @@ HEREDOC
 
       me = current_user
 
-      if !me.nil? && me.id == reply.user_id
-        div do
-          a(
-            "编辑",
-            class: "chip",
-            style: "margin-right: 10px;",
-            hx_get: Htmx::Docs::Reply::Edit.with(id: reply.id, user_id: me.id).path,
-            hx_target: "div#form",
-            hx_swap: "outerHTML",
-            hx_include: "[name='_csrf']",
-            script: "on click go to the top of the <#form/>"
-            #             script: <<-'HEREDOC'
-            # on click js
-            #             event.preventDefault();
-            #             const formElement = document.getElementById('form');
-            #             formElement.scrollIntoView();
-            # end
-            # HEREDOC
-          )
+      if !me.nil?
+        button(
+          "查看回复",
+          onclick: "document.getElementById('reply_dialog').showModal();",
+          script: <<-'HEREDOC'
+on click put '修改 #{user.email} 的密码' into the <#modal1 h5/>
+then set @hx-put of <#modal1 a[hx-put]/> to '#{User::Htmx::Password.with(user_id).path}'
+then js htmx.process(document.body) end
+HEREDOC
+        )
 
-          a(
-            "删除",
-            class: "chip",
-            hx_delete: Htmx::Docs::Reply::Delete.with(id: reply.id, user_id: me.id).path,
-            hx_target: "closest div.box",
-            hx_swap: "outerHTML swap:1s",
-            hx_include: "[name='_csrf']",
-            hx_confirm: "删除这条回复？"
-          )
+        if me.id == reply.user_id
+          div do
+            a(
+              "编辑",
+              class: "chip",
+              style: "margin-right: 10px;",
+              hx_get: Htmx::Docs::Reply::Edit.with(id: reply.id, user_id: me.id).path,
+              hx_target: "div#form",
+              hx_swap: "outerHTML",
+              hx_include: "[name='_csrf']",
+              script: "on click go to the top of the <#form/>"
+              #             script: <<-'HEREDOC'
+              # on click js
+              #             event.preventDefault();
+              #             const formElement = document.getElementById('form');
+              #             formElement.scrollIntoView();
+              # end
+              # HEREDOC
+            )
+
+            a(
+              "删除",
+              class: "chip",
+              hx_delete: Htmx::Docs::Reply::Delete.with(id: reply.id, user_id: me.id).path,
+              hx_target: "closest div.box",
+              hx_swap: "outerHTML swap:1s",
+              hx_include: "[name='_csrf']",
+              hx_confirm: "删除这条回复？"
+            )
+          end
         end
       end
     end

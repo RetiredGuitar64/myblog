@@ -121,7 +121,7 @@ abstract class DocLayout
                 end
 
                 div id: "form_with_replies" do
-                  mount ::Docs::Form, current_user: current_user, doc_path: current_path
+                  mount ::Docs::ReplyToDocForm, current_user: current_user, doc_path: current_path
 
                   show_replies_when_revealed
                 end
@@ -149,6 +149,7 @@ abstract class DocLayout
 
   private def doc_search_dialog
     dialog(
+      id: "doc_search_dialog",
       class: "margin f-col",
       style: "max-width: 100%; width: 30em;
 max-height: 100%; height: 40em;

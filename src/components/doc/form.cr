@@ -4,30 +4,25 @@ class Docs::Form < BaseComponent
   needs reply_id : Int64?
   needs msg : String?
 
-  def render
+  def render(&)
     div style: "border:0.5px solid gray; padding: 5px;", id: "form" do
-      render_tabs
-    end
-  end
+      div class: "tab-frame", style: "margin-top: 5px;text-align: center;" do
+        input type: "radio", checked: "", name: "tab", id: "tab1"
+        label "输入", for: "tab1"
 
-  private def render_tabs
-    div class: "tab-frame", style: "margin-top: 5px;text-align: center;" do
-      input type: "radio", checked: "", name: "tab", id: "tab1"
-      label "输入", for: "tab1"
-
-      input(
-        type: "radio",
-        name: "tab",
-        id: "tab2",
-        hx_put: Htmx::Docs::MarkdownRender.path_without_query_params,
-        hx_target: "#markdown-preview",
-        hx_include: "[name='_csrf'],next textarea",
-        hx_indicator: "next img.htmx-indicator",
-      )
-      label(
-        "预览",
-        for: "tab2",
-        script: "on mouseover set x to the value of the next <textarea/>
+        input(
+          type: "radio",
+          name: "tab",
+          id: "tab2",
+          hx_put: Htmx::Docs::MarkdownRender.path_without_query_params,
+          hx_target: "#markdown-preview",
+          hx_include: "[name='_csrf'],next textarea",
+          hx_indicator: "next img.htmx-indicator",
+        )
+        label(
+          "预览",
+          for: "tab2",
+          script: "on mouseover set x to the value of the next <textarea/>
         then if x == ''
            add @disabled to the previous <input/>
            then set the style of me to 'cursor: not-allowed;'
@@ -36,23 +31,24 @@ class Docs::Form < BaseComponent
           then remove @style from me
         end
         "
-      )
+        )
 
-      if msg
-        output script: <<-'HEREDOC', style: "display: inline-block; color: green;" do
+        if msg
+          output script: <<-'HEREDOC', style: "display: inline-block; color: green;" do
 init transition my opacity to 0% over 3 seconds
 HEREDOC
-          text msg.to_s
+            text msg.to_s
+          end
         end
-      end
 
-      render_submit_button
+        yield
 
-      div class: "tab" do
-        render_form
-      end
-      div class: "tab", style: "text-align: initial;" do
-        render_preview
+        div class: "tab" do
+          render_form
+        end
+        div class: "tab", style: "text-align: initial;" do
+          render_preview
+        end
       end
     end
   end
@@ -90,47 +86,5 @@ HEREDOC
   private def render_preview
     para id: "markdown-preview"
     mount Shared::Spinner, text: "正在预览..."
-  end
-
-  private def render_submit_button
-    me = current_user
-    text = "回复"
-
-    opts = {
-      style:      "margin-right: 25px; margin-left: 10px;",
-      hx_target:  "#form_with_replies",
-      hx_include: "[name='_csrf'],next textarea",
-    }
-
-    if me.nil?
-      opts = opts.merge(disabled: "")
-    else
-      if !reply_id.nil?
-        text = "提交"
-        opts = opts.merge(
-          hx_patch: Htmx::Docs::Reply::Update.path_without_query_params(id: reply_id.not_nil!),
-          hx_vals: %({"user_id": #{me.id}})
-        )
-      else
-        opts = opts.merge(
-          hx_post: Htmx::Docs::Reply::Create.path_without_query_params,
-          hx_vals: %({"user_id": #{me.id}, "doc_path": "#{doc_path}"})
-        )
-      end
-    end
-
-    span style: "float:right;" do
-      if !reply_id.nil? && !me.nil?
-        button(
-          "取消",
-          hx_get: Htmx::Docs::Reply::New.with(doc_path: doc_path, user_id: me.id).path,
-          hx_swap: "outerHTML",
-          hx_target: "#form"
-        )
-      end
-      strong do
-        button(text, opts)
-      end
-    end
   end
 end

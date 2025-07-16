@@ -6,7 +6,7 @@ class Docs::FormWithReplies < BaseComponent
   needs msg : String?
 
   def render
-    mount Docs::Form, current_user: current_user, doc_path: doc_path, msg: msg
+    mount Docs::ReplyToDocForm, current_user: current_user, doc_path: doc_path, msg: msg
 
     div id: "replies" do
       mount(

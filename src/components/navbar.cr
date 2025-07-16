@@ -14,7 +14,7 @@ class Navbar < BaseComponent
             if current_path.starts_with?("/docs")
               tag "search" do
                 strong do
-                  button "搜索文档", onclick: "document.querySelectorAll('dialog')[0].showModal();"
+                  button "搜索文档", onclick: "document.getElementById('doc_search_dialog').showModal();"
                 end
               end
             else
