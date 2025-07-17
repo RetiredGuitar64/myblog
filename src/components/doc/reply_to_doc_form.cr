@@ -11,7 +11,7 @@ class Docs::ReplyToDocForm < BaseComponent
 
       opts = {
         style:      "margin-right: 25px; margin-left: 10px;",
-        hx_target:  "#form_with_replies",
+        hx_target:  "closest div.replies",
         hx_include: "[name='_csrf'],next textarea",
       }
 
@@ -36,7 +36,7 @@ class Docs::ReplyToDocForm < BaseComponent
         if !reply_id.nil? && !me.nil?
           button(
             "取消",
-            onclick: "document.getElementById('reply_dialog').close();"
+            onclick: "document.getElementById('edit_dialog').close();"
           )
         end
         strong do

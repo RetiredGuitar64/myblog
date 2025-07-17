@@ -125,7 +125,7 @@ HEREDOC
               "删除",
               class: "chip",
               hx_delete: Htmx::Docs::Reply::Delete.with(id: reply.id, user_id: me.id).path,
-              hx_target: "closest div.box",
+              hx_target: "closest article.box",
               hx_swap: "outerHTML swap:1s",
               hx_include: "[name='_csrf']",
               hx_confirm: "删除这条回复？"
@@ -147,57 +147,8 @@ HEREDOC
 max-height: 100%; height: 40em;
 padding-bottom: 0;"
     ) do
-      mount Docs::ReplyToDocForm, current_user: current_user, doc_path: reply_path, html_id: "reply_to_reply"
+      div id: "reply_to_reply-form" do
+      end
     end
   end
-
-  # private def reply_dialog
-  #     dialog(
-  #       id: "reply_dialog",
-  #       style: "max-width: 100%; width: 50em;
-  # max-height: 100%; height: 40em;
-  # padding-bottom: 0;"
-  #     ) do
-  #       mount Docs::ReplyToDocForm, current_user: current_user, doc_path: reply_path
-  #       # mount(Docs::Form, content: content, doc_path: doc_path, reply_id: reply_id, current_user: current_user) do
-  #       #   me = current_user
-  #       #   text = "回复"
-
-  #       #   opts = {
-  #       #     style:      "margin-right: 25px; margin-left: 10px;",
-  #       #     hx_target:  "#form_with_replies",
-  #       #     hx_include: "[name='_csrf'],next textarea",
-  #       #   }
-
-  #       #   if me.nil?
-  #       #     opts = opts.merge(disabled: "")
-  #       #   else
-  #       #     if !reply_id.nil?
-  #       #       text = "提交"
-  #       #       opts = opts.merge(
-  #       #         hx_patch: Htmx::Docs::Reply::Update.path_without_query_params(id: reply_id.not_nil!),
-  #       #         hx_vals: %({"user_id": #{me.id}})
-  #       #       )
-  #       #     else
-  #       #       opts = opts.merge(
-  #       #         hx_post: Htmx::Docs::Reply::Create.path_without_query_params,
-  #       #         hx_vals: %({"user_id": #{me.id}, "doc_path": "#{doc_path}"})
-  #       #       )
-  #       #     end
-  #       #   end
-
-  #       #   span style: "float:right;" do
-  #       #     if !reply_id.nil? && !me.nil?
-  #       #       button(
-  #       #         "取消",
-  #       #         onclick: "document.getElementById('reply_dialog').close();"
-  #       #       )
-  #       #     end
-  #       #     strong do
-  #       #       button(text, opts)
-  #       #     end
-  #       #   end
-  #       # end
-  #     end
-  #   end
 end
