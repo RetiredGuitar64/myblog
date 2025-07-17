@@ -11,23 +11,31 @@ class Docs::ReplyToDocForm < BaseComponent
 
       opts = {
         style:      "margin-right: 25px; margin-left: 10px;",
-        hx_target:  "closest div.replies",
+        hx_target:  "div#replies",
         hx_include: "[name='_csrf'],next textarea",
+        script:     "on click set value of next <textarea/> to ''",
+        hx_post:    Htmx::Docs::Reply::CreateOrUpdate.path_without_query_params,
       }
 
       if me.nil?
         opts = opts.merge(disabled: "")
       else
         if !reply_id.nil?
-          text = "提交"
-          opts = opts.merge(
-            hx_patch: Htmx::Docs::Reply::Update.path_without_query_params(id: reply_id.not_nil!),
-            hx_vals: %({"user_id": #{me.id}})
-          )
+          # 一定是针对 reply 的 edit 或 new reply to reply，根据 content 是否有内容判断。
+          if content.blank?
+            opts = opts.merge(
+              hx_vals: %({"user_id": #{me.id}, "id": #{reply_id}, "op": "new"}),
+            )
+          else
+            opts = opts.merge(
+              hx_vals: %({"user_id": #{me.id}, "id": #{reply_id}, "op": "edit"}),
+            )
+            text = "修改"
+          end
         else
+          # 为 doc 新建评论
           opts = opts.merge(
-            hx_post: Htmx::Docs::Reply::Create.path_without_query_params,
-            hx_vals: %({"user_id": #{me.id}, "doc_path": "#{doc_path}"})
+            hx_vals: %({"user_id": #{me.id}, "doc_path": "#{doc_path}"}),
           )
         end
       end

@@ -28,6 +28,7 @@ class Docs::FormButtons < BaseComponent
         herf: "",
         hx_get: "#{reply_path}?order_by=#{order}",
         hx_target: "closest div.replies",
+        hx_swap: "outerHTML",
         hx_include: "next input[name='order_by']",
         style: order_by == order ? selected : unselected,
       )

@@ -1,8 +1,7 @@
 class Docs::RepliesMore < BaseComponent
   needs formatter : Tartrazine::Formatter
-  needs pagination : {count: Int32 | Int64, replies: ReplyQuery, page: Lucky::Paginator?}
+  needs pagination : {count: Int32 | Int64, replies: ReplyQuery, page: Lucky::Paginator?, url: String}
   needs page_number : Int32
-  needs reply_path : String
   needs reply_id : Int64?
 
   def render
@@ -19,17 +18,15 @@ class Docs::RepliesMore < BaseComponent
         render_emoji_buttons_and_delete_button(reply)
 
         if reply.belongs_to_counter > 0
-          div role: "feed", class: "replies" do
-            div class: "f-row justify-content:center" do
-              a(
-                hx_get: "/htmx/docs/replies/#{id}?page=1",
-                hx_target: "closest div",
-                hx_swap: "outerHTML",
-                hx_include: "#order_by",
-              ) do
-                text "加载更多评论"
-                mount Shared::Spinner, text: "正在读取评论..."
-              end
+          div class: "f-row justify-content:center" do
+            a(
+              hx_get: "/htmx/replies/#{id}?page=1",
+              hx_target: "closest div",
+              hx_swap: "outerHTML",
+              hx_include: "previous input.order_by",
+            ) do
+              text "加载更多评论"
+              mount Shared::Spinner, text: "正在读取评论...", width: "10px"
             end
           end
         end
@@ -40,7 +37,6 @@ class Docs::RepliesMore < BaseComponent
       Docs::RepliesMoreLink,
       pagination: pagination,
       page_number: page_number,
-      reply_path: reply_path,
     )
 
     edit_dialog
@@ -95,31 +91,33 @@ HEREDOC
       me = current_user
 
       if !me.nil?
-        if reply.reply_id.nil?
-          a(
-            "回复",
-            class: "chip",
-            style: "margin-right: 10px;",
-            hx_get: Htmx::Docs::Reply::New.with(id: reply.id, user_id: me.id).path,
-            hx_target: "div#reply_to_reply-form",
-            hx_swap: "outerHTML",
-            hx_include: "[name='_csrf']",
-            onclick: "document.getElementById('edit_dialog').showModal();"
-          )
-        end
+        opts = {
+          class:      "chip",
+          style:      "margin-right: 10px;",
+          hx_target:  "div#reply_to_reply-form",
+          hx_swap:    "outerHTML",
+          hx_include: "[name='_csrf']",
+          onclick:    "
+const dialog = document.getElementById('edit_dialog');
+dialog.showModal();
+var textarea = dialog.querySelector('textarea');
+textarea.focus();
+",
+        }
 
-        if me.id == reply.user_id
-          div do
-            a(
-              "编辑",
-              class: "chip",
-              style: "margin-right: 10px;",
-              hx_get: Htmx::Docs::Reply::Edit.with(id: reply.id, user_id: me.id).path,
-              hx_target: "div#reply_to_reply-form",
-              hx_swap: "outerHTML",
-              hx_include: "[name='_csrf']",
-              onclick: "document.getElementById('edit_dialog').showModal();"
+        div do
+          if reply.reply_id.nil?
+            opts = opts.merge(
+              hx_get: Htmx::Docs::Reply::New.with(id: reply.id, user_id: me.id).path,
             )
+            a("回复", opts)
+          end
+
+          if me.id == reply.user_id
+            opts = opts.merge(
+              hx_get: Htmx::Docs::Reply::Edit.with(id: reply.id, user_id: me.id).path,
+            )
+            a("编辑", opts)
 
             a(
               "删除",

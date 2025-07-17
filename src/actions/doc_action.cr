@@ -5,21 +5,32 @@ abstract class DocAction < BrowserAction
 
   expose formatter
 
-  def replies_pagination(doc_path : String? = nil, id : Int64? = nil, order_by = "desc")
-    return {count: 0, replies: ReplyQuery.new.none, page: nil} unless order_by.in?("desc", "asc")
+  def replies_pagination(id_or_doc_path : String, order_by = "desc")
+    return {count: 0, replies: ReplyQuery.new.none, page: nil, url: ""} unless order_by.in?("desc", "asc")
+
+    id = id_or_doc_path.to_i64?
 
     if id.nil?
-      current_doc = DocQuery.new.path_index(doc_path.not_nil!).first
+      doc_path = id_or_doc_path.starts_with?("/") ? id_or_doc_path : "/#{id_or_doc_path}"
+      url = doc_path.sub("/docs", "/htmx/replies/docs")
+      current_doc = DocQuery.new.path_index(doc_path).first
       q = ReplyQuery.new.doc_id(current_doc.id)
     else
-      reply = ReplyQuery.find(id.not_nil!)
+      reply = ReplyQuery.find(id)
       q = ReplyQuery.new.reply_id(reply.id)
+      url = "/htmx/replies/#{id}"
     end
 
     q = q.id.desc_order if order_by == "desc"
 
     page, replies = paginate(q, per_page: 10)
-    {count: page.item_count, replies: replies, page: page}
+
+    {
+      count:   page.item_count,
+      replies: replies,
+      page:    page,
+      url:     url,
+    }
   end
 
   memoize def formatter : Tartrazine::Formatter

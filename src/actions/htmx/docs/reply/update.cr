@@ -11,14 +11,19 @@ class Htmx::Docs::Reply::Update < DocAction
     reply = ReplyQuery.find(id)
 
     UpdateReply.update!(reply, content: content)
-    doc_path = reply.preferences.path_for_doc?.not_nil!
+    doc_path = reply.preferences.path_for_doc?
+
+    if doc_path.nil?
+      id_or_doc_path = reply.id.to_s
+    else
+      id_or_doc_path = doc_path
+    end
 
     component(
-      ::Docs::FormWithReplies,
+      ::Docs::Replies,
       formatter: formatter,
-      pagination: replies_pagination(doc_path: doc_path),
+      pagination: replies_pagination(id_or_doc_path: id_or_doc_path),
       current_user: me,
-      doc_path: doc_path,
       order_by: "desc",
       reply_id: id.to_i64
     )
