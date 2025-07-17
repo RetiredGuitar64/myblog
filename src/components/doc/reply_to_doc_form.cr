@@ -1,6 +1,6 @@
 class Docs::ReplyToDocForm < BaseComponent
   needs content : String = ""
-  needs doc_path : String
+  needs doc_path : String?
   needs reply_id : Int64?
   needs html_id : String = "tab"
 
