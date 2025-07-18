@@ -25,10 +25,20 @@ class Docs::ReplyToDocForm < BaseComponent
           if content.blank?
             opts = opts.merge(
               hx_vals: %({"user_id": #{me.id}, "id": #{reply_id}, "op": "new"}),
+              onclick: "scrollToElementById('doc_reply-#{reply_id}')"
             )
           else
+            reply = ReplyQuery.find(reply_id.not_nil!)
+
+            if !(id = reply.reply_id).nil?
+              opts = opts.merge(
+                hx_target: "#doc_reply-#{id}-replies"
+              )
+            end
+
             opts = opts.merge(
               hx_vals: %({"user_id": #{me.id}, "id": #{reply_id}, "op": "edit"}),
+              hx_swap: "outerHTML"
             )
             text = "修改"
           end

@@ -18,14 +18,14 @@ class Docs::RepliesMore < BaseComponent
         render_emoji_buttons_and_delete_button(reply)
 
         if reply.belongs_to_counter > 0
-          div class: "f-row justify-content:center" do
+          div class: "f-row justify-content:center", id: "#{fragment_id(id)}-replies" do
             a(
               hx_get: "/htmx/replies/#{id}?page=1",
-              hx_target: "closest div",
+              hx_target: "##{fragment_id(id)}-replies",
               hx_swap: "outerHTML",
               hx_include: "previous input.order_by",
             ) do
-              text "加载更多评论"
+              text "加载，共 #{reply.belongs_to_counter} 条回复"
               mount Shared::Spinner, text: "正在读取评论...", width: "10px"
             end
           end
@@ -100,8 +100,9 @@ HEREDOC
           onclick:    "
 const dialog = document.getElementById('edit_dialog');
 dialog.showModal();
-var textarea = dialog.querySelector('textarea');
-textarea.focus();
+setTimeout(function() {
+  dialog.querySelector('textarea').focus();
+}, 500)
 ",
         }
 
@@ -119,15 +120,17 @@ textarea.focus();
             )
             a("编辑", opts)
 
-            a(
-              "删除",
-              class: "chip",
-              hx_delete: Htmx::Docs::Reply::Delete.with(id: reply.id, user_id: me.id).path,
-              hx_target: "closest article.box",
-              hx_swap: "outerHTML swap:1s",
-              hx_include: "[name='_csrf']",
-              hx_confirm: "删除这条回复？"
-            )
+            if reply.belongs_to_counter == 0
+              a(
+                "删除",
+                class: "chip bad color border",
+                hx_delete: Htmx::Docs::Reply::Delete.with(id: reply.id, user_id: me.id).path,
+                hx_target: "closest article.box",
+                hx_swap: "outerHTML swap:1s",
+                hx_include: "[name='_csrf']",
+                hx_confirm: "删除这条回复？"
+              )
+            end
           end
         end
       end
