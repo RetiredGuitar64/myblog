@@ -120,13 +120,15 @@ a.size # Error: undefined method 'size' for Nil (compile-time type is (String | 
 提起 CSP(Communicating Sequential Processes), 大多数接触过的人首先会想到 golang 的 goroutine/Chan。
 
 ```
-Crystal 同样从设计之初就使用 Fiber/Chanel 实现了 CSP 模型。
+Crystal 同样从设计之初就使用 Fiber/Chanel 实现了同样的 CSP 模型。
 
 没错，这就是 Ruby 一直想做，但是一直没做到的事情。
 ```
 
-这里强调一下 Crystal 语言在国内社区（例如某乎）上最被误解的一点，那就是 **Crystal 不支持多线程**，
-这显然是不对的，Crystal __从一开始就支持和 Ruby 一样的多线程使用方式__，例如, 下面的代码一开始就像
+这里强调一下 Crystal 语言在国内社区（例如某乎）上最被误解的一点，那就是 
+**Crystal 不支持多线程**,这显然是对 Crystal 极大的误解。
+
+Crystal __从一开始就支持和 Ruby 一样的多线程使用方式__，例如, 下面的代码一开始就像
 Ruby 一样工作。
 
 ```crystal
@@ -139,14 +141,72 @@ thread2.join
 thread3.join
 ```
 
-我们这里讨论的是，类似于 golang 的 [M:N concurrency](https://pauldigian.com/advanced-go-goroutines-the-basics#mn-concurrency),
-即：在开启多线程的情况下, M 个 Fiber 自动运行在 N 个操作系统线程中。
+这里指的多线程其实是说 `允许 Fibers 在多个线程之上同时执行`.
 
 Crystal [早在 2019 年](https://crystal-lang.org/2019/09/06/parallelism-in-crystal/)，就实现了一个简单的基于多线程的 Fiber 实现，
-但是其实现方式只是使用非常简单的轮询(round-robin fashion)方式实现，标准库也未完全为标准库做好准备。
-新的基于多线程的 Fiber 实现 [RFC0002](https://github.com/crystal-lang/rfcs/pull/2) 在社区成员的共同呼吁下，
-也即将在 2025 年上半年完成，但是鉴于开发资源投入差距巨大，要达到 Golang 实现的成熟度，
-还需要假以时日。
+但是其实现方式只是使用非常简单的轮询(round-robin fashion)方式，标准库也未完全为
+Fiber 安全做好准备。
+
+新的基于多线程的 Fiber 实现 [RFC0002](https://github.com/crystal-lang/rfcs/pull/2) 在社区成员的共同呼吁下，即将在 2025 年完成，
+
+但是，作为新的 Fiber 多线程支持的一部分，版本 1.15.0 开始，为 UNIX 兼容的系统
+引入了一个[新的 Event Loop 实现（已合并）](https://crystal-lang.org/2024/11/05/lifetime-event-loop), 它几乎完全重写，允许编写并发(concurrency)
+的代码，并实际并行(parallel)的方式运行，而操作系统线程(Thread) 的概念，则完全被抽象
+为实现细节
+
+### ExecutionContext::Concurrent 
+
+这是当前默认模式
+
+```crystal
+Fiber::ExecutionContext.default.class # => Fiber::ExecutionContext::Concurrent
+```
+
+Fiber 只会按照并发(concurrency)方式运行, 并不会并行(parallel)，即，任意时间，只会有
+一个 Fiber 正在运行。它们可以在内部使用更简单、更快的同步原语（无需原子操作，线程安全）。
+
+与不同的 context 的 Fiber 进行通讯，需要使用线程安全原语，如果一个 Fiber 非常繁忙， 
+占用整个线程资源，将会阻塞整个线程以及该上下文中的其他 Fiber.
+(例如，加入你正在执行繁忙的数学计算，你想同时在命令行打印一个滚动条，是无法做到的。)
+
+### ExecutionContext::Parallel
+
+类似于 golang 的 [M:N concurrency](https://pauldigian.com/advanced-go-goroutines-the-basics#mn-concurrency) 的完整实现, 从 Crystal 角度来说，会同时启动
+N 个操作系统线程，然后有 M 个 Fiber 在其上并行(parallel)执行。
+
+- 一个 Fiber 在整个运行期间，可能被属于同一个 execution context 的不同的操作系统线程 suspend/resume
+- 多个 Fiber 可以在不同的操作系统线程之上并行(parallel)的同时运行 (无论是否属于同一个 context)
+- Schedulers steal（不知如何翻译）也是工作的，并行度会动态地扩展和缩小。
+
+使用这种模式运行需要开启编译参数： -Dpreview_mt -Dexecution_context
+
+在 Crystal 2.0，将会和 golang 一样，ExecutionContext::Parallel 作为默认。
+
+### ExecutionContext::Isolated
+
+只允许一个 Fiber 在一个线程中执行，没有切换，无需调度，这特别适合那种高 CPU 负载，
+（CPU heavy computation），或运行很长时间的任务，例如: GUI main loop, game loop。
+
+当 Fiber sleep 之后，整个线程会暂停，因为它是 Thread 唯一的 Fiber
+
+当需要和其他 execution context 通讯时，需要线程安全原语。
+
+## Windows 支持
+
+对于大部分之前了解过这门语言的开发者，Windows 支持可能是除了上面的多线程之外，呼声
+最大的一个 feature，经过漫长的修改，以及对语言自身的重构（Crystal 需要考虑其他支持
+的平台和 Windows 的统一接口），然后随着 [Coordinate porting to Windows](https://github.com/crystal-lang/crystal/issues/5430) 已经关闭，
+所有的预定义 todo 已经完成，这意味这 Windows 支持已经接近完成，预计将来，Windows
+支持将和 macOS, linux 一起作为 Tier 1 级别被支持。
+
+我个人对 Windows 支持不怎么关注，而且对于 Crystal 背后这么小的核心团队（开始时所有人都
+没有 Windows 开发背景），非要死磕 Windows 的决定是不支持的。我到现在也认为，这应该
+是被部分 `上社区怒吼两声，为啥不支持 Windows`，然后此后再也消失不见的开发者误导的。
+
+Ruby 发展这么多年了，我也算是个老人了，有人用 windows 做开发吗？ 应该很少吧。
+反倒是，Crystal 早就应该集中更多的资源探索 [incremental compilation](https://forum.crystal-lang.org/t/incremental-compilation-exploration/5224) 以及更好的
+LSP 支持（说起这点都是泪，看看 Dart, Go 和 Rust）
+
 
 ## 其他特性
 
