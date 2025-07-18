@@ -2,6 +2,7 @@ class Docs::FormButtons < BaseComponent
   needs page_count : Int32 | Int64
   needs reply_path : String
   needs order_by : String
+  needs hx_target : String
 
   def render
     div class: "f-row align-items:center justify-content:space-between", style: "margin-top: 5px;" do
@@ -27,7 +28,7 @@ class Docs::FormButtons < BaseComponent
         class: "chip",
         herf: "",
         hx_get: "#{reply_path}?order_by=#{order}",
-        hx_target: "closest div.replies",
+        hx_target: hx_target,
         hx_swap: "outerHTML",
         hx_include: "next input[name='order_by']",
         style: order_by == order ? selected : unselected,

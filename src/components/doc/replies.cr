@@ -10,17 +10,20 @@ class Docs::Replies < BaseComponent
     }
 
     if reply_id
-      opts = opts.merge(id: "doc_reply-#{reply_id}-replies")
+      html_id = "doc_reply-#{reply_id}-replies"
     else
-      opts = opts.merge(id: "replies")
+      html_id = "replies"
     end
+
+    opts = opts.merge(id: html_id)
 
     div opts do
       mount(
         ::Docs::FormButtons,
         page_count: pagination[:count],
         reply_path: pagination[:url],
-        order_by: order_by
+        order_by: order_by,
+        hx_target: "div##{html_id}"
       )
 
       mount(
