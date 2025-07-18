@@ -30,8 +30,6 @@ function init(eventElt) {
 
     // 确保下面的函数，只在 body 重新改变时才触发
     if (eventElt.nodeName == "BODY") {
-        // 薛定谔的猫？我只要这里日志查看它，它就有数据，否则，它经常是空的？
-        console.log(mixManifest);
         initStork();
     }
 
