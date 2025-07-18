@@ -1,16 +1,16 @@
 class Htmx::Docs::Replies < DocAction
   param order_by : String = "desc"
 
-  get "/htmx/replies/*:markdown_path" do
+  get "/htmx/replies/*:id_or_doc_path" do
     page_number = params.get?(:page).try &.to_i
-
-    id_or_doc_path = markdown_path
 
     return head 401 if id_or_doc_path.nil?
 
-    id = id_or_doc_path.to_i64?
+    id_or_doc_path = self.id_or_doc_path.not_nil!
 
     pagination = replies_pagination(id_or_doc_path: id_or_doc_path, order_by: order_by)
+
+    id = id_or_doc_path.to_i64?
 
     if page_number && page_number > 1
       component(
@@ -28,7 +28,7 @@ class Htmx::Docs::Replies < DocAction
         pagination: pagination,
         current_user: current_user,
         order_by: order_by,
-        reply_id: id,
+        reply_id: id
       )
     end
   end

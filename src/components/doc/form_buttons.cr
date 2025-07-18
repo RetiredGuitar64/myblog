@@ -22,7 +22,8 @@ class Docs::FormButtons < BaseComponent
     # /docs/replies/index?order_by=asc&order_by=desc
     # 此时有两个 order_by，第一个来自于 hx_get 中的 ? 参数, 第二个来自于 hx_include
     # 此时，总是第一个生效。
-    [["最早", "asc"], ["最新", "desc"]].each do |(title, order)|
+
+    [{"最早", "asc"}, {"最新", "desc"}].each do |title, order|
       a(
         title,
         class: "chip",
@@ -36,6 +37,6 @@ class Docs::FormButtons < BaseComponent
     end
 
     # 为了记录上次点击的 order_by 顺序，传递 order_by 到服务器，并重新写入隐藏 input
-    input type: "hidden", name: "order_by", value: order_by, class: "order_by"
+    input type: "hidden", name: "order_by", value: order_by
   end
 end

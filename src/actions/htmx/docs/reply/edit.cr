@@ -14,9 +14,9 @@ class Htmx::Docs::Reply::Edit < DocAction
       ::Docs::ReplyToDocForm,
       current_user: current_user,
       content: reply.content,
+      html_id: "reply_to_reply",
       reply_id: id.to_i64,
       doc_path: reply.preferences.path_for_doc?,
-      html_id: "reply_to_reply"
     )
   end
 end

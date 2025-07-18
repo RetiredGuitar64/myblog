@@ -13,7 +13,7 @@ class SaveReply < Reply::SaveOperation
       user_avatar.value = avatar
     end
 
-    if !id.value
+    if !id.value # 新建的时候
       doc_id.value.try do |doc_id|
         doc = DocQuery.find(doc_id)
         if (last_reply = ReplyQuery.new.doc_id(doc.id).last?)
@@ -62,7 +62,7 @@ class SaveReply < Reply::SaveOperation
 
   private def validate_doc_id_reply_id
     if doc_id.value.blank? && reply_id.value.blank?
-      add_error :doc_id_reply_id, "必须至少一个存在"
+      add_error :doc_id_or_reply_id, "必须至少一个存在"
     end
   end
 end

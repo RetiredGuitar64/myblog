@@ -23,9 +23,9 @@ class Docs::RepliesMore < BaseComponent
               hx_get: "/htmx/replies/#{id}?page=1",
               hx_target: "##{fragment_id(id)}-replies",
               hx_swap: "outerHTML",
-              hx_include: "previous input.order_by",
+              hx_include: "previous input[name='order_by']",
             ) do
-              text "加载，共 #{reply.replies_counter} 条回复"
+              text "加载评论，共 #{reply.replies_counter} 条回复"
               mount Shared::Spinner, text: "正在读取评论...", width: "10px"
             end
           end
@@ -88,8 +88,6 @@ HEREDOC
         )
       end
 
-      me = current_user
-
       if !me.nil?
         opts = {
           class:      "chip",
@@ -107,20 +105,14 @@ setTimeout(function() {
         }
 
         div do
-          if reply.reply_id.nil?
-            opts = opts.merge(
-              hx_get: Htmx::Docs::Reply::New.with(id: reply.id, user_id: me.id).path,
-            )
-            a("回复", opts)
+          if reply.reply_id.nil? # 只允许针对 doc 的评论进行回复
+            a("回复", opts, hx_get: Htmx::Docs::Reply::New.with(id: reply.id, user_id: me.id).path)
           end
 
-          if me.id == reply.user_id
-            opts = opts.merge(
-              hx_get: Htmx::Docs::Reply::Edit.with(id: reply.id, user_id: me.id).path,
-            )
-            a("编辑", opts)
+          if me.id == reply.user_id # 只允许编辑自己的回复
+            a("编辑", opts, hx_get: Htmx::Docs::Reply::Edit.with(id: reply.id, user_id: me.id).path)
 
-            if reply.replies_counter == 0
+            if reply.replies_counter == 0 # 如果回复有了回复，就不再允许删除
               a(
                 "删除",
                 class: "chip bad color border",
@@ -144,9 +136,13 @@ setTimeout(function() {
   private def edit_dialog
     dialog(
       id: "edit_dialog",
-      style: "max-width: 100%; width: 50em;
-max-height: 100%; height: 40em;
-padding-bottom: 0;"
+      style: "
+max-width: 100%;
+width: 50em;
+max-height: 100%;
+height: 40em;
+padding-bottom: 0;
+"
     ) do
       div id: "reply_to_reply-form" do
       end

@@ -9,7 +9,7 @@ class Docs::RepliesMoreLink < BaseComponent
           hx_get: "#{pagination[:url]}?page=#{page_number + 1}",
           hx_target: "closest div",
           hx_swap: "outerHTML",
-          hx_include: "previous input.order_by"
+          hx_include: "previous input[name='order_by']"
         ) do
           text "加载更多评论"
           mount Shared::Spinner, text: "正在读取评论..."

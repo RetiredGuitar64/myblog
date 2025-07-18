@@ -1,11 +1,18 @@
 class Docs::ReplyToDocForm < BaseComponent
   needs content : String = ""
+  needs html_id : String = "tab"
   needs doc_path : String?
   needs reply_id : Int64?
-  needs html_id : String = "tab"
 
   def render
-    mount(Docs::Form, content: content, doc_path: doc_path, reply_id: reply_id, current_user: current_user, html_id: html_id) do
+    mount(
+      Docs::Form,
+      content: content,
+      doc_path: doc_path,
+      reply_id: reply_id,
+      current_user: current_user,
+      html_id: html_id
+    ) do
       me = current_user
       text = "回复"
 
@@ -21,16 +28,22 @@ class Docs::ReplyToDocForm < BaseComponent
         opts = opts.merge(disabled: "")
       else
         if !reply_id.nil?
-          # 一定是针对 reply 的 edit 或 new reply to reply，根据 content 是否有内容判断。
+          # 一定是针对 reply 的操作，这里包含三种情况
+          # - 为评论新增评论
+          # - 编辑评论
+          # - 编辑评论的评论。
           if content.blank?
+            # 为评论新增评论
             opts = opts.merge(
               hx_vals: %({"user_id": #{me.id}, "id": #{reply_id}, "op": "new"}),
               onclick: "scrollToElementById('doc_reply-#{reply_id}')"
             )
           else
+            # 这里覆盖两种编辑的情况
             reply = ReplyQuery.find(reply_id.not_nil!)
 
             if !(id = reply.reply_id).nil?
+              # 如果是评论的评论，htmx target 直接覆盖子评论列表
               opts = opts.merge(
                 hx_target: "#doc_reply-#{id}-replies"
               )

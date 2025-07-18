@@ -5,19 +5,9 @@ class Docs::Replies < BaseComponent
   needs reply_id : Int64?
 
   def render
-    opts = {
-      role: "feed",
-    }
+    html_id = reply_id ? "doc_reply-#{reply_id}-replies" : "replies"
 
-    if reply_id
-      html_id = "doc_reply-#{reply_id}-replies"
-    else
-      html_id = "replies"
-    end
-
-    opts = opts.merge(id: html_id)
-
-    div opts do
+    div role: "feed", id: html_id do
       mount(
         ::Docs::FormButtons,
         page_count: pagination[:count],

@@ -5,7 +5,7 @@ abstract class DocAction < BrowserAction
 
   expose formatter
 
-  def replies_pagination(id_or_doc_path : String, order_by = "desc")
+  def replies_pagination(id_or_doc_path : String, order_by : String = "desc", per_page : Int32 = 10)
     return {count: 0, replies: ReplyQuery.new.none, page: nil, url: ""} unless order_by.in?("desc", "asc")
 
     id = id_or_doc_path.to_i64?
@@ -23,7 +23,7 @@ abstract class DocAction < BrowserAction
 
     q = q.id.desc_order if order_by == "desc"
 
-    page, replies = paginate(q, per_page: 10)
+    page, replies = paginate(q, per_page: per_page)
 
     {
       count:   page.item_count,

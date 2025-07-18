@@ -20,33 +20,34 @@ class Htmx::Docs::Reply::CreateOrUpdate < DocAction
         SaveReply.update!(reply, content: content)
         path_for_doc = reply.preferences.path_for_doc?
         if path_for_doc.nil?
-          reply_id = reply.reply_id
-          pagination = replies_pagination(id_or_doc_path: reply_id.to_s)
+          # edit reply to reply
+          id_or_doc_path = reply.reply_id.to_s
         else
-          reply_id = reply.id
-          pagination = replies_pagination(id_or_doc_path: path_for_doc)
+          # edit reply to doc
+          id_or_doc_path = path_for_doc
         end
       when "new"
-        reply_id = reply.id
-        SaveReply.create!(user_id: user_id, reply_id: reply_id, content: content)
-        pagination = replies_pagination(id_or_doc_path: reply.preferences.path_for_doc?.not_nil!)
+        # new reply to reply，这个是要回复的那个 reply
+        SaveReply.create!(user_id: user_id, reply_id: reply.id, content: content)
+        id_or_doc_path = reply.preferences.path_for_doc?.not_nil!
       end
     else
       # 给 doc 新建评论
-      doc = DocQuery.new.path_index(doc_path.not_nil!).first
-
+      doc_path = self.doc_path.not_nil!
+      doc = DocQuery.new.path_index(doc_path).first
       SaveReply.create!(user_id: user_id, doc_id: doc.id, content: content)
-
-      pagination = replies_pagination(id_or_doc_path: doc_path.not_nil!)
+      id_or_doc_path = doc_path
     end
+
+    pagination = replies_pagination(id_or_doc_path: id_or_doc_path.not_nil!)
 
     component(
       ::Docs::Replies,
       formatter: formatter,
-      pagination: pagination.not_nil!,
+      pagination: pagination,
       current_user: me,
       order_by: "desc",
-      reply_id: reply_id
+      reply_id: reply.try &.id
     )
   end
 end

@@ -121,6 +121,7 @@ abstract class DocLayout
                 end
 
                 div id: "form_with_replies" do
+                  # 只是一个占位符，会被 htmx 请求覆盖
                   mount ::Docs::ReplyToDocForm, current_user: current_user, doc_path: current_path
 
                   show_replies_when_revealed
