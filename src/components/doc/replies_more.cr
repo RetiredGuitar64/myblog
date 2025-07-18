@@ -17,7 +17,7 @@ class Docs::RepliesMore < BaseComponent
 
         render_emoji_buttons_and_delete_button(reply)
 
-        if reply.belongs_to_counter > 0
+        if reply.replies_counter > 0
           div class: "f-row justify-content:center", id: "#{fragment_id(id)}-replies" do
             a(
               hx_get: "/htmx/replies/#{id}?page=1",
@@ -25,7 +25,7 @@ class Docs::RepliesMore < BaseComponent
               hx_swap: "outerHTML",
               hx_include: "previous input.order_by",
             ) do
-              text "加载，共 #{reply.belongs_to_counter} 条回复"
+              text "加载，共 #{reply.replies_counter} 条回复"
               mount Shared::Spinner, text: "正在读取评论...", width: "10px"
             end
           end
@@ -120,7 +120,7 @@ setTimeout(function() {
             )
             a("编辑", opts)
 
-            if reply.belongs_to_counter == 0
+            if reply.replies_counter == 0
               a(
                 "删除",
                 class: "chip bad color border",

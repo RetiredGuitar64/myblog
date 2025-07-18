@@ -44,8 +44,6 @@ class SaveReply < Reply::SaveOperation
             floor:        floor,
           }.to_json
         )
-
-        SaveReply.update!(reply, belongs_to_counter: reply.belongs_to_counter + 1)
       end
 
       votes.value = Reply::Votes.from_json(
