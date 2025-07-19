@@ -10,6 +10,7 @@ module PageHelpers
     "/docs/7_12_Kevin"                               => {title: "2025_7_12", sub_title: ""},
     "/docs/7_17_Fatima"                              => {title: "2025_7_17", sub_title: ""},
     "/docs/7_18_Andrei"                              => {title: "2025_7_18", sub_title: ""},
+    "/docs/7_19_Fatima"                              => {title: "2025_7_19", sub_title: ""},
     # "/docs/introduction"                             => {title: "简介", sub_title: ""},
     # "/docs/install"                                  => {title: "安装", sub_title: ""},
     # "/docs/package_manager"                          => {title: "包管理", sub_title: "shards 命令", parent: "/docs/install"},
