@@ -1,7 +1,7 @@
 require "../spec_helper"
 
 describe "Authentication flow", tags: "flow" do
-  pending "works" do
+  it "works" do
     flow = AuthenticationFlow.new("test@example.com")
     flow.sign_up "password"
     flow.should_be_signed_in
@@ -16,13 +16,13 @@ describe "Authentication flow", tags: "flow" do
   # Use the `visit` method's `as` option in your tests to sign in as that user.
   #
   # Feel free to delete this once you have other tests using the 'as' option.
-  it "allows sign in through backdoor when testing" do
-    user = UserFactory.create
-    flow = BaseFlow.new
+  # it "allows sign in through backdoor when testing" do
+  #   user = UserFactory.create
+  #   flow = BaseFlow.new
 
-    flow.visit Me::Show, as: user
-    should_be_signed_in(flow)
-  end
+  #   flow.visit Me::Show, as: user
+  #   should_be_signed_in(flow)
+  # end
 end
 
 private def should_be_signed_in(flow)

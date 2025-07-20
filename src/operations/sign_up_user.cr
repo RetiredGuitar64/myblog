@@ -6,11 +6,11 @@ class SignUpUser < User::SaveOperation
   permit_columns email
   attribute password : String
   attribute password_confirmation : String
-  attribute captcha : String
+  attribute captcha_code : String
 
   before_save do
     validate_uniqueness_of email
-    validate_required captcha
+    validate_required captcha_code
     Authentic.copy_and_encrypt(password, to: encrypted_password) if password.valid?
 
     while (user_name = "User#{rand(100000..999999)}")
