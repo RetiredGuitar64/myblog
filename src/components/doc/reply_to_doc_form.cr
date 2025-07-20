@@ -45,7 +45,7 @@ class Docs::ReplyToDocForm < BaseComponent
             reply = ReplyQuery.find(reply_id.not_nil!)
 
             if !(id = reply.reply_id).nil?
-              # 如果是评论的评论，htmx target 直接覆盖子评论列表
+              # 如果修改评论的评论，htmx target 直接覆盖子评论列表
               opts = opts.merge(
                 hx_target: "#doc_reply-#{id}-replies"
               )
@@ -54,7 +54,7 @@ class Docs::ReplyToDocForm < BaseComponent
             opts = opts.merge(
               hx_vals: %({"user_id": #{me.id}, "id": #{reply_id}, "op": "edit"}),
               hx_swap: "outerHTML",
-              onclick: "scrollToElementById('doc_reply-#{reply_id}')"
+              onclick: "scrollToElementById('doc_reply-#{reply_id}')",
             )
             text = "修改"
           end

@@ -2,11 +2,10 @@ class Docs::Replies < BaseComponent
   needs formatter : Tartrazine::Formatter
   needs pagination : {count: Int32 | Int64, replies: ReplyQuery, page: Lucky::Paginator?, url: String}
   needs order_by : String
+  needs html_id : String
   needs reply_id : Int64?
 
   def render
-    html_id = reply_id ? "doc_reply-#{reply_id}-replies" : "replies"
-
     div role: "feed", id: html_id do
       mount(
         ::Docs::FormButtons,

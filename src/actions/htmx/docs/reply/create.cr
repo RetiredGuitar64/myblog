@@ -22,21 +22,25 @@ class Htmx::Docs::Reply::CreateOrUpdate < DocAction
         if path_for_doc.nil?
           # edit reply to reply
           id_or_doc_path = reply.reply_id.to_s
+          html_id = "doc_reply-#{reply.reply_id}-replies"
         else
           # edit reply to doc
           id_or_doc_path = path_for_doc
+          html_id = "replies"
         end
       when "new"
         # new reply to reply，这个是要新建回复的那个 reply
-        SaveReply.create!(user_id: user_id, reply_id: reply.id, content: content)
+        reply = SaveReply.create!(user_id: user_id, reply_id: reply.id, content: content)
         id_or_doc_path = reply.id.to_s
+        html_id = "doc_reply-#{reply.id}-replies"
       end
     else
       # 给 doc 新建评论
       doc_path = self.doc_path.not_nil!
       doc = DocQuery.new.path_index(doc_path).first
-      SaveReply.create!(user_id: user_id, doc_id: doc.id, content: content)
+      reply = SaveReply.create!(user_id: user_id, doc_id: doc.id, content: content)
       id_or_doc_path = doc_path
+      html_id = "replies"
     end
 
     pagination = replies_pagination(id_or_doc_path: id_or_doc_path.not_nil!)
@@ -47,7 +51,8 @@ class Htmx::Docs::Reply::CreateOrUpdate < DocAction
       pagination: pagination,
       current_user: me,
       order_by: "desc",
-      reply_id: reply.try &.id,
+      reply_id: reply.id,
+      html_id: html_id.to_s
     )
   end
 end

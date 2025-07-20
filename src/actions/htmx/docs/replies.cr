@@ -28,7 +28,8 @@ class Htmx::Docs::Replies < DocAction
         pagination: pagination,
         current_user: current_user,
         order_by: order_by,
-        reply_id: id
+        reply_id: id,
+        html_id: id.nil? ? "replies" : "doc_reply-#{id}-replies"
       )
     end
   end
