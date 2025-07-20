@@ -17,8 +17,8 @@ class Docs::RepliesMore < BaseComponent
 
         render_emoji_buttons_and_delete_button(reply)
 
-        if reply.replies_counter > 0
-          div class: "f-row justify-content:center", id: "#{fragment_id(id)}-replies" do
+        div class: "f-row justify-content:center", id: "#{fragment_id(id)}-replies" do
+          if reply.replies_counter > 0
             a(
               hx_get: "/htmx/replies/#{id}?page=1",
               hx_target: "##{fragment_id(id)}-replies",

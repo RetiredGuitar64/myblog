@@ -22,6 +22,7 @@ class Docs::ReplyToDocForm < BaseComponent
         hx_include: "[name='_csrf'],next textarea",
         script:     "on click set value of next <textarea/> to ''",
         hx_post:    Htmx::Docs::Reply::CreateOrUpdate.path_without_query_params,
+        onclick:    "document.getElementById('edit_dialog').close();",
       }
 
       if me.nil?
@@ -36,7 +37,8 @@ class Docs::ReplyToDocForm < BaseComponent
             # 为评论新增评论
             opts = opts.merge(
               hx_vals: %({"user_id": #{me.id}, "id": #{reply_id}, "op": "new"}),
-              onclick: "scrollToElementById('doc_reply-#{reply_id}')"
+              hx_target: "#doc_reply-#{reply_id}-replies",
+              hx_swap: "outerHTML"
             )
           else
             # 这里覆盖两种编辑的情况
@@ -51,7 +53,8 @@ class Docs::ReplyToDocForm < BaseComponent
 
             opts = opts.merge(
               hx_vals: %({"user_id": #{me.id}, "id": #{reply_id}, "op": "edit"}),
-              hx_swap: "outerHTML"
+              hx_swap: "outerHTML",
+              onclick: "scrollToElementById('doc_reply-#{reply_id}')"
             )
             text = "修改"
           end

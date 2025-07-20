@@ -27,9 +27,9 @@ class Htmx::Docs::Reply::CreateOrUpdate < DocAction
           id_or_doc_path = path_for_doc
         end
       when "new"
-        # new reply to reply，这个是要回复的那个 reply
+        # new reply to reply，这个是要新建回复的那个 reply
         SaveReply.create!(user_id: user_id, reply_id: reply.id, content: content)
-        id_or_doc_path = reply.preferences.path_for_doc?.not_nil!
+        id_or_doc_path = reply.id.to_s
       end
     else
       # 给 doc 新建评论
@@ -47,7 +47,7 @@ class Htmx::Docs::Reply::CreateOrUpdate < DocAction
       pagination: pagination,
       current_user: me,
       order_by: "desc",
-      reply_id: reply.try &.id
+      reply_id: reply.try &.id,
     )
   end
 end
