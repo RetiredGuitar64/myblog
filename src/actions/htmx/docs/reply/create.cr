@@ -1,7 +1,9 @@
-class Htmx::Docs::Reply::Create < DocAction
+class Htmx::Docs::Reply::CreateOrUpdate < DocAction
   param user_id : Int64
   param content : String
-  param doc_path : String
+  param doc_path : String?
+  param id : Int64?
+  param op : String?
 
   # 回复评论按钮
   post "/htmx/docs/reply" do
@@ -10,22 +12,47 @@ class Htmx::Docs::Reply::Create < DocAction
     return head 401 if user_id != me.id
     return head 400 if content.blank?
 
-    doc = DocQuery.new.path_index(doc_path).first
+    if !id.nil?
+      reply = ReplyQuery.find(id.not_nil!)
 
-    SaveReply.create(user_id: user_id, doc_id: doc.id, content: content) do |op, _saved_reply|
-      if op.saved?
-        component(
-          ::Docs::FormWithReplies,
-          formatter: formatter,
-          pagination: replies_pagination(doc_path: doc_path),
-          current_user: me,
-          doc_path: doc_path,
-          order_by: "desc",
-          msg: "创建成功"
-        )
-      else
-        head 400
+      case op
+      when "edit"
+        SaveReply.update!(reply, content: content)
+        path_for_doc = reply.preferences.path_for_doc?
+        if path_for_doc.nil?
+          # edit reply to reply
+          id_or_doc_path = reply.reply_id.to_s
+          html_id = "doc_reply-#{reply.reply_id}-replies"
+        else
+          # edit reply to doc
+          id_or_doc_path = path_for_doc
+          html_id = "replies"
+        end
+      when "new"
+        # new reply to reply，这个是要新建回复的那个 reply
+        id_or_doc_path = reply.id.to_s
+        html_id = "doc_reply-#{reply.id}-replies"
+        reply = SaveReply.create!(user_id: user_id, reply_id: reply.id, content: content)
       end
+    else
+      # 给 doc 新建评论
+      doc_path = self.doc_path.not_nil!
+      doc = DocQuery.new.path_index(doc_path).first
+      id_or_doc_path = doc_path
+      html_id = "replies"
+      reply = SaveReply.create!(user_id: user_id, doc_id: doc.id, content: content)
     end
+
+    pagination = replies_pagination(id_or_doc_path: id_or_doc_path.not_nil!)
+
+    component(
+      ::Docs::Replies,
+      formatter: formatter,
+      pagination: pagination,
+      current_user: me,
+      order_by: "desc",
+      reply_id: reply.id,
+      html_id: html_id.to_s
+    )
   end
 end

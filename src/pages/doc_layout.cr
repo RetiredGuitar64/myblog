@@ -121,7 +121,8 @@ abstract class DocLayout
                 end
 
                 div id: "form_with_replies" do
-                  mount ::Docs::Form, current_user: current_user, doc_path: current_path
+                  # 只是一个占位符，会被 htmx 请求覆盖
+                  mount ::Docs::ReplyToDocForm, current_user: current_user, doc_path: current_path
 
                   show_replies_when_revealed
                 end
@@ -142,13 +143,14 @@ abstract class DocLayout
   end
 
   private def show_replies_when_revealed
-    div id: "replies", hx_get: current_reply_path, hx_trigger: "revealed" do
+    div role: "feed", id: "replies", hx_get: current_reply_path, hx_trigger: "revealed", hx_swap: "outerHTML" do
       mount Shared::Spinner, text: "正在读取评论..."
     end
   end
 
   private def doc_search_dialog
     dialog(
+      id: "doc_search_dialog",
       class: "margin f-col",
       style: "max-width: 100%; width: 30em;
 max-height: 100%; height: 40em;

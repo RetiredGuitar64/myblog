@@ -1,12 +1,14 @@
 class Docs::RepliesMore < BaseComponent
   needs formatter : Tartrazine::Formatter
-  needs pagination : {count: Int32 | Int64, replies: ReplyQuery, page: Lucky::Paginator?}
+  needs pagination : {count: Int32 | Int64, replies: ReplyQuery, page: Lucky::Paginator?, url: String}
   needs page_number : Int32
-  needs reply_path : String
+  needs reply_id : Int64?
 
   def render
     pagination[:replies].each do |reply|
-      div class: "box f-col", id: fragment_id(reply) do
+      id = reply.id
+
+      article class: "box f-col #{reply.reply_id ? "ok" : ""}", id: fragment_id(id) do
         render_avatar_name_and_time(reply)
 
         hr style: "border: none; border-top: 1px solid darkgray;"
@@ -14,10 +16,30 @@ class Docs::RepliesMore < BaseComponent
         raw markdown(reply.content)
 
         render_emoji_buttons_and_delete_button(reply)
+
+        div class: "f-row justify-content:center", id: "#{fragment_id(id)}-replies" do
+          if reply.replies_counter > 0
+            a(
+              hx_get: "/htmx/replies/#{id}?page=1",
+              hx_target: "##{fragment_id(id)}-replies",
+              hx_swap: "outerHTML",
+              hx_include: "previous input[name='order_by']",
+            ) do
+              text "加载评论，共 #{reply.replies_counter} 条回复"
+              mount Shared::Spinner, text: "正在读取评论...", width: "10px"
+            end
+          end
+        end
       end
     end
 
-    render_more_link
+    mount(
+      Docs::RepliesMoreLink,
+      pagination: pagination,
+      page_number: page_number,
+    )
+
+    edit_dialog
   end
 
   private def render_avatar_name_and_time(reply)
@@ -27,8 +49,17 @@ class Docs::RepliesMore < BaseComponent
         span reply.user_name
       end
 
+      if reply_id == reply.id
+        output(
+          style: "display: inline-block; color: green;",
+          script: "init transition my opacity to 0% over 3 seconds"
+        ) do
+          text "更新成功"
+        end
+      end
+
       div do
-        a href: "##{fragment_id(reply)}" do
+        a href: "##{fragment_id(reply.id)}" do
           span TimeInWords::Helpers(TimeInWords::I18n::ZH_CN).from(past_time: reply.created_at)
         end
         raw <<-HEREDOC
@@ -57,63 +88,64 @@ HEREDOC
         )
       end
 
-      # wait 1s then put it into the next <output/>
+      if !me.nil?
+        opts = {
+          class:      "chip",
+          style:      "margin-right: 10px;",
+          hx_target:  "div#reply_to_reply-form",
+          hx_swap:    "outerHTML",
+          hx_include: "[name='_csrf']",
+          onclick:    "
+const dialog = document.getElementById('edit_dialog');
+dialog.showModal();
+setTimeout(function() {
+  dialog.querySelector('textarea').focus();
+}, 500)
+",
+        }
 
-      me = current_user
-
-      if !me.nil? && me.id == reply.user_id
         div do
-          a(
-            "编辑",
-            class: "chip",
-            style: "margin-right: 10px;",
-            hx_get: Htmx::Docs::Reply::Edit.with(id: reply.id, user_id: me.id).path,
-            hx_target: "div#form",
-            hx_swap: "outerHTML",
-            hx_include: "[name='_csrf']",
-            script: "on click go to the top of the <#form/>"
-            #             script: <<-'HEREDOC'
-            # on click js
-            #             event.preventDefault();
-            #             const formElement = document.getElementById('form');
-            #             formElement.scrollIntoView();
-            # end
-            # HEREDOC
-          )
+          if reply.reply_id.nil? # 只允许针对 doc 的评论进行回复
+            a("回复", opts, hx_get: Htmx::Docs::Reply::New.with(id: reply.id, user_id: me.id).path)
+          end
 
-          a(
-            "删除",
-            class: "chip",
-            hx_delete: Htmx::Docs::Reply::Delete.with(id: reply.id, user_id: me.id).path,
-            hx_target: "closest div.box",
-            hx_swap: "outerHTML swap:1s",
-            hx_include: "[name='_csrf']",
-            hx_confirm: "删除这条回复？"
-          )
+          if me.id == reply.user_id # 只允许编辑自己的回复
+            a("编辑", opts, hx_get: Htmx::Docs::Reply::Edit.with(id: reply.id, user_id: me.id).path)
+
+            if reply.replies_counter == 0 # 如果回复有了回复，就不再允许删除
+              a(
+                "删除",
+                class: "chip bad color border",
+                hx_delete: Htmx::Docs::Reply::Delete.with(id: reply.id, user_id: me.id).path,
+                hx_target: "closest article.box",
+                hx_swap: "outerHTML swap:1s",
+                hx_include: "[name='_csrf']",
+                hx_confirm: "删除这条回复？"
+              )
+            end
+          end
         end
       end
     end
   end
 
-  private def render_more_link
-    div class: "f-row justify-content:center" do
-      if pagination[:page].try &.next_page
-        a(
-          hx_get: "#{reply_path}?page=#{page_number + 1}",
-          hx_target: "closest div",
-          hx_swap: "outerHTML",
-          hx_include: "#order_by"
-        ) do
-          text "加载更多评论"
-          mount Shared::Spinner, text: "正在读取评论..."
-        end
-      else
-        text "没有更多评论了"
-      end
-    end
+  private def fragment_id(reply_id)
+    "doc_reply-#{reply_id}"
   end
 
-  private def fragment_id(reply)
-    "doc_reply-#{reply.id}"
+  private def edit_dialog
+    dialog(
+      id: "edit_dialog",
+      style: "
+max-width: 100%;
+width: 50em;
+max-height: 100%;
+height: 40em;
+padding-bottom: 0;
+"
+    ) do
+      div id: "reply_to_reply-form" do
+      end
+    end
   end
 end

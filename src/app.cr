@@ -17,6 +17,7 @@ require "../config/backed_file_system_mounter"
 Lucky::AssetHelpers.load_manifest "dist/mix-manifest.json"
 # Lucky::AssetHelpers.load_manifest("public/manifest.json", use_vite: true)
 
+require "./utils/**"
 require "../config/server"
 require "./app_database"
 require "../config/**"
