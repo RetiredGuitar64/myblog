@@ -30,8 +30,8 @@ class Htmx::Docs::Reply::CreateOrUpdate < DocAction
         end
       when "new"
         # new reply to reply，这个是要新建回复的那个 reply
-        reply = SaveReply.create!(user_id: user_id, reply_id: reply.id, content: content)
         id_or_doc_path = reply.id.to_s
+        reply = SaveReply.create!(user_id: user_id, reply_id: reply.id, content: content)
         html_id = "doc_reply-#{reply.id}-replies"
       end
     else
