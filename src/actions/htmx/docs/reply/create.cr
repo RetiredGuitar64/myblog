@@ -31,16 +31,16 @@ class Htmx::Docs::Reply::CreateOrUpdate < DocAction
       when "new"
         # new reply to reply，这个是要新建回复的那个 reply
         id_or_doc_path = reply.id.to_s
-        reply = SaveReply.create!(user_id: user_id, reply_id: reply.id, content: content)
         html_id = "doc_reply-#{reply.id}-replies"
+        reply = SaveReply.create!(user_id: user_id, reply_id: reply.id, content: content)
       end
     else
       # 给 doc 新建评论
       doc_path = self.doc_path.not_nil!
       doc = DocQuery.new.path_index(doc_path).first
-      reply = SaveReply.create!(user_id: user_id, doc_id: doc.id, content: content)
       id_or_doc_path = doc_path
       html_id = "replies"
+      reply = SaveReply.create!(user_id: user_id, doc_id: doc.id, content: content)
     end
 
     pagination = replies_pagination(id_or_doc_path: id_or_doc_path.not_nil!)
