@@ -11,11 +11,12 @@ class Htmx::Docs::Reply::Edit < DocAction
     return head 401 if user_id != reply.user_id
 
     component(
-      ::Docs::Form,
+      ::Docs::ReplyToDocForm,
       current_user: current_user,
       content: reply.content,
+      html_id: "reply_to_reply",
       reply_id: id.to_i64,
-      doc_path: reply.preferences.path_for_doc?.not_nil!
+      doc_path: reply.preferences.path_for_doc?,
     )
   end
 end

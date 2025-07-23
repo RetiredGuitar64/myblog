@@ -74,7 +74,7 @@ module PageHelpers
   end
 
   def current_reply_path
-    current_path.sub("/docs", "/htmx/docs/replies")
+    current_path.sub("/docs", "/htmx/replies/docs")
   end
 
   # def asset_host

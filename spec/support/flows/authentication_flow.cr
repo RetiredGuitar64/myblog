@@ -10,6 +10,15 @@ class AuthenticationFlow < BaseFlow
       email: email,
       password: password,
       password_confirmation: password
+    el("span#signup_captcha").click
+    # CAPTCHA_CACHE.keys.size.should eq 1
+    # signup_captcha_id = CAPTCHA_CACHE.keys.first
+    CAPTCHA_LOCK.synchronize do
+      CAPTCHA_CACHE.keys.each do |e|
+        CAPTCHA_CACHE.write(e, "foo", expires_in: 10.minutes)
+      end
+    end
+    fill "captcha", with: "foo"
     click "@sign-up-button"
   end
 
@@ -31,7 +40,7 @@ class AuthenticationFlow < BaseFlow
   end
 
   def should_have_password_error
-    current_page.should have_element("body", text: "Password is wrong")
+    current_page.should have_element("div.error", text: "Password is wrong")
   end
 
   private def sign_out_button

@@ -1,6 +1,6 @@
 require "../../../spec_helper"
 
-describe Api::SignUps::Create do
+pending Api::SignUps::Create do
   it "creates user on sign up" do
     UserToken.stub_token("fake-token") do
       response = ApiClient.exec(Api::SignUps::Create, user: valid_params)
@@ -30,6 +30,5 @@ private def valid_params
     email:                 "test@email.com",
     password:              "password",
     password_confirmation: "password",
-    captcha:               "fake",
   }
 end

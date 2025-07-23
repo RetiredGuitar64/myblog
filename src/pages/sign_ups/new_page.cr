@@ -28,8 +28,8 @@ class SignUps::NewPage < AuthLayout
             ) do
               text "点击获取人机验证码"
             end
-            input type: "text", id: "captcha", name: "captcha", required: ""
-            mount Shared::FieldErrors, op.captcha
+            input type: "text", id: "captcha", name: "captcha", flow_id: "captcha", required: ""
+            mount Shared::FieldErrors, op.captcha_code
           end
 
           para do

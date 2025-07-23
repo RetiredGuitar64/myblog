@@ -7,7 +7,9 @@ class Htmx::OnlineUsers < BrowserAction
     me = UserQuery.find(user_id.not_nil!) if user_id
 
     if me
-      ONLINE_USER_COUNTER.write(me.id.to_s, "")
+      COUNTER_MUTEX.synchronize do
+        ONLINE_USER_COUNTER.write(me.id.to_s, Time.local.to_unix)
+      end
     else
       ONLINE_IP_COUNTER.write(context.request.remote_ip || "0.0.0.0", "")
     end
