@@ -21,7 +21,7 @@ abstract class DocAction < BrowserAction
       url = "/htmx/replies/#{id}"
     end
 
-    q = q.id.desc_order if order_by == "desc"
+    q = order_by == "desc" ? q.id.desc_order : q.id.asc_order
 
     page, replies = paginate(q, per_page: per_page)
 

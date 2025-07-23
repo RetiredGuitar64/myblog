@@ -123,6 +123,8 @@ a.size # Error: undefined method 'size' for Nil (compile-time type is (String | 
 Crystal 同样从设计之初就使用 Fiber/Chanel 实现了同样的 CSP 模型。
 
 没错，这就是 Ruby 一直想做，但是一直没做到的事情。
+
+据说 Ruby 3.3 引入了基于 M:N 的 [Thread Scheduler](https://bugs.ruby-lang.org/issues/19842), 我还没有用过
 ```
 
 这里强调一下 Crystal 语言在国内社区（例如某乎）上最被误解的一点，那就是 
