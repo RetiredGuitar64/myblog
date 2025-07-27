@@ -70,7 +70,9 @@ abstract class DocLayout
         doc_info = "#{doc_info}       最后编辑于: #{Time.unix(date.as_i64).to_local.to_s("%Y年%m月%d日")}"
       end
     end
-
+      
+      doc_info = "#{doc_info}  | #{doc.view_count}次阅读" if doc.view_count > 0
+      
     "<blockquote>#{doc_info}</blockquote>"
   end
 
