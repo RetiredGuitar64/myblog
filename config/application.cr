@@ -42,5 +42,7 @@ COUNTER_MUTEX       = Mutex.new
 
 ONLINE_IP_COUNTER = CACHE_STORE.new(expires_in: 3.minutes)
 
+VIEW_COUNT_CACHE = Cache::MemoryStore(String, Bool).new(expires_in: 30.minutes)
+
 # upload image into freeimage.host API key.
 FREEIMAGE_HOST_API_KEY = ENV["FREEIMAGE_HOST_API_KEY"]? || "fake_key"
