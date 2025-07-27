@@ -59,19 +59,19 @@ abstract class DocLayout
     end
   end
 
-  def print_doc_date(doc)
-    date_info = "创建于：#{doc.created_at.to_s("%Y年%m月%d日")}"
+  def print_doc_info(doc)
+    doc_info = "创建于：#{doc.created_at.to_s("%Y年%m月%d日")}"
 
     timestamp = JSON.parse(File.read("dist/mix-manifest.json"))["/assets/docs/markdowns_timestamps.yml"]
     timestamp = "dist#{timestamp}"
 
     if File.exists?(timestamp)
       YAML.parse(File.read(timestamp))[markdown_path]?.try do |date|
-        date_info = "#{date_info}       最后编辑于: #{Time.unix(date.as_i64).to_local.to_s("%Y年%m月%d日")}"
+        doc_info = "#{doc_info}       最后编辑于: #{Time.unix(date.as_i64).to_local.to_s("%Y年%m月%d日")}"
       end
     end
 
-    "<blockquote>#{date_info}</blockquote>"
+    "<blockquote>#{doc_info}</blockquote>"
   end
 
   def sub_title
@@ -106,7 +106,7 @@ abstract class DocLayout
 
                 div class: "f-row justify-content:space-between" do
                   doc = find_or_create_doc
-                  raw print_doc_date(doc)
+                  raw print_doc_info(doc)
                   print_votes(doc)
                 end
 
