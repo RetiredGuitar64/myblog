@@ -1,7 +1,6 @@
 class Footer < BaseComponent
   def render
     section class: "tool-bar", style: "margin-top: 10px;" do
-      text "Crystal China"
       a "spider.yuxuan@gmail.com", href: "mailto:spider.yuxuan@gmail.com"
       span(
         hx_trigger: "load,every 2m",
