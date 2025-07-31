@@ -12,7 +12,9 @@
 // https://stackoverflow.com/questions/39535760/what-does-a-tilde-in-a-css-url-do
 
 @import 'modern-normalize/modern-normalize.css';
-@import 'missing.css';
+// @import 'missing.css';
+// @import "tailwindcss" prefix(tw);
+@import "tailwindcss";
 /* @import 'asciinema-player/dist/bundle/asciinema-player.css'; */
 
 // 这是 code block 的样式
