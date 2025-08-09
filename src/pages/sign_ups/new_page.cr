@@ -4,7 +4,7 @@ class SignUps::NewPage < AuthLayout
   def content
     op = operation
 
-    div style: "height: 100vh;", class: "f-row justify-content:center align-items:center" do
+    div style: "height: 50vh;", class: "f-row justify-content:center align-items:center" do
       figure do
         form_for SignUps::Create, class: "table rows" do
           para do
