@@ -1,7 +1,7 @@
 class Home::IndexPage < MainLayout
   def content
-    div class: "brand-logo f-col align-items:center justify-content:center" do
-      h1 "RetiredGuitar64's Blog"
+    div class: "" do
+      h1 "RetiredGuitar64's Blog", class: "bg-black text-green-500"
 
       tag(
         "canvas",

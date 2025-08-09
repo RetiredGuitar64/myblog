@@ -15,7 +15,14 @@
 // @import 'missing.css';
 // @import "tailwindcss" prefix(tw);
 @import "tailwindcss";
+// @tailwind base;
+// @tailwind components;
+// @tailwind utilities;
 /* @import 'asciinema-player/dist/bundle/asciinema-player.css'; */
+
+@theme {
+//  --color-mint-500: oklch(0.72 0.21 178);
+};
 
 // 这是 code block 的样式
 @import './catppuccin-macchiato.css';
