@@ -12,7 +12,7 @@ class Footer < BaseComponent
           class: "hover:text-black underline underline-offset-4 decoration-gray-300 hover:decoration-gray-500 transition-all h-6 flex items-center"
 
         span(
-          class: "bg-gray-100 px-3 py-0.5 rounded-full hover:bg-gray-200 transition-colors h-6 flex items-center",
+          class: "bg-gray-300 px-3 py-0.5 rounded-full hover:bg-gray-200 transition-colors h-6 flex items-center",
           hx_trigger: "load,every 2m",
           hx_patch: Htmx::OnlineUsers.with(user_id: current_user.try(&.id)).path,
           hx_include: "[name='_csrf']"
