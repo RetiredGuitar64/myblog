@@ -11,10 +11,15 @@
 // Note: importing with `~` tells webpack to look in the installed npm packages
 // https://stackoverflow.com/questions/39535760/what-does-a-tilde-in-a-css-url-do
 
-@import 'modern-normalize/modern-normalize.css';
+// @import 'modern-normalize/modern-normalize.css';
 // @import 'missing.css';
 // @import "tailwindcss" prefix(tw);
-@import "tailwindcss";
+// @import "tailwindcss";
+@layer theme, base, components, utilities;
+
+@import 'tailwindcss/theme' layer(theme);
+@import 'tailwindcss/preflight' layer(base);
+@import 'tailwindcss/utilities' layer(utilities);
 // @tailwind base;
 // @tailwind components;
 // @tailwind utilities;

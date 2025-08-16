@@ -6,10 +6,12 @@ class Docs::Form < BaseComponent
 
   def render(&)
     me = current_user
-    div style: "border:0.5px solid gray; padding: 5px;", id: "#{html_id}-form" do
+    # 修改1：最外层容器改为圆角和半透明白色背景
+    div class: "border border-gray-300 shadow-md rounded-lg bg-white/50", style: "padding: 5px;", id: "#{html_id}-form" do
       div class: "tab-frame", style: "margin-top: 5px;text-align: center; min-height: 350px;" do
         input type: "radio", checked: "", name: "#{html_id}", id: "#{html_id}1"
-        label "输入", for: "#{html_id}1", style: "margin-right: 5px;"
+        # 修改2：美化按钮样式
+        label "输入", for: "#{html_id}1", class: "px-3 py-1 bg-white/80 border border-gray-300 rounded hover:bg-gray-100", style: "margin-right: 5px;"
 
         input(
           type: "radio",
@@ -20,9 +22,11 @@ class Docs::Form < BaseComponent
           hx_include: "[name='_csrf'],next textarea",
           hx_indicator: "next img.htmx-indicator",
         )
+        # 修改2：美化按钮样式
         label(
           "预览",
           for: "#{html_id}2",
+          class: "px-3 py-1 bg-white/60 border border-gray-300 rounded hover:bg-gray-100",
           script: "on mouseover set x to the value of the next <textarea/>
         then if x == ''
            add @disabled to the previous <input/>
