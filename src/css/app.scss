@@ -15,7 +15,7 @@
 // @import 'missing.css';
 // @import "tailwindcss" prefix(tw);
 // @import "tailwindcss";
-@layer theme, base, components, utilities;
+@layer theme, components, utilities;
 
 @import 'tailwindcss/theme' layer(theme);
 @import 'tailwindcss/preflight' layer(base);

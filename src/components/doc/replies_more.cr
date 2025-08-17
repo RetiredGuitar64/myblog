@@ -136,13 +136,17 @@ setTimeout(function() {
   private def edit_dialog
     dialog(
       id: "edit_dialog",
+      class: "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50",
       style: "
-max-width: 100%;
-width: 50em;
-max-height: 100%;
-height: 40em;
-padding-bottom: 0;
-"
+      max-width: 100%;
+      width: 50em;
+      max-height: 100%;
+      height: 40em;
+      padding-bottom: 0;
+      background: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    "
     ) do
       div id: "reply_to_reply-form" do
       end

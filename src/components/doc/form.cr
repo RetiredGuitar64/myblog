@@ -7,7 +7,7 @@ class Docs::Form < BaseComponent
   def render(&)
     me = current_user
     # 修改1：最外层容器改为圆角和半透明白色背景
-    div class: "border border-gray-300 shadow-md rounded-lg bg-white/50", style: "padding: 5px;", id: "#{html_id}-form" do
+    div class: "border border-gray-300 rounded-lg bg-white/50", style: "padding: 5px;", id: "#{html_id}-form" do
       div class: "tab-frame", style: "margin-top: 5px;text-align: center; min-height: 350px;" do
         input type: "radio", checked: "", name: "#{html_id}", id: "#{html_id}1"
         # 修改2：美化按钮样式
@@ -60,7 +60,7 @@ class Docs::Form < BaseComponent
     textarea_opt = {
       id:   "#{html_id}_text_area",
       rows: 16,
-      cols: 70,
+      cols: 60,
       name: "content",
     }
 
