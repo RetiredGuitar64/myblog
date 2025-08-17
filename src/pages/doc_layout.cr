@@ -158,18 +158,20 @@ abstract class DocLayout
 
   private def doc_search_dialog
     dialog id: "doc_search_dialog",
-      class: "p-0 rounded-xl shadow-2xl max-w-full w-[30em] max-h-[90vh] bg-white bg-opacity-95 backdrop-blur-sm" do
-      div class: "p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl" do
-        h3 class: "text-lg font-medium text-gray-900" do
-          text "注意：中文搜索结果通常不准确, 请使用英文关键字！"
+      class: "fixed top-20 left-1/2 transform -translate-x-1/2 z-50 w-[30em] max-w-[90vw] bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl overflow-visible" do
+      div class: "flex flex-col" do
+        div class: "p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl" do
+          h3 class: "text-lg font-medium text-gray-900" do
+            text "注意：中文搜索结果通常不准确, 请使用英文关键字！"
+          end
         end
-      end
-      div class: "p-4" do
-        div class: "stork-wrapper-flat" do
-          input data_stork: "docs",
-            class: "stork-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
-            id: "search-input"
-          div data_stork: "docs-output", class: "stork-output mt-3"
+        div class: "flex-1 p-4" do
+          div class: "stork-wrapper-flat" do
+            input data_stork: "docs",
+              class: "stork-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+              id: "search-input"
+            div data_stork: "docs-output", class: "stork-output mt-3"
+          end
         end
       end
     end
