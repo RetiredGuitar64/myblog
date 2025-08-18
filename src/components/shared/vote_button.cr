@@ -10,7 +10,7 @@ class Shared::VoteButton < BaseComponent
         # 基础样式类
         button_classes = ["flex items-center justify-center",
                          "w-[35px] h-[15px] text-xs",
-                         "rounded border border-gray-300",  # 更柔和的边框颜色
+                         "rounded border border-gray-300 cursor-pointer",  # 更柔和的边框颜色
                          count == 0 ? "opacity-50 grayscale" : ""]
         
         # 投票状态样式

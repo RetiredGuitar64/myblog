@@ -16,7 +16,7 @@ class Docs::FormButtons < BaseComponent
 
   private def render_order_buttons(reply_path : String)
     selected_classes = "bg-white/80 font-bold shadow-md"
-    unselected_classes = "bg-gray-200 hover:bg-gray-300"
+    unselected_classes = "bg-gray-200 hover:bg-gray-300 cursor-pointer"
 
     [{"最早", "asc"}, {"最新", "desc"}].each do |title, order|
       a(

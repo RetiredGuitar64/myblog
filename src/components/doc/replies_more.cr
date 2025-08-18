@@ -5,28 +5,34 @@ class Docs::RepliesMore < BaseComponent
   needs reply_id : Int64?
 
   def render
-    pagination[:replies].each do |reply|
-      id = reply.id
+    div class: "mt-6" do  # 1. 顶部增加间距
+      pagination[:replies].each do |reply|
+        id = reply.id
 
-      article class: "box f-col #{reply.reply_id ? "ok" : ""}", id: fragment_id(id) do
-        render_avatar_name_and_time(reply)
+        article class: "bg-white/50 rounded-lg shadow p-4 mb-4 flex flex-col #{reply.reply_id ? "ml-8" : ""}",  # 3. 背景半透明
+               id: fragment_id(id) do
+          render_avatar_name_and_time(reply)
 
-        hr style: "border: none; border-top: 1px solid darkgray;"
+          hr class: "border-0 border-t border-gray-300 my-3"
 
-        raw markdown(reply.content)
+          div class: "prose max-w-none" do
+            raw markdown(reply.content)
+          end
 
-        render_emoji_buttons_and_delete_button(reply)
+          render_emoji_buttons_and_delete_button(reply)
 
-        div class: "f-row justify-content:center", id: "#{fragment_id(id)}-replies" do
-          if reply.replies_counter > 0
-            a(
-              hx_get: "/htmx/replies/#{id}?page=1",
-              hx_target: "##{fragment_id(id)}-replies",
-              hx_swap: "outerHTML",
-              hx_include: "previous input[name='order_by']",
-            ) do
-              text "加载评论，共 #{reply.replies_counter} 条回复"
-              mount Shared::Spinner, text: "正在读取评论...", width: "10px"
+          div class: "flex justify-center mt-3", id: "#{fragment_id(id)}-replies" do
+            if reply.replies_counter > 0
+              a(
+                class: "text-blue-600 hover:text-blue-800 cursor-pointer transition-colors duration-200",  # 2. & 4. 指针样式和过渡
+                hx_get: "/htmx/replies/#{id}?page=1",
+                hx_target: "##{fragment_id(id)}-replies",
+                hx_swap: "outerHTML",
+                hx_include: "previous input[name='order_by']",
+              ) do
+                text "加载评论，共 #{reply.replies_counter} 条回复"
+                mount Shared::Spinner, text: "正在读取评论...", width: "10px"
+              end
             end
           end
         end
@@ -43,28 +49,27 @@ class Docs::RepliesMore < BaseComponent
   end
 
   private def render_avatar_name_and_time(reply)
-    div class: "f-row justify-content:space-between", style: "" do
-      div class: "f-row" do
-        img src: reply.user_avatar || asset("svgs/crystal-lang-icon.svg"), style: "height:24px;width:24px;"
-        span reply.user_name
+    div class: "flex justify-between items-center" do
+      div class: "flex items-center" do
+        img src: reply.user_avatar || asset("svgs/crystal-lang-icon.svg"), 
+            class: "h-6 w-6 mr-2"
+        span reply.user_name, class: "text-gray-800"
       end
 
       if reply_id == reply.id
-        output(
-          style: "display: inline-block; color: green;",
-          script: "init transition my opacity to 0% over 3 seconds"
-        ) do
+        div class: "text-green-600 opacity-0 animate-fade-out", 
+            data_script: "init transition my opacity to 0% over 3 seconds" do
           text "更新成功"
         end
       end
 
-      div do
-        a href: "##{fragment_id(reply.id)}" do
+      div class: "flex items-center" do
+        a href: "##{fragment_id(reply.id)}", class: "text-gray-500 text-sm" do
           span TimeInWords::Helpers(TimeInWords::I18n::ZH_CN).from(past_time: reply.created_at)
         end
-        raw <<-HEREDOC
-<chip style="margin-left: 10px; border-color: #ccc;">#{reply.preferences.floor} 楼</chip>
-HEREDOC
+        span class: "ml-2 px-2 py-1 text-xs border border-gray-300 rounded-full" do
+          text "#{reply.preferences.floor}楼"
+        end
       end
     end
   end
@@ -77,7 +82,7 @@ HEREDOC
                     VoteQuery.new.user_id(me.id).reply_id(reply.id).map &.vote_type
                   end
 
-    div class: "f-row justify-content:space-between", style: "margin-bottom: 0px;" do
+    div class: "flex justify-between items-center mt-3" do
       div do
         mount(
           Shared::VoteButton,
@@ -89,35 +94,48 @@ HEREDOC
       end
 
       if !me.nil?
-        opts = {
-          class:      "chip",
-          style:      "margin-right: 10px;",
-          hx_target:  "div#reply_to_reply-form",
-          hx_swap:    "outerHTML",
-          hx_include: "[name='_csrf']",
-          onclick:    "
-const dialog = document.getElementById('edit_dialog');
-dialog.showModal();
-setTimeout(function() {
-  dialog.querySelector('textarea').focus();
-}, 500)
-",
-        }
+        base_button_classes = "px-3 py-1 mr-2 bg-gray-100 rounded-full cursor-pointer transition-all duration-200"  # 2. & 4. 指针和过渡效果
 
-        div do
-          if reply.reply_id.nil? # 只允许针对 doc 的评论进行回复
-            a("回复", opts, hx_get: Htmx::Docs::Reply::New.with(id: reply.id, user_id: me.id).path)
+        div class: "flex" do
+          if reply.reply_id.nil?
+            a("回复", 
+              class: "#{base_button_classes} hover:bg-gray-200",  # 4. 平滑过渡
+              hx_target: "div#reply_to_reply-form",
+              hx_swap: "outerHTML",
+              hx_include: "[name='_csrf']",
+              hx_get: Htmx::Docs::Reply::New.with(id: reply.id, user_id: me.id).path,
+              onclick: "
+                const dialog = document.getElementById('edit_dialog');
+                dialog.showModal();
+                setTimeout(function() {
+                  dialog.querySelector('textarea').focus();
+                }, 500)
+              "
+            )
           end
 
-          if me.id == reply.user_id # 只允许编辑自己的回复
-            a("编辑", opts, hx_get: Htmx::Docs::Reply::Edit.with(id: reply.id, user_id: me.id).path)
+          if me.id == reply.user_id
+            a("编辑",
+              class: "#{base_button_classes} hover:bg-gray-200",  # 4. 平滑过渡
+              hx_target: "div#reply_to_reply-form",
+              hx_swap: "outerHTML",
+              hx_include: "[name='_csrf']",
+              hx_get: Htmx::Docs::Reply::Edit.with(id: reply.id, user_id: me.id).path,
+              onclick: "
+                const dialog = document.getElementById('edit_dialog');
+                dialog.showModal();
+                setTimeout(function() {
+                  dialog.querySelector('textarea').focus();
+                }, 500)
+              "
+            )
 
-            if reply.replies_counter == 0 # 如果回复有了回复，就不再允许删除
+            if reply.replies_counter == 0
               a(
                 "删除",
-                class: "chip bad color border",
+                class: "#{base_button_classes} bg-red-100 text-red-700 hover:bg-red-200",  # 4. 平滑过渡
                 hx_delete: Htmx::Docs::Reply::Delete.with(id: reply.id, user_id: me.id).path,
-                hx_target: "closest article.box",
+                hx_target: "closest article",
                 hx_swap: "outerHTML swap:1s",
                 hx_include: "[name='_csrf']",
                 hx_confirm: "删除这条回复？"
@@ -136,17 +154,7 @@ setTimeout(function() {
   private def edit_dialog
     dialog(
       id: "edit_dialog",
-      class: "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50",
-      style: "
-      max-width: 100%;
-      width: 50em;
-      max-height: 100%;
-      height: 40em;
-      padding-bottom: 0;
-      background: white;
-      border-radius: 0.5rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    "
+      class: "fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-3xl max-h-[90vh] bg-white rounded-lg shadow-xl p-0"
     ) do
       div id: "reply_to_reply-form" do
       end
