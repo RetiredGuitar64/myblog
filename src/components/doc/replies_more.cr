@@ -5,12 +5,12 @@ class Docs::RepliesMore < BaseComponent
   needs reply_id : Int64?
 
   def render
-    div class: "mt-6" do  # 1. 顶部增加间距
+    div class: "mt-6" do # 1. 顶部增加间距
       pagination[:replies].each do |reply|
         id = reply.id
 
-        article class: "bg-white/50 rounded-lg shadow p-4 mb-4 flex flex-col #{reply.reply_id ? "ml-8" : ""}",  # 3. 背景半透明
-               id: fragment_id(id) do
+        article class: "bg-white/50 rounded-lg shadow p-4 mb-4 flex flex-col #{reply.reply_id ? "ml-8" : ""}", # 3. 背景半透明
+          id: fragment_id(id) do
           render_avatar_name_and_time(reply)
 
           hr class: "border-0 border-t border-gray-300 my-3"
@@ -24,7 +24,7 @@ class Docs::RepliesMore < BaseComponent
           div class: "flex justify-center mt-3", id: "#{fragment_id(id)}-replies" do
             if reply.replies_counter > 0
               a(
-                class: "text-blue-600 hover:text-blue-800 cursor-pointer transition-colors duration-200",  # 2. & 4. 指针样式和过渡
+                class: "text-blue-600 hover:text-blue-800 cursor-pointer transition-colors duration-200", # 2. & 4. 指针样式和过渡
                 hx_get: "/htmx/replies/#{id}?page=1",
                 hx_target: "##{fragment_id(id)}-replies",
                 hx_swap: "outerHTML",
@@ -51,14 +51,21 @@ class Docs::RepliesMore < BaseComponent
   private def render_avatar_name_and_time(reply)
     div class: "flex justify-between items-center" do
       div class: "flex items-center" do
-        img src: reply.user_avatar || asset("svgs/crystal-lang-icon.svg"), 
-            class: "h-6 w-6 mr-2"
+        # 圆形头像容器
+        div class: "relative h-6 w-6 mr-2" do
+          # 圆形蒙版
+          div class: "absolute inset-0 rounded-full overflow-hidden bg-gray-200" do
+            # 头像图片
+            img src: reply.user_avatar || asset("svgs/crystal-lang-icon.svg"),
+              class: "w-full h-full object-cover"
+          end
+        end
         span reply.user_name, class: "text-gray-800"
       end
 
       if reply_id == reply.id
-        div class: "text-green-600 opacity-0 animate-fade-out", 
-            data_script: "init transition my opacity to 0% over 3 seconds" do
+        div class: "text-green-600 opacity-0 animate-fade-out",
+          data_script: "init transition my opacity to 0% over 3 seconds" do
           text "更新成功"
         end
       end
@@ -94,12 +101,12 @@ class Docs::RepliesMore < BaseComponent
       end
 
       if !me.nil?
-        base_button_classes = "px-3 py-1 mr-2 bg-gray-100 rounded-full cursor-pointer transition-all duration-200"  # 2. & 4. 指针和过渡效果
+        base_button_classes = "px-3 py-1 mr-2 bg-gray-100 rounded-full cursor-pointer transition-all duration-200" # 2. & 4. 指针和过渡效果
 
         div class: "flex" do
           if reply.reply_id.nil?
-            a("回复", 
-              class: "#{base_button_classes} hover:bg-gray-200",  # 4. 平滑过渡
+            a("回复",
+              class: "#{base_button_classes} hover:bg-gray-200", # 4. 平滑过渡
               hx_target: "div#reply_to_reply-form",
               hx_swap: "outerHTML",
               hx_include: "[name='_csrf']",
@@ -116,7 +123,7 @@ class Docs::RepliesMore < BaseComponent
 
           if me.id == reply.user_id
             a("编辑",
-              class: "#{base_button_classes} hover:bg-gray-200",  # 4. 平滑过渡
+              class: "#{base_button_classes} hover:bg-gray-200", # 4. 平滑过渡
               hx_target: "div#reply_to_reply-form",
               hx_swap: "outerHTML",
               hx_include: "[name='_csrf']",
@@ -133,7 +140,7 @@ class Docs::RepliesMore < BaseComponent
             if reply.replies_counter == 0
               a(
                 "删除",
-                class: "#{base_button_classes} bg-red-100 text-red-700 hover:bg-red-200",  # 4. 平滑过渡
+                class: "#{base_button_classes} bg-red-100 text-red-700 hover:bg-red-200", # 4. 平滑过渡
                 hx_delete: Htmx::Docs::Reply::Delete.with(id: reply.id, user_id: me.id).path,
                 hx_target: "closest article",
                 hx_swap: "outerHTML swap:1s",
