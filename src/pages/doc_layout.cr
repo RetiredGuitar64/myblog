@@ -72,7 +72,7 @@ abstract class DocLayout
     doc_info += " | #{doc.view_count}次阅读" if doc.view_count > 0
 
     # 原始版本保持不变
-    "<div class='bg-white/30 p-2 rounded-lg mb-4 text-sm text-gray-600 italic'>#{doc_info}</div>"
+    "<div class='bg-white/30 p-2 rounded-full mb-2 text-sm text-gray-600 italic'>#{doc_info}</div>"
   end
 
   def sub_title
@@ -108,7 +108,7 @@ abstract class DocLayout
                   end
                 end
 
-                div class: "flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8" do
+                div class: "flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4" do
                   doc = find_or_create_doc
                   raw print_doc_info(doc)
                   print_votes(doc)
