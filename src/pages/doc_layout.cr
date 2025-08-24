@@ -97,7 +97,7 @@ abstract class DocLayout
             main class: "flex-1 p-8" do
               # 修改5：仅在此处修改容器样式
               div class: "max-w-5xl mx-auto bg-white/40 rounded-lg shadow-md p-8" do
-                header class: "mb-6" do
+                header class: "mb-3" do
                   h1 class: "text-3xl font-bold text-gray-800" do
                     text page_title
                     if (msg = sub_title)
