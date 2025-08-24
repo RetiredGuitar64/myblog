@@ -22,7 +22,7 @@ class SignIns::NewPage < AuthLayout
             end
 
             # 使用 flex 布局确保按钮在同一行
-            div class: "flex items-center gap-4" do
+            div class: "flex items-center justify-between" do
               strong do
                 submit "登录", 
                   type: "submit", 
