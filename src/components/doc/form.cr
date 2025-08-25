@@ -47,7 +47,7 @@ class Docs::Form < BaseComponent
         div class: "tab" do
           render_form
         end
-        div class: "tab", style: "text-align: initial;" do
+        div class: "tab reset-tw", style: "text-align: initial;" do
           render_preview
         end
       end

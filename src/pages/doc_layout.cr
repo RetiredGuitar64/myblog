@@ -29,7 +29,9 @@ abstract class DocLayout
       )
     end
 
-    raw(MARKDOWN_CACHE.fetch(markdown_path) { markdown content })
+    div class: "reset-tw" do
+      raw(MARKDOWN_CACHE.fetch(markdown_path) { markdown content })
+    end
   end
 
   def page_title

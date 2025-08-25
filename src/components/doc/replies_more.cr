@@ -15,7 +15,7 @@ class Docs::RepliesMore < BaseComponent
 
           hr class: "border-0 border-t border-gray-300 my-3"
 
-          div class: "prose max-w-none" do
+          div class: "reset-tw" do
             raw markdown(reply.content)
           end
 
