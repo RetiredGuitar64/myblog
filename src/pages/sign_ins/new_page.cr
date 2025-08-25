@@ -8,7 +8,7 @@ class SignIns::NewPage < AuthLayout
         # 邮箱登录框
         div class: "bg-white/40 rounded-xl shadow-md p-6 border border-gray-200/50" do
           # 添加标题
-          h2 class: "text-xl font-bold text-gray-800 text-center mb-6" do
+          h2 class: "text-xl font-bold text-gray-800 text-center mb-6 mt-2" do
             text "邮箱登录"
           end
           

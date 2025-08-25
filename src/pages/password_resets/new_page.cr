@@ -7,7 +7,7 @@ class PasswordResets::NewPage < AuthLayout
       figure do
         # 密码重置框
         div class: "bg-white/40 rounded-xl shadow-md p-6 border border-gray-200/50" do
-          h1 class: "text-xl font-bold text-gray-800 text-center mb-6" do
+          h1 class: "text-xl font-bold text-gray-800 text-center mb-6 mt-2" do
             text "重置你的密码"
           end
           

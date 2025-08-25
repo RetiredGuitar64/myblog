@@ -12,13 +12,13 @@ class Me::EditPage < MainLayout
           # 昵称
           div class: "mb-4" do
             label_for op.name, "昵称", class: "block text-sm font-medium text-gray-700 mb-1"
-            text_input op.name, class: "w-full px-1 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            text_input op.name, class: "w-full px-1 py-1 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           end
 
           # 头像
           div class: "mb-4" do
             label_for op.avatar, "头像（目前仅支持 http/https 链接）", class: "block text-sm font-medium text-gray-700 mb-1"
-            text_input op.avatar, class: "w-full px-1 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            text_input op.avatar, class: "w-full px-1 py-1 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             
             if (avatar = op.avatar.value)
               div class: "mt-2 flex justify-center" do
@@ -35,13 +35,13 @@ class Me::EditPage < MainLayout
           # 密码
           div class: "mb-4" do
             label_for op.password, "密码", class: "block text-sm font-medium text-gray-700 mb-1"
-            password_input op.password, auto_focus: true, class: "w-full px-1 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            password_input op.password, auto_focus: true, class: "w-full px-1 py-1 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           end
 
           # 确认密码
           div class: "mb-6" do
             label_for op.password, "确认密码", class: "block text-sm font-medium text-gray-700 mb-1"
-            password_input op.password_confirmation, class: "w-full px-1 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            password_input op.password_confirmation, class: "w-full px-1 py-1 border border-gray-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           end
 
           # 按钮

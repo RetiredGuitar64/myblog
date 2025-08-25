@@ -9,7 +9,7 @@ class SignUps::NewPage < AuthLayout
         # 邮箱注册框
         div class: "bg-white/40 rounded-xl shadow-md px-8 py-6 border border-gray-200/50" do
           # 添加标题
-          h2 class: "text-xl font-bold text-gray-800 text-center mb-4" do
+          h2 class: "text-xl font-bold text-gray-800 text-center mb-4 mt-2" do
             text "邮箱注册"
           end
 
