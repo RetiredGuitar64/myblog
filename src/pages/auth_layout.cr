@@ -17,7 +17,7 @@ abstract class AuthLayout
   def render
     html_doctype
 
-    html lang: "en" do
+    html lang: "en", class: "bg-gradient-to-br from-lime-100 via-sky-300 to-purple-400" do
       mount Shared::LayoutHead, page_title: page_title
 
       body do
@@ -28,8 +28,13 @@ abstract class AuthLayout
             content
           end
 
-          footer class: "f-row flex-wrap:wrap justify-content:center" do
-            mount Footer, current_user: current_user
+          # 页脚区域
+          footer class: "mt-auto w-full" do
+            div class: "container mx-auto px-4 flex justify-center" do
+              div class: "backdrop-blur-2xl bg-white/20 rounded-full shadow-sm p-4 inline-flex flex-col items-center" do
+                mount Footer, current_user: current_user
+              end
+            end
           end
           mount Shared::Common, page_title: page_title
         end

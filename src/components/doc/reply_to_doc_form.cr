@@ -17,7 +17,7 @@ class Docs::ReplyToDocForm < BaseComponent
       text = "回复"
 
       opts = {
-        style:      "margin-right: 25px; margin-left: 10px;",
+        style: "margin-right: 25px; margin-left: 10px; padding: 6px 12px; background: #3b82f6; color: white; border-radius: 4px; border: none; cursor: pointer;", # 仅添加内联样式
         hx_target:  "div#replies",
         hx_include: "[name='_csrf'],next textarea",
         script:     "on click set value of next <textarea/> to ''",
@@ -26,26 +26,19 @@ class Docs::ReplyToDocForm < BaseComponent
       }
 
       if me.nil?
-        opts = opts.merge(disabled: "")
+        opts = opts.merge(disabled: "", style: "#{opts[:style]} background: #cccccc;") # 禁用状态变灰
       else
         if !reply_id.nil?
-          # 一定是针对 reply 的操作，这里包含三种情况
-          # - 为评论新增评论
-          # - 编辑评论
-          # - 编辑评论的评论。
           if content.blank?
-            # 为评论新增评论
             opts = opts.merge(
               hx_vals: %({"user_id": #{me.id}, "id": #{reply_id}, "op": "new"}),
               hx_target: "#doc_reply-#{reply_id}-replies",
               hx_swap: "outerHTML"
             )
           else
-            # 这里覆盖两种编辑的情况
             reply = ReplyQuery.find(reply_id.not_nil!)
 
             if !(id = reply.reply_id).nil?
-              # 如果修改评论的评论，htmx target 直接覆盖子评论列表
               opts = opts.merge(
                 hx_target: "#doc_reply-#{id}-replies"
               )
@@ -55,11 +48,11 @@ class Docs::ReplyToDocForm < BaseComponent
               hx_vals: %({"user_id": #{me.id}, "id": #{reply_id}, "op": "edit"}),
               hx_swap: "outerHTML",
               onclick: "scrollToElementById('doc_reply-#{reply_id}')",
+              style: "#{opts[:style]} background: #10b981;" # 修改按钮变绿
             )
             text = "修改"
           end
         else
-          # 为 doc 新建评论
           opts = opts.merge(
             hx_vals: %({"user_id": #{me.id}, "doc_path": "#{doc_path}"}),
           )
@@ -70,6 +63,7 @@ class Docs::ReplyToDocForm < BaseComponent
         if !reply_id.nil? && !me.nil?
           button(
             "取消",
+            style: "padding: 6px 12px; background: #e5e7eb; color: #333; border-radius: 4px; border: none; cursor: pointer; margin-right: 10px;", # 取消按钮样式
             onclick: "document.getElementById('edit_dialog').close();"
           )
         end

@@ -50,6 +50,7 @@ export default defineConfig(({ command, mode }) => {
         css: {
             postcss: {
                 plugins: [
+                    require("@tailwindcss/postcss"),
                     require("autoprefixer"), // 自动添加浏览器前缀
                     ...(isWatch
                         ? []
