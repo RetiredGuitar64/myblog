@@ -13,6 +13,7 @@ module PageHelpers
     "/docs/7_19_Fatima"                              => {title: "2025_7_19", sub_title: ""},
     "/docs/7_27"                                     => {title: "2025_7_27", sub_title: ""},
     "/docs/8_9"                                      => {title: "2025_8_9", sub_title: ""},
+    "/docs/8_19_Scott"                                     => {title: "2025_8_19", sub_title: ""},
   }
   PAGINATION_URLS = PAGINATION_RELATION_MAPPING.keys
 
