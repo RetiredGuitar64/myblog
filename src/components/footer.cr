@@ -1,23 +1,23 @@
 class Footer < BaseComponent
   def render
-    section class: "flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-gray-800" do
+    section class: "flex flex-col gap-6 justify-center items-center text-sm text-gray-800 sm:flex-row" do
       # 文本信息组
-      div class: "flex flex-wrap items-center justify-center gap-5" do
-        span class: "font-medium hover:text-black transition-colors h-6 flex items-center ml-5" do
+      div class: "flex flex-wrap gap-5 justify-center items-center" do
+        span class: "flex items-center ml-5 h-6 font-medium transition-colors hover:text-black" do
           text "Crystal China"
         end
 
         a "spider.yuxuan@gmail.com", 
           href: "mailto:spider.yuxuan@gmail.com",
-          class: "hover:text-black underline underline-offset-4 decoration-gray-300 hover:decoration-gray-500 transition-all h-6 flex items-center"
+          class: "flex items-center h-6 underline transition-all hover:text-black underline-offset-4 decoration-gray-300 hover:decoration-gray-500"
 
         span(
-          class: "bg-gray-300 px-3 py-0.5 rounded-full hover:bg-gray-200 transition-colors h-6 flex items-center",
+          class: "flex items-center py-0.5 px-3 h-6 bg-gray-300 rounded-full transition-colors hover:bg-gray-200",
           hx_trigger: "load,every 2m",
           hx_patch: Htmx::OnlineUsers.with(user_id: current_user.try(&.id)).path,
           hx_include: "[name='_csrf']"
         ) do
-          span class: "inline-flex items-center gap-1" do
+          span class: "inline-flex gap-1 items-center" do
             tag "svg", width: 8, height: 8, viewBox: "0 0 8 8", class: "text-green-500 fill-current" do
               tag "circle", cx: "4", cy: "4", r: "4"
             end
@@ -27,35 +27,35 @@ class Footer < BaseComponent
       end
 
       # 图标组
-      div class: "flex justify-center items-center gap-6 h-6 mx-5" do
+      div class: "flex gap-6 justify-center items-center mx-5 h-6" do
         a href: "https://github.com/RetiredGuitar64/myblog", 
           target: "_blank", 
           rel: "nofollow", 
           title: "本站在 GitHub 上面的开源内容",
-          class: "group hover:scale-110 transition-transform h-full flex items-center" do
+          class: "flex items-center h-full transition-transform hover:scale-110 group" do
           img src: asset("svgs/github-icon.svg"), 
               alt: "github",
-              class: "w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity"
+              class: "w-5 h-5 opacity-80 transition-opacity group-hover:opacity-100"
         end
 
         a href: "https://x.com/e5YxtF6E1QCammW", 
           target: "_blank", 
           rel: "nofollow", 
           title: "我的 X 账号",
-          class: "group hover:scale-110 transition-transform h-full flex items-center" do
+          class: "flex items-center h-full transition-transform hover:scale-110 group" do
           img src: asset("svgs/x-icon.svg"), 
               alt: "x.com",
-              class: "w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity"
+              class: "w-5 h-5 opacity-80 transition-opacity group-hover:opacity-100"
         end
 
         a href: "https://crystal-lang.org/", 
           target: "_blank", 
           rel: "nofollow", 
           title: "Crystal 官方网站",
-          class: "group hover:scale-[1.15] transition-transform h-full flex items-center" do
+          class: "flex items-center h-full transition-transform group hover:scale-[1.15]" do
           img src: asset("svgs/crystal-lang-icon.svg"), 
               alt: "crystal-lang",
-              class: "w-5 h-5 opacity-80 group-hover:opacity-100 transition-opacity"
+              class: "w-5 h-5 opacity-80 transition-opacity group-hover:opacity-100"
         end
       end
     end

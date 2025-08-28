@@ -2,7 +2,7 @@ class Component::OAuth < BaseComponent
   def render
     figure class: "flex flex-col items-center space-y-4" do
       # 标题
-      h2 class: "text-xl font-bold text-gray-800 text-center mb-4" do
+      h2 class: "mb-4 text-xl font-bold text-center text-gray-800" do
         text "使用 OAuth 登录"
       end
 
@@ -10,9 +10,9 @@ class Component::OAuth < BaseComponent
       para do
         link to: SignUps::Oauth::New.with(provider: "google"), 
              hx_boost: "false",
-             class: "inline-flex items-center px-6 py-2 bg-white/50 rounded-full shadow-sm border border-gray-200 hover:bg-white/80 hover:shadow-md transition-all duration-200" do
+             class: "inline-flex items-center py-2 px-6 rounded-full border border-gray-200 shadow-sm transition-all duration-200 hover:shadow-md bg-white/50 hover:bg-white/80" do
           # Google 图标
-          span class: "w-5 h-5 bg-white rounded-full mr-2 flex items-center justify-center" do
+          span class: "flex justify-center items-center mr-2 w-5 h-5 bg-white rounded-full" do
             text "G"
           end
           text "Google"
@@ -23,10 +23,10 @@ class Component::OAuth < BaseComponent
       para do
         link to: SignUps::Oauth::New.with(provider: "github"), 
              hx_boost: "false",
-             class: "inline-flex items-center px-6 py-2 bg-white/50 rounded-full shadow-sm border border-gray-200 hover:bg-white/80 hover:shadow-md transition-all duration-200" do
+             class: "inline-flex items-center py-2 px-6 rounded-full border border-gray-200 shadow-sm transition-all duration-200 hover:shadow-md bg-white/50 hover:bg-white/80" do
           # Github 图标
-          span class: "w-5 h-5 bg-black rounded-full mr-2 flex items-center justify-center" do
-            span class: "text-white text-xs font-bold" do
+          span class: "flex justify-center items-center mr-2 w-5 h-5 bg-black rounded-full" do
+            span class: "text-xs font-bold text-white" do
               text "G"
             end
           end

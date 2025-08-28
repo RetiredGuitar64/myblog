@@ -1,8 +1,8 @@
 class Home::IndexPage < MainLayout
   def content
-    div class: "w-full max-w-3xl mx-auto px-8 py-6" do
+    div class: "py-6 px-8 mx-auto w-full max-w-3xl" do
       # 标题部分
-      h1 class: "text-3xl font-normal text-gray-700 mb-8 text-center" do
+      h1 class: "mb-8 text-3xl font-normal text-center text-gray-700" do
         text "RetiredGuitar64's Blog"
       end
 
@@ -13,7 +13,7 @@ class Home::IndexPage < MainLayout
           height: 300,
           width: 300,
           id: "logo-canvas",
-          class: "hover:opacity-90 transition-opacity",
+          class: "transition-opacity hover:opacity-90",
           style: "cursor: move",
           running: "false"
         )

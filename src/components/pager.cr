@@ -18,13 +18,13 @@ class Pager < BaseComponent
         div class: "flex items-center" do
           if prev_path == current_path
             div class: "flex items-center text-gray-400 cursor-default" do
-              img src: asset("svgs/previous_page.svg"), alt: "previous_page", class: "h-6 mr-2 opacity-50"
+              img src: asset("svgs/previous_page.svg"), alt: "previous_page", class: "mr-2 h-6 opacity-50"
               strong "没有上一页了"
             end
           else
             a href: prev_path, 
-              class: "flex items-center bg-white/50 shadow-sm rounded-lg px-4 py-2 transition-all duration-200 hover:bg-white/70 hover:shadow-md" do
-              img src: asset("svgs/previous_page.svg"), alt: "previous_page", class: "h-6 mr-2"
+              class: "flex items-center py-2 px-4 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md bg-white/50 hover:bg-white/70" do
+              img src: asset("svgs/previous_page.svg"), alt: "previous_page", class: "mr-2 h-6"
               strong PAGINATION_RELATION_MAPPING[prev_path][:title]
             end
           end
@@ -40,13 +40,13 @@ class Pager < BaseComponent
           if next_path == current_path
             div class: "flex items-center text-gray-400 cursor-default" do
               strong "没有下一页了"
-              img src: asset("svgs/next_page.svg"), alt: "next_page", class: "h-6 ml-2 opacity-50"
+              img src: asset("svgs/next_page.svg"), alt: "next_page", class: "ml-2 h-6 opacity-50"
             end
           else
             a href: next_path, 
-              class: "flex items-center bg-white/50 shadow-sm rounded-lg px-4 py-2 transition-all duration-200 hover:bg-white/70 hover:shadow-md" do
+              class: "flex items-center py-2 px-4 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md bg-white/50 hover:bg-white/70" do
               strong PAGINATION_RELATION_MAPPING[next_path][:title]
-              img src: asset("svgs/next_page.svg"), alt: "next_page", class: "h-6 ml-2"
+              img src: asset("svgs/next_page.svg"), alt: "next_page", class: "ml-2 h-6"
             end
           end
         end

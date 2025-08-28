@@ -5,8 +5,8 @@ class PasswordResetRequests::NewPage < AuthLayout
     div style: "height: 80vh;", class: "flex justify-center items-center" do
       figure do
         # 密码重置请求框
-        div class: "bg-white/40 rounded-xl shadow-md p-6 border border-gray-200/50" do
-          h1 class: "text-xl font-bold text-gray-800 text-center mb-6" do
+        div class: "p-6 rounded-xl border shadow-md bg-white/40 border-gray-200/50" do
+          h1 class: "mb-6 text-xl font-bold text-center text-gray-800" do
             text "重置你的密码"
           end
           
@@ -27,7 +27,7 @@ class PasswordResetRequests::NewPage < AuthLayout
       div class: "text-center" do
         submit "发送重置邮件", 
           flow_id: "request-password-reset-button",
-          class: "px-8 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+          class: "py-2 px-8 text-white bg-blue-500 rounded-full transition-colors hover:bg-blue-600"
       end
     end
   end

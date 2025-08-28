@@ -38,7 +38,7 @@ class Shared::Field(T) < BaseComponent
     label_for attribute, label_text
 
     # 添加默认的边框样式
-    tag_defaults field: attribute, class: "border border-gray-500 rounded-lg px-1 py-1 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" do |tag_builder|
+    tag_defaults field: attribute, class: "py-1 px-1 rounded-lg border border-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500" do |tag_builder|
       yield tag_builder
     end
 

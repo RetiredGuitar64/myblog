@@ -7,11 +7,11 @@ class Docs::Form < BaseComponent
   def render(&)
     me = current_user
     # 修改1：最外层容器改为圆角和半透明白色背景
-    div class: "border border-gray-300 rounded-lg bg-white/50", style: "padding: 5px;", id: "#{html_id}-form" do
+    div class: "rounded-lg border border-gray-300 bg-white/50", style: "padding: 5px;", id: "#{html_id}-form" do
       div class: "tab-frame", style: "margin-top: 5px;text-align: center; min-height: 350px;" do
         input type: "radio", checked: "", name: "#{html_id}", id: "#{html_id}1"
         # 修改2：美化按钮样式
-        label "输入", for: "#{html_id}1", class: "px-3 py-1 bg-white/80 border border-gray-300 rounded hover:bg-gray-100", style: "margin-right: 5px;"
+        label "输入", for: "#{html_id}1", class: "py-1 px-3 rounded border border-gray-300 hover:bg-gray-100 bg-white/80", style: "margin-right: 5px;"
 
         input(
           type: "radio",
@@ -26,7 +26,7 @@ class Docs::Form < BaseComponent
         label(
           "预览",
           for: "#{html_id}2",
-          class: "px-3 py-1 bg-white/60 border border-gray-300 rounded hover:bg-gray-100",
+          class: "py-1 px-3 rounded border border-gray-300 hover:bg-gray-100 bg-white/60",
           script: "on mouseover set x to the value of the next <textarea/>
         then if x == ''
            add @disabled to the previous <input/>

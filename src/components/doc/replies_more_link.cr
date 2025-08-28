@@ -6,7 +6,7 @@ class Docs::RepliesMoreLink < BaseComponent
     div class: "flex justify-center items-center py-4" do  # 使用Tailwind的flex布局实现居中
       if pagination[:page].try &.next_page
         a(
-          class: "text-blue-600 hover:text-blue-800 cursor-pointer transition-colors duration-200 flex items-center",  # 添加交互样式
+          class: "flex items-center text-blue-600 transition-colors duration-200 cursor-pointer hover:text-blue-800",  # 添加交互样式
           hx_get: "#{pagination[:url]}?page=#{page_number + 1}",
           hx_target: "closest div",
           hx_swap: "outerHTML",

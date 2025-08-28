@@ -5,7 +5,7 @@ class Docs::FormButtons < BaseComponent
   needs hx_target : String
 
   def render
-    div class: "flex items-center justify-between mt-2" do
+    div class: "flex justify-between items-center mt-2" do
       span "共 #{page_count} 条回复", class: "text-gray-600"
 
       div class: "flex items-center space-x-2" do
@@ -21,7 +21,7 @@ class Docs::FormButtons < BaseComponent
     [{"最早", "asc"}, {"最新", "desc"}].each do |title, order|
       a(
         title,
-        class: "px-3 py-1 rounded-full transition #{order_by == order ? selected_classes : unselected_classes}",
+        class: "py-1 px-3 rounded-full transition #{order_by == order ? selected_classes : unselected_classes}",
         herf: "",
         hx_get: "#{reply_path}?order_by=#{order}",
         hx_target: hx_target,

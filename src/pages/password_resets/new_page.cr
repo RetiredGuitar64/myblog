@@ -6,8 +6,8 @@ class PasswordResets::NewPage < AuthLayout
     div style: "height: 80vh;", class: "flex justify-center items-center" do
       figure do
         # 密码重置框
-        div class: "bg-white/40 rounded-xl shadow-md p-6 border border-gray-200/50" do
-          h1 class: "text-xl font-bold text-gray-800 text-center mb-6 mt-2" do
+        div class: "p-6 rounded-xl border shadow-md bg-white/40 border-gray-200/50" do
+          h1 class: "mt-2 mb-6 text-xl font-bold text-center text-gray-800" do
             text "重置你的密码"
           end
           
@@ -33,7 +33,7 @@ class PasswordResets::NewPage < AuthLayout
       div class: "text-center" do
         submit "更新", 
           flow_id: "update-password-button",
-          class: "px-8 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors"
+          class: "py-2 px-8 text-white bg-blue-500 rounded-full transition-colors hover:bg-blue-600"
       end
     end
   end

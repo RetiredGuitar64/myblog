@@ -30,10 +30,10 @@ class Sidebar < BaseComponent
 
   def render
     # 外层容器：固定定位、圆角、玻璃效果、滚动控制
-    div class: "fixed left-6 top-22 w-64 h-[calc(100vh-6rem)] bg-white/10 backdrop-blur-md rounded-xl border border-white/20 shadow-xl overflow-y-auto hover:overflow-y-auto",
+    div class: "overflow-y-auto fixed left-6 w-64 rounded-xl border shadow-xl hover:overflow-y-auto top-22 h-[calc(100vh-6rem)] bg-white/10 backdrop-blur-md border-white/20",
       style: "scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.3) transparent;" do
       div class: "p-4" do
-        h1 "目录", class: "text-xl font-bold text-gray-800 mb-4"
+        h1 "目录", class: "mb-4 text-xl font-bold text-gray-800"
 
         nav do
           ul class: "space-y-2" do
@@ -64,22 +64,22 @@ class Sidebar < BaseComponent
 
             # 用户信息区域
             if (user = current_user)
-              li class: "mt-6 pt-4 border-t border-white/30" do
+              li class: "pt-4 mt-6 border-t border-white/30" do
                 if (avatar = user.avatar)
-                  div class: "flex items-center px-4 py-3 rounded-full bg-white/20 backdrop-blur-sm" do
+                  div class: "flex items-center py-3 px-4 rounded-full bg-white/20 backdrop-blur-sm" do
                     # 圆形头像容器
-                    div class: "relative w-8 h-8 mr-3" do
+                    div class: "relative mr-3 w-8 h-8" do
                       # 圆形蒙版
-                      div class: "absolute inset-0 rounded-full overflow-hidden bg-gray-200" do
+                      div class: "overflow-hidden absolute inset-0 bg-gray-200 rounded-full" do
                         # 头像背景图
-                        div class: "w-full h-full bg-cover bg-center",
+                        div class: "w-full h-full bg-center bg-cover",
                           style: "background-image: url('#{avatar}')"
                       end
                     end
-                    strong user.name, class: "text-gray-800 font-medium"
+                    strong user.name, class: "font-medium text-gray-800"
                   end
                 else
-                  div class: "px-4 py-3 rounded-full bg-white/20 backdrop-blur-sm text-gray-800" do
+                  div class: "py-3 px-4 text-gray-800 rounded-full bg-white/20 backdrop-blur-sm" do
                     text user.name
                   end
                 end

@@ -74,7 +74,7 @@ abstract class DocLayout
     doc_info += " | #{doc.view_count}次阅读" if doc.view_count > 0
 
     # 原始版本保持不变
-    "<div class='bg-white/30 p-2 rounded-full mb-2 text-sm text-gray-600 italic'>#{doc_info}</div>"
+    "<div class='p-2 mb-2 text-sm italic text-gray-600 rounded-full bg-white/30'>#{doc_info}</div>"
   end
 
   def sub_title
@@ -87,7 +87,7 @@ abstract class DocLayout
     html lang: "en" do
       mount Shared::LayoutHead, page_title: page_title
 
-      body class: "max-h-screen bg-fixed bg-gradient-to-br from-lime-100 via-sky-300 to-purple-400", "hx-boost": "true" do
+      body class: "max-h-screen bg-fixed bg-gradient-to-br from-lime-100 to-purple-400 via-sky-300", "hx-boost": "true" do
         div class: "flex flex-col min-h-screen" do
           mount Navbar, current_user: current_user
 
@@ -98,34 +98,34 @@ abstract class DocLayout
 
             main class: "flex-1 p-8" do
               # 修改5：仅在此处修改容器样式
-              div class: "max-w-5xl mx-auto bg-white/40 rounded-lg shadow-md p-8" do
+              div class: "p-8 mx-auto max-w-5xl rounded-lg shadow-md bg-white/40" do
                 header class: "mb-3" do
                   h1 class: "text-3xl font-bold text-gray-800" do
                     text page_title
                     if (msg = sub_title)
-                      span class: "block text-lg text-gray-600 mt-1" do
+                      span class: "block mt-1 text-lg text-gray-600" do
                         text msg
                       end
                     end
                   end
                 end
 
-                div class: "flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4" do
+                div class: "flex flex-col gap-4 justify-between items-start mb-4 md:flex-row md:items-center" do
                   doc = find_or_create_doc
                   raw print_doc_info(doc)
                   print_votes(doc)
                 end
 
                 # 修改3：仅在此处修改字体大小
-                article class: "prose max-w-none text-lg" do
+                article class: "max-w-none text-lg prose" do
                   content
                 end
 
-                footer class: "mt-8 pt-6 border-t border-gray-200" do
+                footer class: "pt-6 mt-8 border-t border-gray-200" do
                   mount Pager
                 end
 
-                div class: "text-center text-gray-500 my-8 italic" do
+                div class: "my-8 italic text-center text-gray-500" do
                   text "欢迎在评论区留下你的见解、问题或建议"
                 end
 
@@ -134,7 +134,7 @@ abstract class DocLayout
                   show_replies_when_revealed
                 end
 
-                footer class: "mt-12 pt-6 border-t border-gray-200" do
+                footer class: "pt-6 mt-12 border-t border-gray-200" do
                   mount Footer, current_user: current_user
                 end
               end
@@ -150,7 +150,7 @@ abstract class DocLayout
 
   private def show_replies_when_revealed
     div role: "feed", id: "replies",
-      class: "mt-8 p-6 bg-white bg-opacity-70 rounded-lg shadow-sm",
+      class: "p-6 mt-8 bg-white bg-opacity-70 rounded-lg shadow-sm",
       "hx-get": current_reply_path,
       "hx-trigger": "revealed",
       "hx-swap": "outerHTML" do
@@ -160,9 +160,9 @@ abstract class DocLayout
 
   private def doc_search_dialog
     dialog id: "doc_search_dialog",
-      class: "fixed top-20 left-1/2 transform -translate-x-1/2 z-50 w-[30em] max-w-[90vw] bg-white/95 backdrop-blur-sm rounded-xl shadow-2xl overflow-visible" do
+      class: "overflow-visible fixed top-20 left-1/2 z-50 rounded-xl shadow-2xl transform -translate-x-1/2 w-[30em] max-w-[90vw] bg-white/95 backdrop-blur-sm" do
       div class: "flex flex-col" do
-        div class: "p-4 border-b border-gray-200 bg-gray-50 rounded-t-xl" do
+        div class: "p-4 bg-gray-50 rounded-t-xl border-b border-gray-200" do
           h3 class: "text-lg font-medium text-gray-900" do
             text "注意：中文搜索结果通常不准确, 请使用英文关键字！"
           end
@@ -170,9 +170,9 @@ abstract class DocLayout
         div class: "flex-1 p-4" do
           div class: "stork-wrapper-flat" do
             input data_stork: "docs",
-              class: "stork-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500",
+              class: "py-3 px-4 w-full rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 stork-input",
               id: "search-input"
-            div data_stork: "docs-output", class: "stork-output mt-3"
+            div data_stork: "docs-output", class: "mt-3 stork-output"
           end
         end
       end

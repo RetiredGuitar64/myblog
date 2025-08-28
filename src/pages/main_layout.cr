@@ -16,22 +16,22 @@ abstract class MainLayout
     html lang: "en" do
       mount Shared::LayoutHead, page_title: page_title
 
-      body class: "min-h-screen bg-gradient-to-br from-lime-100 via-sky-300 to-purple-400" do
-        div class: "flex flex-col min-h-screen items-center" do
+      body class: "min-h-screen bg-gradient-to-br from-lime-100 to-purple-400 via-sky-300" do
+        div class: "flex flex-col items-center min-h-screen" do
           # 导航栏
           mount Navbar, current_user: current_user
 
           # 主要内容区域（自动适应内容大小）
-          main class: "w-auto mx-auto my-8" do
-            div class: "bg-white/30 rounded-3xl shadow-lg p-8 flex flex-col items-center" do
+          main class: "my-8 mx-auto w-auto" do
+            div class: "flex flex-col items-center p-8 rounded-3xl shadow-lg bg-white/30" do
               content
             end
           end
 
           # 页脚区域（自动适应内容大小）
           footer class: "mt-auto w-full" do
-            div class: "container mx-auto px-4 pb-8 flex justify-center" do
-              div class: "backdrop-blur-2xl bg-white/20 rounded-full shadow-sm p-4 inline-flex flex-col items-center" do
+            div class: "container flex justify-center px-4 pb-8 mx-auto" do
+              div class: "inline-flex flex-col items-center p-4 rounded-full shadow-sm backdrop-blur-2xl bg-white/20" do
                 mount Footer, current_user: current_user
               end
             end
