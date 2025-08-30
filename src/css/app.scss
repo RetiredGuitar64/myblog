@@ -14,7 +14,7 @@
 // @import 'modern-normalize/modern-normalize.css';
 // @import 'missing.css';
 // @import "tailwindcss" prefix(tw);
-@import "tailwindcss";
+@use "tailwindcss";
 @import "./reset-tw.css"; //使tailwind在文章和评论中不渲染
 // @layer theme, base, components, utilities;
 
