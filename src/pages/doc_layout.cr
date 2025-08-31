@@ -87,7 +87,7 @@ abstract class DocLayout
     html lang: "en" do
       mount Shared::LayoutHead, page_title: page_title
 
-      body class: "max-h-screen bg-fixed bg-gradient-to-br from-lime-100 to-purple-400 via-sky-300", "hx-boost": "true" do
+      body hx_boost: true, class: "max-h-screen bg-fixed bg-gradient-to-br from-lime-100 to-purple-400 via-sky-300" do
         div class: "flex flex-col min-h-screen" do
           mount Navbar, current_user: current_user
 

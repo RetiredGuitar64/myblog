@@ -16,7 +16,7 @@ abstract class MainLayout
     html lang: "en" do
       mount Shared::LayoutHead, page_title: page_title
 
-      body class: "min-h-screen bg-gradient-to-br from-lime-100 to-purple-400 via-sky-300" do
+      body hx_boost: true, class: "min-h-screen bg-gradient-to-br from-lime-100 to-purple-400 via-sky-300" do
         div class: "flex flex-col items-center min-h-screen" do
           # 导航栏
           mount Navbar, current_user: current_user
