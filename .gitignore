@@ -11,4 +11,4 @@
 /dist
 /*.custom.gz
 /new_page.sh
-
+/recovery/*
