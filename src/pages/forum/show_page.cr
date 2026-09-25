@@ -15,6 +15,11 @@ class Forum::ShowPage < MainLayout
           h1 topic.title, class: "m-0 text-3xl font-semibold tracking-tight text-gray-900"
           para class: "mt-3 mb-0 text-sm text-gray-500" do
             text "#{topic.user.name} 发布于 #{topic.created_at.to_s("%Y-%m-%d %H:%M")}"
+
+            if current_user.try(&.id) == topic.user_id
+              text " · "
+              link "编辑", to: Forum::Edit.with(id: topic.id), class: "text-[#145591] no-underline hover:underline"
+            end
           end
         end
 
