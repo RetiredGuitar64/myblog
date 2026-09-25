@@ -5,5 +5,6 @@ class Topic < BaseModel
 
     column title : String
     column content : String
+    column edited_at : Time?
   end
 end
