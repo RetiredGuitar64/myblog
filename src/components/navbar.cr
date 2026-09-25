@@ -23,7 +23,7 @@ class Navbar < BaseComponent
             end
 
             li do
-              link "论坛", to: Forum::Index, class: nav_item_class(active: current_path.starts_with?("/forum"))
+              link "社区", to: Forum::Index, class: nav_item_class(active: current_path.starts_with?("/forum"))
             end
 
             li do

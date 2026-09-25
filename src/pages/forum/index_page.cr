@@ -3,7 +3,7 @@ class Forum::IndexPage < MainLayout
   needs pages : Lucky::Paginator
 
   def page_title
-    "论坛"
+    "社区"
   end
 
   def content
@@ -12,7 +12,7 @@ class Forum::IndexPage < MainLayout
     section class: "#{page_container_classes} py-10" do
       header class: "mb-8 flex flex-wrap items-center justify-between gap-4" do
         div do
-          h1 "论坛", class: "m-0 text-3xl font-semibold tracking-tight text-gray-900"
+          h1 "社区", class: "m-0 text-3xl font-semibold tracking-tight text-gray-900"
           para "讨论 Crystal 语言及其生态。", class: "mt-2 mb-0 text-sm text-gray-600"
         end
 
@@ -42,7 +42,7 @@ class Forum::IndexPage < MainLayout
   end
 
   private def render_pagination
-    nav class: "mt-6 flex items-center justify-center gap-4 text-sm", "aria-label": "论坛分页" do
+    nav class: "mt-6 flex items-center justify-center gap-4 text-sm", "aria-label": "社区分页" do
       if (previous_path = pages.path_to_previous)
         a "上一页", href: previous_path, class: "form-secondary"
       else

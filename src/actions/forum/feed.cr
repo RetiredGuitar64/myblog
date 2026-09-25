@@ -13,7 +13,7 @@ class Forum::Feed < BrowserAction
     body = XML.build(encoding: "UTF-8") do |xml|
       xml.element("rss", "xmlns:atom": "http://www.w3.org/2005/Atom", version: "2.0") do
         xml.element("channel") do
-          xml.element("title") { xml.text "Crystal China 论坛" }
+          xml.element("title") { xml.text "Crystal 中文社区" }
           xml.element("description") { xml.text "Crystal 语言及其生态的中文讨论" }
           xml.element("link") { xml.text Forum::Index.url }
           xml.element("atom", "link", nil, rel: "self", href: Forum::Feed.url)
