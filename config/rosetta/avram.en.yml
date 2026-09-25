@@ -3,6 +3,7 @@ en:
     attribute_variants:
       email: "Email"
       language: "Language"
+      content: "Content"
       password: "Password"
       password_confirmation: "Password confirmation"
     validate_acceptance_of: "must be accepted"
@@ -19,4 +20,3 @@ en:
     validate_numeric_nil: "must not be nil"
     validate_required: "is required"
     validate_uniqueness_of: "is already taken"
-
