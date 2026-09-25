@@ -5,8 +5,12 @@ class Footer < BaseComponent
 
       section class: "#{page_container_classes} mt-2 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm" do
         address class: "not-italic" do
-          text "Crystal China "
-          a "admin@crystal-china.org", href: "mailto:admin@crystal-china.org"
+          text "联系："
+          a(
+            "admin@crystal-china.org",
+            href: "mailto:admin@crystal-china.org",
+            class: "text-sky-700 hover:text-sky-900 hover:underline"
+          )
         end
 
         span(
