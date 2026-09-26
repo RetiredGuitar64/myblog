@@ -9,6 +9,8 @@ class Forum::ShowPage < MainLayout
   end
 
   def content
+    time_in_words = TimeInWords::Helpers(TimeInWords::I18n::ZH_CN)
+
     div class: "#{page_container_classes} py-10" do
       article class: "mx-auto w-full max-w-[90ch]" do
         header class: "border-b border-gray-200 pb-5" do
@@ -21,12 +23,21 @@ class Forum::ShowPage < MainLayout
           end
 
           para class: "mt-3 mb-0 text-sm text-gray-500" do
-            text "#{topic.user.name} 发布于 #{topic.created_at.to_s("%Y-%m-%d %H:%M")}"
+            link(
+              topic.node.name,
+              to: Forum::Index.with(node: topic.node.slug),
+              class: "font-medium text-[#145591] no-underline hover:text-[#0f477b] hover:underline"
+            )
+            text " · #{topic.user.name} "
+            span(
+              "发布于 #{time_in_words.from(past_time: topic.created_at)}",
+              title: topic.created_at.to_local.to_s("%Y-%m-%d %H:%M:%S")
+            )
 
             if (edited_at = topic.edited_at)
               text " · "
               span(
-                "已编辑于 #{TimeInWords::Helpers(TimeInWords::I18n::ZH_CN).from(past_time: edited_at)}",
+                "编辑于 #{time_in_words.from(past_time: edited_at)}",
                 title: edited_at.to_local.to_s("%Y-%m-%d %H:%M:%S")
               )
             end

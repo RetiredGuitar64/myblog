@@ -1,4 +1,4 @@
-class Forum::Create < BrowserAction
+class Forum::Create < ForumAction
   param content : String = ""
 
   post "/forum" do
@@ -7,6 +7,7 @@ class Forum::Create < BrowserAction
         redirect Forum::Show.with(id: topic.id)
       else
         build_failed_flash(operation)
+
         html Forum::NewPage, operation: operation
       end
     end

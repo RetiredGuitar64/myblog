@@ -1,5 +1,6 @@
 class Forum::NewPage < MainLayout
   needs operation : SaveTopic
+  needs nodes : Array(Node)
 
   def page_title
     "发布主题"
@@ -13,7 +14,7 @@ class Forum::NewPage < MainLayout
         end
 
         form_for Forum::Create, class: "panel-body space-y-6" do
-          mount Forum::TopicFields, operation: operation, current_user: current_user do
+          mount Forum::TopicFields, operation: operation, nodes: nodes, current_user: current_user do
             link "取消", to: Forum::Index, class: "form-secondary"
             submit "发布", class: "form-submit"
           end

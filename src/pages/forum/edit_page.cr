@@ -1,6 +1,7 @@
 class Forum::EditPage < MainLayout
   needs topic : Topic
   needs operation : UpdateTopic
+  needs nodes : Array(Node)
 
   def page_title
     "编辑主题"
@@ -46,7 +47,7 @@ on keydown[event.key is "Escape"]
 end
 HYPER
         ) do
-          mount Forum::TopicFields, operation: operation, current_user: current_user do
+          mount Forum::TopicFields, operation: operation, nodes: nodes, current_user: current_user do
             button(
               "取消",
               type: "button",

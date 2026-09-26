@@ -1,4 +1,4 @@
-class Forum::Edit < BrowserAction
+class Forum::Edit < ForumAction
   get "/forum/:id/edit" do
     topic = TopicQuery.find(id)
 
