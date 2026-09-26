@@ -18,7 +18,7 @@ HYPER
   def render
     dialog(
       id: DIALOG_ID,
-      class: "mx-auto mt-[8vh] h-[40em] max-h-[calc(100vh_-_2rem)] w-[calc(100%_-_2rem)] pb-0 sm:mt-[16vh] sm:w-[50em] sm:max-w-full",
+      class: "mx-auto mt-[8vh] max-h-[calc(100vh_-_2rem)] w-[calc(100%_-_2rem)] pb-0 sm:mt-[16vh] sm:w-[50em] sm:max-w-full",
       script: <<-HYPER
 on closeRequested
   set textarea to the first <textarea/> in me
