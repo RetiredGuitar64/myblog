@@ -14,10 +14,25 @@ class Comments::Card < BaseComponent
         current_user: current_user
       )
 
-      mount Comments::CardFooter,
-        comment: comment,
-        order_by: order_by,
-        current_user: current_user
+      me = current_user
+      voted_types = me ? comment.votes.map(&.vote_type) : [] of String
+
+      footer id: "comment-#{comment.id}-footer", class: "mt-2 flex flex-wrap items-end justify-between gap-x-4 gap-y-3" do
+        div class: "flex min-w-0 flex-wrap items-center gap-2 text-sm" do
+          mount(
+            Shared::VoteButton,
+            vote_counts: Hash(String, Int32).from_json(comment.vote_counts.to_json),
+            comment_id: comment.id,
+            current_user: me,
+            voted_types: voted_types
+          )
+        end
+
+        mount Comments::CardAction,
+          comment: comment,
+          order_by: order_by,
+          current_user: me
+      end
 
       div id: "comment-#{comment.id}-comments" do
       end

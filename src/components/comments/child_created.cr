@@ -15,13 +15,13 @@ class Comments::ChildCreated < BaseComponent
     )
 
     tag "hx-partial",
-      hx_target: "#comment-#{root_comment.id}-thread-toggle",
+      hx_target: "#comment-#{root_comment.id}-actions",
       hx_swap: "outerHTML" do
       mount(
-        Comments::ThreadToggle,
+        Comments::CardAction,
         comment: root_comment,
         order_by: pagination[:order_by],
-        expanded: true,
+        thread_expanded: true,
         current_user: current_user
       )
     end

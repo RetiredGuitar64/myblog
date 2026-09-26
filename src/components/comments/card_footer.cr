@@ -1,36 +1,29 @@
-class Comments::CardFooter < BaseComponent
+class Comments::CardAction < BaseComponent
   needs comment : Comment
   needs order_by : String
+  needs thread_expanded : Bool = false
 
   def render
-    me = current_user
-    voted_types = me ? comment.votes.map(&.vote_type) : [] of String
-
-    footer class: "mt-2 flex flex-wrap items-end justify-between gap-x-4 gap-y-3" do
-      div class: "flex min-w-0 flex-wrap items-center gap-2 text-sm" do
-        mount(
-          Shared::VoteButton,
-          vote_counts: Hash(String, Int32).from_json(comment.vote_counts.to_json),
-          comment_id: comment.id,
-          current_user: me,
-          voted_types: voted_types
-        )
-      end
-
+    div id: "comment-#{comment.id}-actions", class: "flex flex-1 flex-wrap items-center justify-end gap-x-4 gap-y-3" do
       if comment.parent_id.nil?
         mount(
           Comments::ThreadToggle,
           comment: comment,
           order_by: order_by,
+          expanded: thread_expanded?,
           current_user: current_user
         )
       end
 
-      render_comment_actions(me) unless me.nil?
+      if (me = current_user)
+        render_comment_actions(me)
+      end
     end
   end
 
   private def render_comment_actions(me : User)
+    list_id = comment.root_id ? "comment-#{comment.root_id}-comments" : "comments"
+
     opts = {
       type:       "button",
       class:      "action-button action-button-accent",
@@ -58,7 +51,8 @@ class Comments::CardFooter < BaseComponent
             type: "button",
             class: "action-button action-button-danger",
             hx_delete: Htmx::Comments::Delete.with(id: comment.id).path,
-            hx_target: "closest article",
+            hx_include: "##{list_id}-order-by",
+            hx_target: "##{list_id}",
             hx_swap: "outerHTML swap:1s",
             hx_confirm: confirmation
           )
