@@ -33,7 +33,7 @@ class Htmx::Comments::Delete < CommentAction
     end
 
     component(
-      ::Comments::Child,
+      ::Comments::Deleted,
       formatter: formatter,
       pagination: pagination,
       root_comment: root_comment,

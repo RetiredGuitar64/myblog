@@ -1,4 +1,4 @@
-class Comments::Child < BaseComponent
+class Comments::Deleted < BaseComponent
   needs formatter : Tartrazine::Formatter
   needs pagination : Comments::Pagination
   needs root_comment : Comment?
