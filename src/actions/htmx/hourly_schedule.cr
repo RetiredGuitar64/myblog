@@ -5,7 +5,7 @@ class Htmx::HourlySchedule < BrowserAction
   post "/htmx/hourly_schedule" do
     me = current_user
 
-    return head 401 if me.email != ENV["ADMIN_EMAIL"]?
+    return head 403 unless me.admin?
 
     cell_hour_time = Time.parse("#{date} #{hour}:59", "%Y-%m-%d %H:%M", Time::Location.load("Asia/Shanghai"))
 

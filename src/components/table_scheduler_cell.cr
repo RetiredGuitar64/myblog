@@ -8,7 +8,7 @@ class TableSchedulerCell < BaseComponent
     me = current_user
     cell_hour_time = Time.parse("#{date} #{hour}:59", "%Y-%m-%d %H:%M", Time::Location.load("Asia/Shanghai"))
     expired = Time.local > cell_hour_time
-    admin = me && me.email == ENV["ADMIN_EMAIL"]?
+    admin = me.try(&.admin?) || false
 
     opts = {
       class: expired ? "disabled" : "",

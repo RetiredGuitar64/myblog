@@ -18,4 +18,10 @@ class User < BaseModel
   def emailable : Carbon::Address
     Carbon::Address.new(email)
   end
+
+  def admin?
+    return true unless LuckyEnv.production?
+
+    ENV.fetch("ADMIN_EMAILS", "").split(/[\s,]+/).includes?(email)
+  end
 end

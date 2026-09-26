@@ -17,8 +17,23 @@ class Forum::ShowPage < MainLayout
           div class: "flex items-start gap-4" do
             h1 topic.title, class: "m-0 min-w-0 flex-1 text-3xl font-semibold tracking-tight text-gray-900"
 
-            if current_user.try(&.id) == topic.user_id
-              link "编辑", to: Forum::Edit.with(id: topic.id), class: "form-secondary shrink-0 px-3 py-1.5 text-sm"
+            if (me = current_user)
+              div class: "flex shrink-0 items-center gap-2" do
+                if me.id == topic.user_id || me.admin?
+                  link "编辑", to: Forum::Edit.with(id: topic.id), class: "action-button action-button-neutral h-8"
+                end
+
+                if me.admin?
+                  button(
+                    "删除",
+                    type: "button",
+                    class: "action-button action-button-danger h-8",
+                    hx_delete: Admin::Topics::Delete.with(id: topic.id).path,
+                    hx_confirm: "删除这个主题及其全部评论？此操作不可撤销。",
+                    hx_disable: "this"
+                  )
+                end
+              end
             end
           end
 

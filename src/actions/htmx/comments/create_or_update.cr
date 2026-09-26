@@ -25,7 +25,7 @@ class Htmx::Comments::CreateOrUpdate < CommentAction
         # 编辑一条已有评论。这里 comment 可能是：
         # - CommentThread 的顶级评论
         # - 针对 comment 的子评论
-        return head 403 if comment.user_id != me.id
+        return head 403 unless comment.user_id == me.id || me.admin?
 
         UpdateComment.update!(comment, content: content)
 

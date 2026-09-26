@@ -7,7 +7,7 @@ class Htmx::Comments::Edit < CommentAction
 
     comment = CommentQuery.find(id)
 
-    return head 403 if comment.user_id != me.id
+    return head 403 unless comment.user_id == me.id || me.admin?
 
     component(
       ::Comments::Form,

@@ -4,7 +4,7 @@ class Forum::Update < ForumAction
   put "/forum/:id" do
     topic = TopicQuery.find(id)
 
-    return head 403 if topic.user_id != current_user.id
+    return head 403 unless topic.user_id == current_user.id || current_user.admin?
 
     UpdateTopic.update(topic, params, content: content) do |operation, _updated_topic|
       if operation.saved?

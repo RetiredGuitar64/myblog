@@ -32,6 +32,10 @@ class Navbar < BaseComponent
 
             me = current_user
             if me
+              if me.admin?
+                li { link "后台", to: Admin::Index, class: nav_item_class(active: current_path.starts_with?("/admin")) }
+              end
+
               li do
                 link(
                   "登出",

@@ -43,10 +43,16 @@ class Comments::CardFooter < BaseComponent
     div class: "flex shrink-0 flex-wrap items-center justify-end gap-2" do
       button("回复", opts, hx_get: Htmx::Comments::New.with(id: comment.id, order_by: order_by).path)
 
-      if me.id == comment.user_id # 只允许编辑自己的回复
+      if me.id == comment.user_id || me.admin?
         button("编辑", opts, hx_get: Htmx::Comments::Edit.with(id: comment.id, order_by: order_by).path)
 
-        if comment.children_count == 0 # 如果回复有了直接回复，就不再允许删除
+        if comment.children_count == 0 || me.admin?
+          confirmation = if comment.children_count > 0
+                           "这条回复存在子回复，删除后将一并删除。确定继续？"
+                         else
+                           "删除这条回复？"
+                         end
+
           button(
             "删除",
             type: "button",
@@ -54,7 +60,7 @@ class Comments::CardFooter < BaseComponent
             hx_delete: Htmx::Comments::Delete.with(id: comment.id).path,
             hx_target: "closest article",
             hx_swap: "outerHTML swap:1s",
-            hx_confirm: "删除这条回复？"
+            hx_confirm: confirmation
           )
         end
       end
