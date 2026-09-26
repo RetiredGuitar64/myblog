@@ -27,7 +27,8 @@ class Forum::TopicFields(T) < BaseComponent
         Comments::Editor,
         content: operation.content.value || "",
         current_user: current_user,
-        html_id: "topic"
+        html_id: "topic",
+        editor_height: "h-[24rem] min-h-[24rem] max-h-[60rem]"
       ) do
         yield
       end
