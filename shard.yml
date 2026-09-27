@@ -8,8 +8,6 @@ authors:
 targets:
   crystal_china:
     main: src/crystal_china.cr
-  index:
-    main: src/build_doc_index.cr
 
 dependencies:
   lucky:
