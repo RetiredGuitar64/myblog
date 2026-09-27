@@ -50,6 +50,14 @@ else
            -d redis
 fi
 
+for _ in {1..30}; do
+    if podman exec "${pod_name}_pg" pg_isready -q -U "${DB_USERNAME:-postgres}" > /dev/null 2>&1; then
+        break
+    fi
+    sleep 1
+done
+podman exec "${pod_name}_pg" pg_isready -U "${DB_USERNAME:-postgres}"
+
 podman ps --pod
 
 # clean up
