@@ -10,7 +10,7 @@ class Navbar < BaseComponent
         nav class: "w-full md:ml-auto md:w-auto" do
           ul class: "m-0 flex list-none flex-wrap items-center justify-center gap-x-2 gap-y-2 p-0 sm:gap-x-4 md:justify-end lg:gap-x-6" do
             li do
-              if current_path.starts_with?("/docs")
+              if current_path.starts_with?("/docs") && current_user
                 button(
                   "搜索文档",
                   class: nav_item_class(active: true),
