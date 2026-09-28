@@ -27,6 +27,9 @@ class Db::SyncDocContent < LuckyTask::Task
       missing_paths << doc.path_index
     end
 
-    puts "Docs without Markdown source: #{missing_paths.join(", ")}" unless missing_paths.empty?
+    unless missing_paths.empty?
+      puts "Docs without Markdown source:"
+      missing_paths.each { |path| puts "  #{path}" }
+    end
   end
 end

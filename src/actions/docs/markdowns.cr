@@ -2,10 +2,12 @@ class Docs::Markdowns < DocAction
   get "/docs/*:requested_path" do
     return redirect(to: Docs::Markdowns.with(requested_path: "index")) if requested_path.nil?
 
-    DocNavigation.load
     markdown_path = MarkdownFile.resolve(requested_path)
     raise Lucky::RouteNotFoundError.new(context) if markdown_path.nil?
+    raise Lucky::RouteNotFoundError.new(context) unless current_path == "/docs/#{requested_path}"
 
+    DocNavigation.load
+    
     markdown_source = File.read(markdown_path)
     doc = DocContent.sync(current_path, markdown_source)
     record_view(doc)
