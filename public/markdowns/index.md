@@ -35,6 +35,8 @@ Crystal 是一门受 Ruby 高度启发的计算机程序语言，并且最终编
 
 更多的 shard，查看 [shard.yml](https://github.com/crystal-china/website/blob/master/shard.yml)。
 
+数据存储使用 [PostgreSQL](https://www.postgresql.org/)，并通过 [PGroonga](https://pgroonga.github.io/) 扩展提供中文文档全文搜索。
+
 前端部分，基于本人的喜好，本站**最大限度避免编写Javascript**, 并且本人也基本不会写 CSS，
 有希望拿本项目练手的前端小将，欢迎报名！
 
@@ -46,8 +48,6 @@ Crystal 是一门受 Ruby 高度启发的计算机程序语言，并且最终编
   这种服务端工程师的最爱。
 - [hyperscript](https://github.com/bigskysoftware/_hyperscript) 专门写在页面标签中的 `script` 或 `_` 属性中的脚本，语法非常接近于
   口语话的英文，是 htmx 一个非常好的补充，见本站 [src/components/comments/editor.cr](https://github.com/crystal-china/website/blob/master/src/components/comments/editor.cr) 中的例子。
-- [stork](https://github.com/jameslittle230/stork) 很好用的本地全文搜索库，会编译为 wasm 因此性能很好，缺点是中文支持差一点，
-  另外，作者不维护了，有点可惜，目前够用吧。
 - [tailwindcss](https://tailwindcss.com/) 不用介绍了吧？
 
 更多用到的前端库，查看 [pacakge.json](https://github.com/crystal-china/website/blob/master/package.json)。
@@ -61,11 +61,11 @@ Crystal 是一门受 Ruby 高度启发的计算机程序语言，并且最终编
 
 整个部署过程是非常简单而且快速的。
 
-1. `shards run index` 创建所需的索引
-2. `bun run prod` 打包并压缩 assets 文件到 `./public/assets`。
-3. 交叉编译，生成一个静态的 binary (所有所需的 assets 文件也会被加入二进制文件)
-4. 和服务器上最后部署版本比较，并生成 binary patchfile.
-5. 复制 patchfile 到服务器，并应用。（相较于文件覆盖，服务器无需停止，既可以打 patch）
+1. `bun run prod` 打包并压缩 assets 文件到 `./public/assets`。
+2. 交叉编译，生成一个静态的 binary (所有所需的 assets 文件也会被加入二进制文件)
+3. 和服务器上最后部署版本比较，并生成 binary patchfile.
+4. 复制 patchfile 到服务器，并应用。（相较于文件覆盖，服务器无需停止，既可以打 patch）
+5. 同步 Markdown 文件到服务器，运行 `bin/tasks db.sync_doc_content` 更新数据库中的全文搜索内容。
 6. 成功后，本地做一个刚刚部署版本的备份
 
 此网站编译后的 binary 大小大约 21M 左右（包含所有 assets 文件），修改不多的情况下，

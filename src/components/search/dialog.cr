@@ -19,11 +19,11 @@ class Search::Dialog < BaseComponent
           type: "search",
           name: "q",
           id: "search-input",
-          placeholder: "至少 2 个汉字或 3 个英文字母",
+          placeholder: "输入关键词开始搜索",
           autocomplete: "off",
           autofocus: "true",
           class: "mt-3 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-sky-600 focus:ring-2 focus:ring-sky-100",
-          hx_get: Htmx::Search.path_without_query_params + "?scope=docs",
+          hx_get: Htmx::Search.with(scope: "docs").path,
           hx_trigger: "input changed delay:500ms, search",
           hx_sync: "this:replace",
           hx_target: "#doc-search-results"
