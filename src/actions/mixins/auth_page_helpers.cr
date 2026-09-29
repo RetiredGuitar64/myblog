@@ -11,9 +11,17 @@ module AuthPageHelpers
   end
 
   def auth_page_with_oauth(&)
-    section class: "mx-auto grid w-full max-w-4xl gap-8 px-8 py-12 lg:grid-cols-[minmax(0,1fr)_18rem]" do
-      yield
-      mount Component::OAuth
+    providers = [] of String
+    providers << "google" if ENV["GOOGLE_OAUTH_CLIENT_ID"]?.presence && ENV["GOOGLE_OAUTH_SECRET"]?.presence
+    providers << "github" if ENV["GITHUB_OAUTH_CLIENT_ID"]?.presence && ENV["GITHUB_OAUTH_SECRET"]?.presence
+
+    if providers.empty?
+      auth_page_single_column { yield }
+    else
+      section class: "mx-auto grid w-full max-w-4xl gap-8 px-8 py-12 lg:grid-cols-[minmax(0,1fr)_18rem]" do
+        yield
+        mount Component::OAuth, providers: providers
+      end
     end
   end
 
