@@ -8,12 +8,12 @@ class Forum::Feed < BrowserAction
   accepted_formats [:rss], default: :rss
 
   get "/forum/feed.xml" do
-    topics = TopicQuery.new.created_at.desc_order.limit(20).results
+    topics = TopicQuery.new.created_at.desc_order.limit(20).preload_node.results
 
     body = XML.build(encoding: "UTF-8") do |xml|
       xml.element("rss", "xmlns:atom": "http://www.w3.org/2005/Atom", version: "2.0") do
         xml.element("channel") do
-          xml.element("title") { xml.text "Crystal China 论坛" }
+          xml.element("title") { xml.text "Crystal 中文社区" }
           xml.element("description") { xml.text "Crystal 语言及其生态的中文讨论" }
           xml.element("link") { xml.text Forum::Index.url }
           xml.element("atom", "link", nil, rel: "self", href: Forum::Feed.url)
@@ -29,6 +29,7 @@ class Forum::Feed < BrowserAction
               xml.element("guid", "isPermaLink": true) { xml.text url }
               xml.element("pubDate") { xml.text topic.created_at.to_rfc2822 }
               xml.element("title") { xml.text topic.title }
+              xml.element("category") { xml.text topic.node.name }
               xml.element("link") { xml.text url }
               xml.element("description") { xml.cdata user_markdown(topic.content) }
             end

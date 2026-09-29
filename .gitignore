@@ -11,8 +11,7 @@
 /dist
 /public/assets
 /public/bun-manifest.json
-/public/markdowns/search-index.st
-/public/markdowns/search-index.st.version
 /script/setup
 /script/system_check
 /*.custom.gz
+/backups

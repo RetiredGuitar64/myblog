@@ -5,12 +5,16 @@ class CreateDocs::V20250309141337 < Avram::Migrator::Migration::V1
       add path_index : String, unique: true, index: true
       add view_count : Int32, default: 0
       add vote_counts : JSON::Any, default: JSON.parse({"👍" => 0, "👎" => 0, "❤️" => 0}.to_json)
+      # Raw Markdown used by PGroonga document search.
+      add content : String?
       # Stable content identity; unlike file mtime, Git checkout does not change it.
       add content_digest : String?
       # Changes only when the Markdown content digest changes.
       add content_updated_at : Time?
       add_timestamps
     end
+
+    execute "CREATE INDEX docs_content_pgroonga_index ON docs USING pgroonga (content)"
   end
 
   def rollback

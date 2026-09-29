@@ -1,5 +1,6 @@
 class CreateUsers::V00000000000001 < Avram::Migrator::Migration::V1
   def migrate
+    enable_extension "pgroonga"
     enable_extension "citext"
 
     create table_for(User) do
@@ -16,5 +17,6 @@ class CreateUsers::V00000000000001 < Avram::Migrator::Migration::V1
   def rollback
     drop table_for(User)
     disable_extension "citext"
+    execute "DROP EXTENSION IF EXISTS pgroonga"
   end
 end

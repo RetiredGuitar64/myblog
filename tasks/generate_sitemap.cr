@@ -29,6 +29,10 @@ module GenerateSitemapTask
 
         add_url(xml, host, Forum::Index.path)
 
+        NodeQuery.new.sorted.each do |node|
+          add_url(xml, host, Forum::Index.with(node: node.slug).path, node.updated_at)
+        end
+
         TopicQuery.new.id.asc_order.each do |topic|
           add_url(xml, host, Forum::Show.with(id: topic.id).path, topic.updated_at)
         end

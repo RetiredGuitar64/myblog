@@ -25,9 +25,13 @@ else
 fi
 
 if podman pod exists $pod_name; then
+    if [ "$(podman inspect --format '{{.Config.Image}}' "${pod_name}_pg")" != "docker.io/groonga/pgroonga:4.0.9-debian-18" ]; then
+        echo "${pod_name}_pg 仍是旧镜像；请先备份数据库并重建 pod（不要删除 crystal_china_pgdata volume）" >&2
+        exit 1
+    fi
     podman pod start $pod_name
 else
-    podman pod create --name $pod_name -p 5432:5432 -p 6379:6379
+    podman pod create --name $pod_name -p 127.0.0.1:5432:5432 -p 127.0.0.1:6379:6379
 
     # podman pod list
 
@@ -38,13 +42,21 @@ else
            -e POSTGRES_DB=${DB_NAME:-${pod_name}_development} \
            -e POSTGRES_PASSWORD=${DB_PASSWORD:-postgres} \
            -v crystal_china_pgdata:/var/lib/postgresql \
-           -d postgres
+           -d docker.io/groonga/pgroonga:4.0.9-debian-18
 
     podman run \
            --pod ${pod_name} \
            --name ${pod_name}_redis \
            -d redis
 fi
+
+for _ in {1..30}; do
+    if podman exec "${pod_name}_pg" pg_isready -q -U "${DB_USERNAME:-postgres}" > /dev/null 2>&1; then
+        break
+    fi
+    sleep 1
+done
+podman exec "${pod_name}_pg" pg_isready -U "${DB_USERNAME:-postgres}"
 
 podman ps --pod
 

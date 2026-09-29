@@ -1,4 +1,6 @@
 class Component::OAuth < BaseComponent
+  needs providers : Array(String)
+
   def render
     aside class: "app-panel flex h-full flex-col justify-center gap-6 p-6" do
       header do
@@ -7,8 +9,8 @@ class Component::OAuth < BaseComponent
       end
 
       nav class: "space-y-3", "aria-label": "快捷登录方式" do
-        link "Google", to: SignUps::Oauth::New.with(provider: "google"), hx_boost: "false", class: "form-secondary w-full"
-        link "Github", to: SignUps::Oauth::New.with(provider: "github"), hx_boost: "false", class: "form-secondary w-full"
+        link "Google", to: SignUps::Oauth::New.with(provider: "google"), hx_boost: "false", class: "form-secondary w-full" if providers.includes?("google")
+        link "Github", to: SignUps::Oauth::New.with(provider: "github"), hx_boost: "false", class: "form-secondary w-full" if providers.includes?("github")
       end
     end
 

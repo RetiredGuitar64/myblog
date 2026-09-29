@@ -9,7 +9,7 @@ class SignUps::NewPage < AuthLayout
     op = operation
 
     auth_page_with_oauth do
-      auth_card("注册", "创建新账号并设置登录密码。完成后即可使用邮箱、密码或第三方账号登录。") do
+      auth_card("注册", "创建新账号并设置登录密码。") do
         form_for SignUps::Create, class: "panel-body" do
           auth_form_fields do
             mount Shared::Field, attribute: op.email, label_text: "电子邮件", &.email_input(autofocus: "true", required: "", placeholder: "you@example.com")
@@ -46,9 +46,9 @@ class SignUps::NewPage < AuthLayout
             end
 
             auth_form_actions do
-              submit "注册", type: "submit", flow_id: "sign-up-button", class: "form-submit"
-
               link "已有账号？去登录", to: SignIns::New, class: "form-secondary"
+
+              submit "注册", type: "submit", flow_id: "sign-up-button", class: "form-submit"
             end
           end
         end

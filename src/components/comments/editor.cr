@@ -1,12 +1,12 @@
 class Comments::Editor < BaseComponent
   needs content : String = ""
   needs html_id : String = "tab"
+  needs editor_height : String = "h-[11rem] min-h-[11rem] max-h-[40rem]"
 
   def render(&)
     me = current_user
     id_input = "#{html_id}1"
     id_preview = "#{html_id}2"
-    editor_height = "h-[11rem] min-h-[11rem] max-h-[40rem]"
 
     div class: "app-panel", id: "#{html_id}-form" do
       input(

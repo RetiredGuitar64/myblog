@@ -10,6 +10,7 @@ module MarkdownFile
     candidate = ROOT.join("#{request_path}.md").normalize
     relative = candidate.relative_to?(ROOT)
     return if relative.nil? || relative.parts.first? == ".."
+    return unless relative.to_s == "#{request_path}.md"
     return unless File.file?(candidate)
 
     candidate.to_s

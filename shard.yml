@@ -8,8 +8,6 @@ authors:
 targets:
   crystal_china:
     main: src/crystal_china.cr
-  index:
-    main: src/build_doc_index.cr
 
 dependencies:
   lucky:
@@ -52,7 +50,7 @@ dependencies:
   cache:
     github: crystal-cache/cache
   multi_auth:
-    github: msa7/multi_auth
+    github: zw963/multi_auth
   rosetta:
     github: wout/rosetta
 development_dependencies:

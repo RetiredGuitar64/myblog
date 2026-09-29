@@ -83,7 +83,7 @@ abstract class DocLayout
       )
     end
 
-    doc_search_dialog
+    mount Search::Dialog, current_user: current_user if current_user
   end
 
   private def render_standalone_doc
@@ -189,27 +189,5 @@ abstract class DocLayout
         voted_types: voted_types
       )
     end
-  end
-
-  private def doc_search_dialog
-    dialog(
-      id: "doc_search_dialog",
-      class: "mx-auto mt-[8vh] h-[40em] max-h-[calc(100vh_-_2rem)] w-[calc(100%_-_2rem)] sm:mt-[16vh] sm:w-[30em]"
-    ) do
-      label "注意：中文搜索结果通常不准确, 请使用英文关键字！", for: "search-input", class: "titlebar"
-
-      div class: "stork-wrapper-flat mt-3" do
-        input data_stork: "docs", data_stork_index_url: stork_index_url, class: "stork-input", id: "search-input"
-        div data_stork: "docs-output", class: "stork-output"
-      end
-    end
-  end
-
-  private def stork_index_url
-    path = "public/markdowns/search-index.st"
-    version_path = "#{path}.version"
-    version = File.read(version_path).strip if File.file?(version_path)
-
-    version ? "/markdowns/search-index.st?v=#{version}" : "/markdowns/search-index.st"
   end
 end

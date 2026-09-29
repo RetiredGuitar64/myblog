@@ -43,7 +43,8 @@ class Db::Seed::SampleData < LuckyTask::Task
     )
 
     docs = DocNavigation.pages.map(&.path).sample(3).map do |path|
-      SaveDoc.create!(path_index: path)
+      markdown_path = MarkdownFile.resolve(path.sub(%r{\A/docs/}, "")) || raise "Missing Markdown for #{path}"
+      DocContent.sync(path, File.read(markdown_path))
     end
 
     docs.each do |doc|

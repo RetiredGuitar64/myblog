@@ -5,6 +5,7 @@ describe MarkdownFile do
     MarkdownFile.resolve("index").should eq("public/markdowns/index.md")
     MarkdownFile.resolve("missing").should be_nil
     MarkdownFile.resolve("../README").should be_nil
+    MarkdownFile.resolve("concurrency/../index").should be_nil
     MarkdownFile.resolve("/etc/passwd").should be_nil
   end
 end

@@ -13,9 +13,6 @@
 /* 这是 code block 的样式 */
 @import "./catppuccin-macchiato.css";
 
-/* stork 搜索页面的样式 */
-@import "./stork-wrapper-flat.css";
-
 /* 当前目录约定：
  * - base：全局默认值、裸标签、基础排版
  * - components：组件/作用域规则

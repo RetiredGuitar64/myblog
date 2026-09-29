@@ -19,31 +19,30 @@
 
 The application is deployed as a static binary with its frontend assets baked in. Markdown documents deliberately remain outside the binary so they can be updated without recompiling the application.
 
-1. Run `shards run index` to generate `public/markdowns/search-index.st` and its content-based version file. Both generated files are ignored by Git and must still be deployed.
+1. Run `bun run prod` to build and precompress the frontend assets into `public/assets`.
 
-2. Run `bun run prod` to build and precompress the frontend assets into `public/assets`.
-
-3. Build the static binary with `script/build_amd64_static_binary.sh`. This requires Podman or Docker.
+2. Build the static binary with `script/build_amd64_static_binary.sh`. This requires Podman or Docker.
 
    Alternatively, use the [sb_static](https://github.com/crystal-china/magic-haversack/blob/main/bin/sb_static) script with Zig. See [Use Zig CC as an alternative linker](https://github.com/crystal-china/magic-haversack/blob/main/docs/use_zig_cc_as_an_alternative_linker.md) for details.
 
-4. Synchronize `public/markdowns/` and `public/sitemap.xml` to the server with `rsync -a`. The Markdown directory must exist before starting the new binary because the application reads `navigation.yml` during startup.
+3. Synchronize `public/markdowns/` with `rsync -a --delete` (apply `--delete` only to that directory) and `public/sitemap.xml` with `rsync -a`. The Markdown directory must exist before starting the new binary because the application reads `navigation.yml` during startup.
 
-5. Copy `bin/crystal_china` to the server and configure the environment in `.env`; see [.env.sample](/.env.sample). The deployed application has the following relevant structure:
+4. Copy `bin/crystal_china` and `bin/tasks` to the server and configure the environment in `.env`; see [.env.sample](/.env.sample). The deployed application has the following relevant structure:
 
    ```text
    .
    ├── .env
    ├── bin
-   │   └── crystal_china
+   │   ├── crystal_china
+   │   └── tasks
    └── public
        ├── markdowns
        │   ├── navigation.yml
-       │   ├── search-index.st
-       │   ├── search-index.st.version
        │   └── ...
        └── sitemap.xml
    ```
+
+5. Run `bin/tasks db.migrate` and `bin/tasks db.sync_doc_content` to populate the PGroonga-backed document search index. The sync task is safe to rerun after Markdown changes.
 
 6. Add a systemd service to start the server. See [crystal_china.service](/nginx/crystal_china.service). [Procodile](https://github.com/crystal-china/procodile) can be used instead.
 
@@ -52,11 +51,10 @@ The application is deployed as a static binary with its frontend assets baked in
 ### Updating documentation
 
 1. Edit files under `public/markdowns/` and update `navigation.yml` when the page should appear in the Sidebar and Pager.
-2. Run `shards run index` locally to rebuild `search-index.st`.
-3. Synchronize the complete directory with `rsync -a public/markdowns/ .../public/markdowns/`.
-4. Refresh the document page. Recompiling or restarting the application is not required.
+2. Synchronize the complete directory with `rsync -a --delete public/markdowns/ .../public/markdowns/` so removed Markdown files also disappear from the server.
+3. Run `bin/tasks db.sync_doc_content` on the server to update searchable content, then refresh the document page. Recompiling or restarting the application is not required.
 
-A Markdown file omitted from `navigation.yml` remains directly accessible as a standalone document, but it will not appear in the Sidebar, Pager, or Stork search index. Restarting the service never rebuilds the search index.
+A Markdown file omitted from `navigation.yml` remains directly accessible and searchable, but it will not appear in the Sidebar or Pager. Visiting a document also syncs its content into the search index.
 
 ## Contributing
 

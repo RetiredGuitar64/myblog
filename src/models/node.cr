@@ -1,0 +1,11 @@
+class Node < BaseModel
+  table do
+    has_many topics : Topic
+
+    column name : String
+    column slug : String
+    column summary : String
+    column color : String
+    column position : Int32
+  end
+end

@@ -1,5 +1,6 @@
 class Forum::NewPage < MainLayout
   needs operation : SaveTopic
+  needs nodes : Array(Node)
 
   def page_title
     "发布主题"
@@ -13,22 +14,9 @@ class Forum::NewPage < MainLayout
         end
 
         form_for Forum::Create, class: "panel-body space-y-6" do
-          mount Shared::Field, attribute: operation.title, label_text: "标题", &.text_input(autofocus: "true", required: "")
-
-          div class: "form-field" do
-            label "正文", for: "topic_text_area", class: "form-label"
-
-            mount(
-              Comments::Editor,
-              content: operation.content.value || "",
-              current_user: current_user,
-              html_id: "topic"
-            ) do
-              link "取消", to: Forum::Index, class: "form-secondary"
-              submit "发布", class: "form-submit"
-            end
-
-            mount Shared::FieldErrors, operation.content
+          mount Forum::TopicFields, operation: operation, nodes: nodes, current_user: current_user do
+            link "取消", to: Forum::Index, class: "form-secondary"
+            submit "发布", class: "form-submit"
           end
         end
       end
