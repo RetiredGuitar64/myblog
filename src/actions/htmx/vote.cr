@@ -17,9 +17,22 @@ class Htmx::Vote < BrowserAction
   private def toggle_comment_vote(comment_id : Int64, vote_type : String)
     vote_counts = {} of String => Int32
     user_voted_types = [] of String
+    status = 400
 
     transaction_committed = AppDatabase.transaction do
       comment = CommentQuery.new.id(comment_id).for_update.first
+      unless CommentThreadQuery.find(comment.comment_thread_id).target_visible?
+        status = 404
+        AppDatabase.rollback
+      end
+
+      if (root_id = comment.root_id)
+        if CommentQuery.new.id(root_id).none?
+          status = 404
+          AppDatabase.rollback
+        end
+      end
+
       vote_counts = Hash(String, Int32).from_json(comment.vote_counts.to_json)
 
       AppDatabase.rollback unless vote_counts.has_key?(vote_type)
@@ -42,7 +55,7 @@ class Htmx::Vote < BrowserAction
       user_voted_types = VoteQuery.new.user_id(current_user.id).comment_id(comment.id).map(&.vote_type)
     end
 
-    return head 400 unless transaction_committed
+    return head status unless transaction_committed
 
     component(
       Shared::VoteButton,

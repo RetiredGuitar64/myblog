@@ -11,6 +11,7 @@ class Htmx::Comments::Delete < CommentAction
     AppDatabase.transaction do
       comment = CommentQuery.new.id(id).for_update.first
 
+      next status = 404 unless comment_available?(comment)
       next status = 403 unless comment.user_id == me.id || me.admin?
       next status = 409 if comment.children_count > 0 && !me.admin?
 
