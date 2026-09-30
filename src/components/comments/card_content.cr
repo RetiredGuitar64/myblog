@@ -56,17 +56,23 @@ class Comments::CardContent < BaseComponent
   end
 
   private def render_parent_comment_hint
-    return unless (parent_comment = comment.parent)
     # 直接回复根评论时，缩进本身已经说明“这是针对这条顶级评论的回复”，不用再重复显示。
     # 但如果回复的是某条子评论，即使它是那条子评论的第一条回复，也应该显示“回复谁”。
-    return if comment.root_id == parent_comment.id
+    return unless (parent_id = comment.parent_id)
+    return if comment.root_id == parent_id
+
+    parent_comment = comment.parent
 
     div class: "order-3 min-w-0 basis-full self-center px-2 text-center text-xs font-medium text-green-700 sm:order-none sm:flex-1 sm:basis-auto" do
-      a(
-        "回复 #{parent_comment.floor} 楼 @#{parent_comment.user.name}",
-        href: "#comment-#{parent_comment.id}",
-        class: "inline-block truncate underline decoration-dotted underline-offset-2 hover:text-green-800"
-      )
+      if parent_comment && !parent_comment.soft_deleted?
+        a(
+          "回复 #{parent_comment.floor} 楼 @#{parent_comment.user.name}",
+          href: "#comment-#{parent_comment.id}",
+          class: "inline-block truncate underline decoration-dotted underline-offset-2 hover:text-green-800"
+        )
+      else
+        text "回复已删除的评论"
+      end
     end
   end
 end

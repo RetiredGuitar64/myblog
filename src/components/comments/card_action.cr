@@ -40,8 +40,8 @@ class Comments::CardAction < BaseComponent
         button("编辑", opts, hx_get: Htmx::Comments::Edit.with(id: comment.id, order_by: order_by).path)
 
         if comment.children_count == 0 || me.admin?
-          confirmation = if comment.children_count > 0
-                           "这条回复存在子回复，删除后将一并删除。确定继续？"
+          confirmation = if comment.root_id.nil? && comment.descendants_count > 0
+                           "删除后，子回复也将不可见。确定继续？"
                          else
                            "删除这条回复？"
                          end
