@@ -3,6 +3,10 @@ require "./main_layout"
 abstract class AdminLayout < MainLayout
   abstract def admin_content
 
+  def page_title
+    "后台管理"
+  end
+
   def page_description
     "管理 Crystal 中文社区。"
   end
@@ -31,6 +35,14 @@ abstract class AdminLayout < MainLayout
                   "节点管理",
                   to: Admin::Nodes::Index,
                   class: admin_nav_link_classes(active: current_path.starts_with?("/admin/nodes"))
+                )
+              end
+
+              li do
+                link(
+                  "回收站",
+                  to: Admin::Trash::Index,
+                  class: admin_nav_link_classes(active: current_path.starts_with?("/admin/trash"))
                 )
               end
             end
