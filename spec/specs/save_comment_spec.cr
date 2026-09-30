@@ -1,7 +1,7 @@
 require "../spec_helper"
 
 describe SaveComment do
-  it "requires exactly one comment target" do
+  it "rejects both comment targets on creation" do
     user = UserFactory.create
     doc = SaveDoc.create!(path_index: "/docs/save-reply-target")
     comment_thread_id = CommentThreadQuery.new.doc_id(doc.id).first.id
@@ -9,7 +9,7 @@ describe SaveComment do
 
     SaveComment.create(user_id: user.id, comment_thread_id: comment_thread_id, parent_id: parent.id, content: "invalid") do |operation, comment|
       comment.should be_nil
-      operation.not_nil!.errors[:comment_thread_id_or_parent_id].should contain("必须且只能有一个存在")
+      operation.not_nil!.errors[:comment_thread_id_or_parent_id].should contain("不能同时指定评论区和父评论")
     end
   end
 
