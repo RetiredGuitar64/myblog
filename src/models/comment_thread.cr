@@ -1,4 +1,10 @@
 class CommentThread < BaseModel
+  def target_visible?
+    return true unless (topic_id = self.topic_id)
+
+    TopicQuery.new.id(topic_id).any?
+  end
+
   table do
     belongs_to doc : Doc?
     belongs_to topic : Topic?
