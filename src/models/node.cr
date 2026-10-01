@@ -1,6 +1,6 @@
 class Node < BaseModel
   table do
-    has_many topics : Topic
+    has_many topics : Topic, base_query_class: TopicQuery
 
     column name : String
     column slug : String
