@@ -1,40 +1,35 @@
 module Db::CounterHelpers
   def add_counters_for(*, source_table : String, target_table : String, target_column : String, target_id_column : String)
-    counter_function_sql(
+    add_counter_functions(
       source_table: source_table,
       target_table: target_table,
       target_column: target_column,
       target_id_column: target_id_column
     )
 
-    trigger_sql(
+    add_counter_triggers(
       source_table: source_table,
       target_table: target_table,
       target_column: target_column,
     )
   end
 
-  def remove_counters_for(*, source_table : String, target_table : String, target_column : String)
-    key = "#{source_table}_#{target_table}_#{target_column}"
+  def add_soft_delete_counters_for(*, source_table : String, target_table : String, target_column : String, target_id_column : String)
+    add_counter_functions(
+      source_table: source_table,
+      target_table: target_table,
+      target_column: target_column,
+      target_id_column: target_id_column
+    )
 
-    execute <<-SQL
-DROP TRIGGER IF EXISTS trigger_increment_#{key} ON #{source_table};
-SQL
-
-    execute <<-SQL
-DROP TRIGGER IF EXISTS trigger_decrement_#{key} ON #{source_table};
-SQL
-
-    execute <<-SQL
-DROP FUNCTION IF EXISTS increment_#{key}();
-SQL
-
-    execute <<-SQL
-DROP FUNCTION IF EXISTS decrement_#{key}();
-SQL
+    add_soft_delete_counter_triggers(
+      source_table: source_table,
+      target_table: target_table,
+      target_column: target_column
+    )
   end
 
-  private def counter_function_sql(*, source_table : String, target_table : String, target_column : String, target_id_column : String)
+  private def add_counter_functions(*, source_table : String, target_table : String, target_column : String, target_id_column : String)
     key = "#{source_table}_#{target_table}_#{target_column}"
 
     execute <<-SQL
@@ -76,13 +71,14 @@ $$ LANGUAGE plpgsql;
 SQL
   end
 
-  private def trigger_sql(*, source_table : String, target_table : String, target_column : String)
+  private def add_counter_triggers(*, source_table : String, target_table : String, target_column : String, when when_clause : String? = nil)
     key = "#{source_table}_#{target_table}_#{target_column}"
 
     execute <<-SQL
 CREATE TRIGGER trigger_increment_#{key}
 AFTER INSERT ON #{source_table}
 FOR EACH ROW
+#{when_clause ? "WHEN (NEW.#{when_clause})" : ""}
 EXECUTE FUNCTION increment_#{key}();
 SQL
 
@@ -90,8 +86,69 @@ SQL
 CREATE TRIGGER trigger_decrement_#{key}
 AFTER DELETE ON #{source_table}
 FOR EACH ROW
+#{when_clause ? "WHEN (OLD.#{when_clause})" : ""}
 EXECUTE FUNCTION decrement_#{key}();
 SQL
+  end
+
+  private def add_soft_delete_counter_triggers(*, source_table : String, target_table : String, target_column : String)
+    key = "#{source_table}_#{target_table}_#{target_column}"
+
+    add_counter_triggers(
+      source_table: source_table,
+      target_table: target_table,
+      target_column: target_column,
+      when: "soft_deleted_at IS NULL"
+    )
+
+    execute <<-SQL
+CREATE TRIGGER trigger_soft_delete_#{key}
+AFTER UPDATE OF soft_deleted_at ON #{source_table}
+FOR EACH ROW
+WHEN (OLD.soft_deleted_at IS NULL AND NEW.soft_deleted_at IS NOT NULL)
+EXECUTE FUNCTION decrement_#{key}();
+SQL
+
+    execute <<-SQL
+CREATE TRIGGER trigger_restore_#{key}
+AFTER UPDATE OF soft_deleted_at ON #{source_table}
+FOR EACH ROW
+WHEN (OLD.soft_deleted_at IS NOT NULL AND NEW.soft_deleted_at IS NULL)
+EXECUTE FUNCTION increment_#{key}();
+SQL
+  end
+
+  def remove_counters_for(*, source_table : String, target_table : String, target_column : String)
+    key = "#{source_table}_#{target_table}_#{target_column}"
+
+    execute <<-SQL
+DROP TRIGGER IF EXISTS trigger_increment_#{key} ON #{source_table};
+SQL
+
+    execute <<-SQL
+DROP TRIGGER IF EXISTS trigger_decrement_#{key} ON #{source_table};
+SQL
+
+    execute <<-SQL
+DROP FUNCTION IF EXISTS increment_#{key}();
+SQL
+
+    execute <<-SQL
+DROP FUNCTION IF EXISTS decrement_#{key}();
+SQL
+  end
+
+  def remove_soft_delete_counters_for(*, source_table : String, target_table : String, target_column : String)
+    key = "#{source_table}_#{target_table}_#{target_column}"
+
+    execute "DROP TRIGGER IF EXISTS trigger_soft_delete_#{key} ON #{source_table};"
+    execute "DROP TRIGGER IF EXISTS trigger_restore_#{key} ON #{source_table};"
+
+    remove_counters_for(
+      source_table: source_table,
+      target_table: target_table,
+      target_column: target_column
+    )
   end
 end
 

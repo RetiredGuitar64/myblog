@@ -3,6 +3,10 @@ class SaveComment < Comment::SaveOperation
 
   before_save do
     if !id.value # 新建的时候
+      if parent_id.value && comment_thread_id.value
+        add_error :comment_thread_id_or_parent_id, "不能同时指定评论区和父评论"
+      end
+
       parent_id.value.try do |parent_id|
         parent_comment = CommentQuery.find(parent_id)
         comment_thread_id.value = parent_comment.comment_thread_id

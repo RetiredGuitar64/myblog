@@ -8,6 +8,13 @@ class Htmx::Comments::Index < CommentAction
 
     return head 400 if comment_thread_id.nil? == root_id.nil?
 
+    if (thread_id = comment_thread_id)
+      return head 404 unless CommentThreadQuery.find(thread_id).target_visible?
+    elsif (root_comment_id = root_id)
+      root_comment = CommentQuery.find(root_comment_id)
+      return head 404 unless comment_available?(root_comment)
+    end
+
     pagination = comments_pagination(
       comment_thread_id: comment_thread_id,
       root_id: root_id,

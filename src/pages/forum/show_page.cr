@@ -29,7 +29,7 @@ class Forum::ShowPage < MainLayout
                     type: "button",
                     class: "action-button action-button-danger h-8",
                     hx_delete: Admin::Topics::Delete.with(id: topic.id).path,
-                    hx_confirm: "删除这个主题及其全部评论？此操作不可撤销。",
+                    hx_confirm: "删除后，主题及其评论将不可见。确定继续？",
                     hx_disable: "this"
                   )
                 end

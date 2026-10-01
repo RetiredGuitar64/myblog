@@ -6,6 +6,7 @@ class Htmx::Comments::Edit < CommentAction
     return head 401 if me.nil?
 
     comment = CommentQuery.find(id)
+    return head 404 unless comment_available?(comment)
 
     return head 403 unless comment.user_id == me.id || me.admin?
 

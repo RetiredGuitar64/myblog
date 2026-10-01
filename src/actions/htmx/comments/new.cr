@@ -7,6 +7,8 @@ class Htmx::Comments::New < CommentAction
     return head 401 if me.nil?
 
     comment = CommentQuery.find(id)
+    return head 404 unless comment_available?(comment)
+
     # target_comment_id 用于确定提交成功后替换哪个线程：顶级评论用自身 ID，子评论用所属根 ID。
     target_comment_id = comment.root_id || comment.id
 

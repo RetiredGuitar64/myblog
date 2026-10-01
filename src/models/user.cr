@@ -11,8 +11,8 @@ class User < BaseModel
     # OAuth 登录时密码为空
     column encrypted_password : String?
 
-    has_many comments : Comment
-    has_many topics : Topic
+    has_many comments : Comment, base_query_class: CommentQuery
+    has_many topics : Topic, base_query_class: TopicQuery
   end
 
   def emailable : Carbon::Address
@@ -20,8 +20,6 @@ class User < BaseModel
   end
 
   def admin?
-    return true unless LuckyEnv.production?
-
     ENV.fetch("ADMIN_EMAILS", "").split(/[\s,]+/).includes?(email)
   end
 end

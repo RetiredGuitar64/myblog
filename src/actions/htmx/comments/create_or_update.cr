@@ -19,6 +19,7 @@ class Htmx::Comments::CreateOrUpdate < CommentAction
 
     if !id.nil?
       comment = CommentQuery.find(id.not_nil!)
+      return head 404 unless comment_available?(comment)
 
       case op
       when "edit"
@@ -53,7 +54,7 @@ class Htmx::Comments::CreateOrUpdate < CommentAction
     else
       # 给 CommentThread 新建顶级评论
       comment_thread_id = self.comment_thread_id.not_nil!
-      CommentThreadQuery.find(comment_thread_id)
+      return head 404 unless CommentThreadQuery.find(comment_thread_id).target_visible?
       comment = SaveComment.create!(user_id: me.id, comment_thread_id: comment_thread_id, content: content)
       pagination = comments_pagination(comment_thread_id: comment_thread_id, order_by: order_by)
       html_id = "comments"
