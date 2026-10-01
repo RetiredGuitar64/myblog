@@ -20,8 +20,6 @@ class User < BaseModel
   end
 
   def admin?
-    return true unless LuckyEnv.production?
-
     ENV.fetch("ADMIN_EMAILS", "").split(/[\s,]+/).includes?(email)
   end
 end
