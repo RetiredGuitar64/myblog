@@ -37,16 +37,15 @@ class Htmx::Vote < BrowserAction
 
       AppDatabase.rollback unless vote_counts.has_key?(vote_type)
 
-      vote = VoteQuery.new
+      votes = VoteQuery.new
         .user_id(current_user.id)
         .comment_id(comment.id)
-        .vote_type(vote_type)
-        .first?
 
-      if vote
+      if (vote = votes.vote_type(vote_type).first?)
         DeleteVote.delete!(vote)
         vote_counts[vote_type] -= 1
       else
+        remove_opposite_vote(votes, vote_type, vote_counts)
         SaveVote.create!(user_id: current_user.id, comment_id: comment.id, vote_type: vote_type)
         vote_counts[vote_type] += 1
       end
@@ -76,16 +75,15 @@ class Htmx::Vote < BrowserAction
 
       AppDatabase.rollback unless vote_counts.has_key?(vote_type)
 
-      vote = VoteQuery.new
+      votes = VoteQuery.new
         .user_id(current_user.id)
         .doc_id(doc.id)
-        .vote_type(vote_type)
-        .first?
 
-      if vote
+      if (vote = votes.vote_type(vote_type).first?)
         DeleteVote.delete!(vote)
         vote_counts[vote_type] -= 1
       else
+        remove_opposite_vote(votes, vote_type, vote_counts)
         SaveVote.create!(user_id: current_user.id, doc_id: doc.id, vote_type: vote_type)
         vote_counts[vote_type] += 1
       end
@@ -103,5 +101,16 @@ class Htmx::Vote < BrowserAction
       current_user: current_user,
       voted_types: user_voted_types
     )
+  end
+
+  private def remove_opposite_vote(votes : VoteQuery, vote_type : String, vote_counts : Hash(String, Int32))
+    return unless vote_type.in?("👍", "👎")
+
+    opposite_type = vote_type == "👍" ? "👎" : "👍"
+
+    if (opposite_vote = votes.vote_type(opposite_type).first?)
+      DeleteVote.delete!(opposite_vote)
+      vote_counts[opposite_type] -= 1
+    end
   end
 end
